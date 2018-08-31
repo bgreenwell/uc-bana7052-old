@@ -1,5 +1,0 @@
-In the following data pairs
-X = fires per 1000 housing units
-Y = thefts per 1000 population
-within the same Zip code in the Chicago metro area
-Reference: U.S. Commission on Civil Rights
