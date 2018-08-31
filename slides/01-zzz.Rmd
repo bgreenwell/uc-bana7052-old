@@ -1,0 +1,54 @@
+---
+title: "About me"
+output: powerpoint_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Who is this guy?
+
+```{r bitmoji}
+set.seed(101)
+id <- "d47c6f08-0f4b-431c-b9aa-382377158c14-v1"
+RBitmoji::plot_comic(id, tag = "math")
+```
+
+
+## Education
+
+* B.S. in Statistics from WSU
+
+* M.S. in Applied Statistics from WSU
+
+* Ph.D. in Applied Mathematics from AFIT 
+    
+    * *Topics in Statistical Calibration*: http://www.dtic.mil/docs/citations/ADA598921
+    
+
+## Research interests
+
+* Statistical/machines learning
+
+* Interpretable machine learning (e.g., quantifying and visualizing both feature importance and feature effects)
+
+* Statistical computing (e.g., developing useful/useless R packages)
+
+* Inverse estimation (e.g., inverse prediction---maybe in this class? `r emo::ji("thinking")`)
+
+
+## R packages
+
+* [investr](https://cran.r-project.org/package=investr)
+
+* [pdp](https://cran.r-project.org/package=pdp) 
+
+* [vip](https://cran.r-project.org/package=vip)
+
+* [sure](https://cran.r-project.org/package=sure)
+
+* [RBitmoji](https://cran.r-project.org/package=RBitmoji)
+
+* [roundhouse](https://cran.r-project.org/package=roundhouse)
