@@ -11,9 +11,10 @@ head(rocket)
 dim(rocket)
 
 # Scatterplot of the data
-ggplot(rocket, aes(x = age, y = strength)) +
+p <- ggplot(rocket, aes(x = age, y = strength)) +
   geom_point() +
   theme_light()
+print(p)
 
 # Correlation between age and strength
 cor(rocket)
@@ -27,6 +28,15 @@ hist(rocket$age)
 
 # SLR model
 fit <- lm(strength ~ age, data = rocket)
+
+# Draw the fitted regression line
+center_of_data <- data.frame(
+  "strength" = mean(rocket$strength),
+  "age" = mean(rocket$age)
+)
+p + geom_smooth(method = "lm", se = FALSE) +
+  geom_point(data = center_of_data, col = "red2", size = 2)
+  
 
 # Fitted values
 fitted(fit)
