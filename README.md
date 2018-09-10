@@ -1,14 +1,16 @@
-# uc-bana7052
+uc-bana7052
+===========
 
 Course materials for BANA 7052 (Applied Linear Regression) at UC
 
 **Warning:** The following material is still being developed!
 
-## Lectures
+[Course
+syllabus](https://bgreenwell.netlify.com/teaching/bana7052/homework/bana7052-hw1)
 
-* Lecture 01: [Association and Simple Linear Regression](https://bgreenwell.netlify.com/teaching/bana7052/slides/lecture-01#1) (in progress)
+Lectures
+--------
 
-
-## Homework
-
-TBD.
+-   Lecture 01: Association and Simple Linear Regression;
+    [Slides](https://bgreenwell.netlify.com/teaching/bana7052/slides/lecture-01#1);
+    [Homework](https://bgreenwell.netlify.com/teaching/bana7052/homework/bana7052-hw1)
