@@ -55,3 +55,6 @@ summary(fit)$sigma
 sigma(fit)  # using extractor function
 sigma(fit)^2
 sum(residuals(fit)^2) / (nrow(rocket) - 2)  # sanity check
+
+# Why not zero!?
+sum(residuals(fit))
