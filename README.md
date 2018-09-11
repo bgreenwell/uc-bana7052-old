@@ -16,3 +16,14 @@ Lectures
     [Homework](https://bgreenwell.netlify.com/teaching/bana7052/homework/bana7052-hw1)
 
 -   Lecture 02: Inferences in Simple Linear Regression
+
+``` r
+# Some useful R code
+roundhouse::kick(
+  paste("The square-root of -1 is not imaginary.",
+        "It is just hiding from Chuck Norris."),
+  type = 2
+)
+```
+
+![](README_files/figure-markdown_github/roundhouse-1.gif)
