@@ -16,7 +16,8 @@ Lectures
     [Homework](https://bgreenwell.netlify.com/teaching/bana7052/homework/bana7052-hw1)
 
 -   Lecture 02: Inferences in Simple Linear Regression;
-    [Slides](https://bgreenwell.netlify.com/teaching/bana7052/slides/lecture-02#1)
+    [Slides](https://bgreenwell.netlify.com/teaching/bana7052/slides/lecture-02#1);
+    Homework
 
 ``` r
 # Some useful R code
