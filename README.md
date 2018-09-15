@@ -3,7 +3,7 @@ uc-bana7052
 
 Course materials for BANA 7052 (Applied Linear Regression) at UC
 
-**Warning:** The following material is still being developed!
+**Warning:** The following material is still being developed! ⚠️
 
 [Course syllabus](https://bgreenwell.github.io/uc-bana7052/syllabus)
 
