@@ -1,0 +1,79 @@
+---
+title: "BANA 7052: Applied Linear Regression"
+subtitle: "Homework #1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Computational part (type and submit your answers in WORD only)
+
+**Please make sure that you include a cover page.**
+
+**Question 1.** Alumni donations are an important source of revenue for colleges and universities. If administrators could determine the factors that influence increases in the percentage of alumni who make a donation, they might be able to implement policies that could lead to increased revenues. Research shows that students who are more satisfied with their contact with teachers are more likely to graduate. As a result, one might suspect that smaller class sizes and lower student-faculty ratios might lead to a higher percentage of satisfied graduates, which in turn might lead to increases in the percentage of alumni who make a donation. The attached data alumni.xls shows data for 48 national universities (America’s Best Colleges, Year 2000 Edition). The column labeled % of Classes Under 20 shows the percentage of classes offered with fewer than 20 students. The column labeled Student/Faculty Ratio is the number of students enrolled divided by the total number of faculty. Finally, the column labeled Alumni Giving Rate is the percentage of alumni that made a donation to the university. 
+
+Use R to analyze the given data and answer the following questions. Consider the alumni giving rate as the response variable $Y$ and the percentage of classes with fewer than 20 students as the predictor variable $X$.
+
+The data are available for download at https://github.com/bgreenwell/uc-bana7052/tree/master/data. Alternatively, you can import the data into R directly from the web:
+
+```{r download-alumni}
+url <- "https://bgreenwell.netlify.com/data/alumni.csv"
+alumni <- read.csv(url)
+DT::datatable(alumni)  # requires DT package
+```
+
+a)	Start with a basic exploratory data analysis. Show summary statistics of the response variable and predictor variable. 
+
+b)	What is the nature of the variables $X$ and $Y$? Are there outliers? What is the correlation coefficient? Draw a scatter plot. Any major comments about the data?
+
+c)	Fit a simple linear regression to the data. What is your estimated regression equation? 
+
+d)	Interpret your results. 
+
+Write a brief report **up to two pages**. Please clearly label your figures and tables. **No raw outputs please.**
+
+
+
+**Question 2.** A Simulation Study (Simple Linear Regression). Assuming the mean response is $E\left(Y|X\right)= 10 + 5X$:
+
+a) Generate data with $X \sim N\left(\mu = 2, \sigma^2 = 0.12\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)$. **Hint:** You can use `rnorm(n = 50, mean = 5, sd = 3)` to simulate $n = 50$ observations from a $N\left(\mu = 5, \sigma = 3\right)$ distribution, but note that `rnorm()` specifies the standard deviation ($\sigma$), rather than the variance ($\sigma^2$), of the normal distribution. It is also good practice to specify the random seed via `set.seed()` whenever generating random data (otherwise, your results will differ from run to run! `r emo::ji("scream")`).
+
+b) Show summary statistics of the response variable and predictor variable. Are there outliers? What is the correlation coefficient? Draw a scatter plot.
+
+c) Fit a simple linear regression. What is the estimated model? Report the estimated coefficients.  What is the model mean squared error (MSE)?
+
+d) What are the sample mean of $X$ and $Y$? Plot the fitted regression line and point. What do you find?
+
+Write a brief summary in **two pages**. 
+
+
+### Mathematics part (feel free to type or handwrite your solutions)
+
+**Question 3.** Ordinary least squares (OLS) is typically used to estimate the regression coefficients $\beta_0$ and $\beta_1$ in the simple linear regression model by minimizing the residual sum of squares (RSS)
+
+$$
+RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right)^2 = \sum_{i=1}^n e_i^2
+$$
+
+a) How about minimizing $\sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right) = \sum_{i=1}^n e_i$?
+
+b) How about minimizing $\sum_{i=1}^n\left|Y_i - \beta_0 - \beta_1 X_i\right| = \sum_{i=1}^n \left|e_i\right|$?
+
+c) Why is OLS a popular choice for estimating $\beta_0$ and $\beta_1$?
+
+
+**Question 4.** Establish the following relationships for the simple linear regression model. (Some are trivial to show.)
+
+a) The fitted line passes through the point $\left(\bar{X}, \bar{Y}\right)$.
+
+b) $\sum_{i=1}^n e_i = 0$.
+
+c) $\sum_{i=1}^n Y_i = \sum_{i=1}^n \widehat{Y}_i$.
+
+d) $\sum_{i=1}^n X_ie_i = 0$; that is, the sum of the weighted residuals is zero when the residual of the *i*-th observation is weighted by the predictor value of the *i*-th observation.
+
+e) $\sum_{i=1}^n \widehat{Y}_ie_i = 0$; that is, the sum of the weighted residuals is zero when the residual of the *i*-th observation is weighted by the fitted value of the *i*-th observation.
+
+f) $\sum_{i=1}^n e_i^2$ is minimized.
