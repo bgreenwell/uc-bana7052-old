@@ -6,13 +6,14 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   xaringan::moon_reader:
     mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
-    css: ["default", "custom.css", "hygge"]
+    css: [default, metropolis, metropolis-fonts, hygge, "custom.css"]
     lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+class: clear 
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
@@ -41,8 +42,6 @@ background-image: url(https://creativemaths.net/wp-content/uploads/2012/03/it_is
 
 
 ---
-class: inverse
-
 # Reading assignment
 
 .larger[
@@ -296,6 +295,14 @@ $$Cor\left(X, Y\right) = \rho = \frac{Cov\left(X,Y\right)}{\sigma_X\sigma_Y}$$
 
 
 ---
+# Reading data into R
+
+```{r reading, echo=FALSE, out.width="80%"}
+knitr::include_graphics("images/reading.jpg")
+```
+
+
+---
 
 # Crystal weight data
 
@@ -358,7 +365,7 @@ with(crystal, cor.test(time, weight, conf.level = 0.95))
 
 ---
 
-# Correlation and uncontrolled experiments
+# Correlation and causation?
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ntnalq-2nNU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 

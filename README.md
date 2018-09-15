@@ -10,13 +10,13 @@ Course materials for BANA 7052 (Applied Linear Regression) at UC
 Lectures
 --------
 
--   Lecture 01: Association and Simple Linear Regression;
+-   **Lecture 01:** Association and Simple Linear Regression;
     [Slides](https://bgreenwell.github.io/uc-bana7052/slides/lecture-01#1);
     [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw1)
 
--   Lecture 02: Inferences in Simple Linear Regression;
+-   **Lecture 02:** Inferences in Simple Linear Regression;
     [Slides](https://bgreenwell.github.io/uc-bana7052/slides/lecture-01#1);
-    Homework
+    Homework; Quiz
 
 ``` r
 # Some useful R code
