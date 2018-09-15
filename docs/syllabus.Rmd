@@ -1,0 +1,160 @@
+---
+title: "BANA 7052	Applied Linear Regression (2 cr.)"
+subtitle: "Fall Semester, 2018"
+output: html_document
+---
+
+Section 001 Wed. 6pm-9:50pm, RECCENTR 3220
+
+Section 002 Thu. 6pm-9:50pm, RECCENTR 3200
+
+
+### Instuctor:
+
+**Name:** Dr. Brandon M. Greenwell
+
+**Office:** 106 Carl H. Lindner Hall
+
+**Email:** greenwell.brandon@gmail.com (preferred)
+
+**Office hours:** by appointment
+
+**Phone:** 614-288-9450
+
+
+### Teaching assistant:
+
+**Name:** Tianhai Zu, PhD student
+
+**Office:** 534 Carl H. Lindner Hall
+
+**Email:** zuti@mail.uc.edu
+
+**Office Hours:** TBD.
+
+
+### Course info:
+
+**URL:**	https://github.com/bgreenwell/uc-bana7052	
+
+Course materials including syllabus, lecture notes, reading assignments, homework, data sets, R programs, and course handouts will be posted on the course web page.
+
+**Prerequisites:** Undergraduate Introduction to Probability and Statistics.
+
+**Text:** [Applied Linear Regression Models](https://www.amazon.com/Applied-Linear-Regression-Models-Student/dp/0073014664)
+
+
+### Grading:	
+
+* Homework (group) 30%
+* Quiz				     20%
+* Exam				     50%
+
+
+### Grade Scale:
+
+Letter grade is assigned with the following scale:
+
+* A-range: 90--100%
+
+* B-range: 80--89%
+
+* C-range: 70--79%
+
+* D-range: 60--69%
+
+* F-range: 0--50%
+
+'Plus' and 'Minus' grades will not be used. Final letter grade is assigned based on an overall assessment of your grade, intragroup evaluation, and class performance at the instructor’s discretion.
+
+Absolutely NO extra credit request after the exams. However, please feel free to impress the instructor through active class participation, volunteering and HW presentation etc. DURING the semester. The instructor reserves the right to possibly lift or downgrade your final letter grade based on intragroup evaluations, class participation, etc.
+
+
+### Exam and Honor Policy
+
+The final Exam is in-class, closed-book, and closed-notes. You can bring one page (standard $8.5' \times 11'$ paper) two-sided cheat sheet (not a copy/paste from others'), which will be turned in along the exam. Exam should be the sole work of each student.  Anyone cheating or assisting another during an exam will be given a 0 for that exam and possibly a grade of F for the class. College procedures will be followed and the graduate dean will be notified.
+
+Quizzes may be computational, involving some in-class exercising. They are open-book, open-notes, and Google search is allowed. However, any form of peer-to-peer communication is strictly prohibited. 
+	
+	
+### Academic Integrity: 
+
+As with all Lindner College of Business efforts, this course will uphold the highest ethical standards, critical to building character (the C in PACE). Ensuing your integrity is vital and your responsibility. LCB instructors are required to report ANY incident of academic misconduct (e.g., cheating, plagiarism) to the college review process, which could result in severe consequences, including potential dismissal from the college. For further information on Academic Misconduct or related university policies and procedures, please see the UC Code of Conduct (http://www.uc.edu/conduct/Code_of_Conduct.html).
+Use of Electronic Devices: Cell phones should be switched off during classes. Laptops should be used only for course related practice. Any form of entertainment (online chatting, watching videos and the like) is prohibited. Violations will result in dismissal from the class.
+
+
+### Class Communication:
+
+We will use Blackboard to communicate. The student is responsible for all communications sent by the instructor using email via Blackboard. Therefore, students must check to see if their accounts have reached maximum capacity or are otherwise not functioning, and to correct this situation. I receive a large quantity of email messages, many of which appear, based on the subject line, to be junk mail or spam. I delete these messages without reading them. To make sure that your message is not accidentally deleted as junk, please include ‘BANA7041-001’, your course number and section number in the email subject line. Also, be sure to identify yourself in the message. Otherwise, you may not receive a response.
+
+
+### Submission Information:
+
+Group homework is submitted in electronic copy through BlackBoard. You shall submit only ONE copy per group (please consistently use the same account for all your group submissions throughout the semester). Before the end of the semester, grades will be only shown in the people who submit it in BB, please share group grades with your group members. Cover page are mandatory: A cover page template is provided in BB for you to use in each submission. Please strictly follow, including it in the first page of your group reports with BANA7041-001 HW#, Module I/II, assigned group number, and group member names (Last name, First Name) along with M#. 
+Due Dates (One Copy per Group):
+Homework (5 for each Module): Due at 12:00pm (the noon before the class) on the day listed in the schedule. Except under exceptional circumstances, as judged by the instructor, no late submitted assignments will be graded.
+Homework Intragroup Evaluation: 9/27 for Module I, 11/15 for Module II, at 6pm. 
+See INTRAGROUP_EVALUATION_BANA7041.pdf for details on HW intragroup evaluation. 
+
+
+### Computing Resources:  
+
+We will use R for all the data analyses in this course. You can download R for free through at http://www.r-project.org/. It is also recommended that you download and use RStudio: https://www.rstudio.com/. If you're new to R, try out this free [DatCamp course](https://www.datacamp.com/courses/free-introduction-to-r?utm_source=adwords_ppc&utm_campaignid=805200711&utm_adgroupid=42045039256&utm_device=c&utm_keyword=%2Bdata%20%2Bcamp%20%2Br&utm_matchtype=b&utm_network=g&utm_adpostion=1t1&utm_creative=191102095622&utm_targetid=kwd-424954486289&utm_loc_interest_ms=&utm_loc_physical_ms=9015705&gclid=CjwKCAjwrNjcBRA3EiwAIIOvq-DJIlhOIc3C6hbXvU5JQ6YV71frIOKyka9E_TA6fZGUO2g1qzMy4BoCEKIQAvD_BwE).
+
+
+### Homework Group Work Structure of the Course:  
+
+After the first class, each student will join a work group.  A work group will typically consist of three to four students.  This work group will be maintained for the length of the semester. The work group will cooperate in all group homework given during the semester.  All members of a group will share grades on any submitted work. All members are to contribute equitably to the shared workload, carrying a fair weight for the burden. In the end of semester, members of each group will be asked to evaluate the contribution of the other work group peers on the basis of a number of criteria such as intellectual contribution, attendance at group meetings, mentoring and sharing knowledge, writing up the results, and running relevant SAS and R codes.  The peer score will reflect, in some sense, an average over all the assigned work as well as an average of the above criteria. Thus, a student in a work group who may have contributed much on one assignment, may not have contributed the majority of the work on another, yet still such work may be considered by other members to be meritorious “on the average”. 
+
+
+### Student Learning Outcomes:
+
+Upon successful completion of this course, the learner will be able to:
+        
+1. Understand the concepts and be able to identify correct random variables and various probability and sampling distributions and make important calculations for statistical inferences. 
+
+2. Carry out statistical inferences on real world data by formulating null and alternative hypotheses, choosing a test statistic, describing the rejection criteria, making a statistical decision and drawing a business conclusion in an appropriate and correct manner.
+
+3. Understand the concepts of linear regression, its estimators, and inferences and be able to make important calculations.
+
+4. Carry out statistical analyses on real world data by applying estimation, linear regression model fitting, and significance testing methodologies in an appropriate and correct manner.
+ 
+5. Critically assess whether or not underlying assumptions for the use of the statistical methodology have been violated, and to take remedial measures if violation of these assumptions are detected.  
+
+6. Use high-level statistical software, such as SAS and R, for the statistical analyses on real world data.
+ 
+7.To communicate the results of statistical analyses in language understandable to the general public such as a supervisor or colleague who may not have expertise in statistical methodology. 
+
+Students will have homework assignments, quizzes, and exams on which above objectives will be measured.  
+
+
+### Tentative Schedule (Please bring your laptop to all classes.)
+
+Date	Module II Linear Regression (Prof. Yu)	Reading
+Week 1
+10/11	Simple linear regression (SLR); Association
+	KNN: Chapter1 
+Week 2
+10/18	Inferences for SLR; Introduction to MLR; 
+SAS (case) 
+HW II1 due	KNN: Chapter 2 (2.1-2.4; 2.6-2.10); 5
+Week 3
+10/25	Multiple linear regression; Matrix approach 
+HW II2 due	KNN: Chapters 5 & 6.1-6.7, 7.1-7.3
+Week 4
+11/1	Diagnostics and remedial measures; 
+Computational Quiz II1 (8:30-9:30pm)
+HW II3 due	KNN: Chapter 3 & 10
+Week 5
+11/8	Multicollinearity;
+Regression models for quantitative and qualitative predictors;
+SAS (case)
+HW II4 due	KNN: Chapter 7.6 & 10.5; Chapter 8
+Week 6
+11/15	Model selection and validation; Summary; 
+Computational Quiz II2 (8:30-9:30pm)
+HW II5 due; HW intragroup evaluation II due.	KNN: Chapter 9 
+Week 14
+11/22	No Class. Thanksgiving Break. 	
+Week 15
+11/29	Review; Exam for Module II (7-9pm)	

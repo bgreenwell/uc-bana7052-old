@@ -1,0 +1,25 @@
+.scrollable {
+  width: 100%;
+  height: 70%;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+
+.smaller{ font-size: 25% }
+.small { font-size: 75% }
+.medium { font-size: 125% }
+.large { font-size: 150% }
+.larger { font-size: 200% }
+.huge { font-size: 250% }
+.huger { font-size: 300% }
+
+
+.red { color: red; }
+.blue { color: blue; }
+.green { color: green; }
+.purple { color: purple; }
+.dodgerblue { color: dodgerblue; }
+.magenta { color: magenta; }
+.forestgreen { color: forestgreen; }
+.darkorange { color: darkorange; }
