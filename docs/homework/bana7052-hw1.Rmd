@@ -19,7 +19,7 @@ Use R to analyze the given data and answer the following questions. Consider the
 The data are available for download at https://github.com/bgreenwell/uc-bana7052/tree/master/data. Alternatively, you can import the data into R directly from the web:
 
 ```{r download-alumni}
-url <- "https://bgreenwell.netlify.com/data/alumni.csv"
+url <- "https://bgreenwell.github.io/uc-bana7052/data/rocket.csv"
 alumni <- read.csv(url)
 DT::datatable(alumni)  # requires DT package
 ```
