@@ -16,7 +16,8 @@ Lectures
 
 -   **Lecture 02:** Inferences in Simple Linear Regression;
     [Slides](https://bgreenwell.github.io/uc-bana7052/slides/lecture-01#1);
-    Homework; Quiz
+    [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw2);
+    Quiz
 
 ``` r
 # Some useful R code

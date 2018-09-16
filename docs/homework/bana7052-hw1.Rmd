@@ -32,8 +32,7 @@ c)	Fit a simple linear regression to the data. What is your estimated regression
 
 d)	Interpret your results. 
 
-Write a brief report **up to two pages**. Please clearly label your figures and tables. **No raw outputs please.**
-
+* Write a brief report (**no more than two pages**). Please clearly label your figures and tables. No raw outputs please.
 
 
 **Question 2.** A Simulation Study (Simple Linear Regression). Assuming the mean response is $E\left(Y|X\right)= 10 + 5X$:
@@ -46,7 +45,7 @@ c) Fit a simple linear regression. What is the estimated model? Report the estim
 
 d) What are the sample mean of $X$ and $Y$? Plot the fitted regression line and point. What do you find?
 
-Write a brief summary in **two pages**. 
+* Write a brief report (**no more than two pages**). Please clearly label your figures and tables. No raw outputs please.
 
 
 ### Mathematics part (feel free to type or handwrite your solutions)
