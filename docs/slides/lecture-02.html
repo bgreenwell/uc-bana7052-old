@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="author" content="Brandon M. Greenwell" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
     <link href="libs/remark-css/hygge.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,20 +17,18 @@ class: center, middle, inverse, title-slide
 # Inferences in Simple Linear Regression
 ## Lecture 02
 ### Brandon M. Greenwell
-### 11 September, 2018
+### 15 September, 2018
 
 ---
 
+class: clear 
 
 
 
-background-image: url(https://creativemaths.net/wp-content/uploads/2012/03/it_is_so_easy1-704x480.png)
-
-???
+background-image: url(images/research-walberg-normal-distribution.jpg)
 
 
 ---
-class: inverse
 
 # Reading assignment
 
@@ -36,7 +36,7 @@ class: inverse
 
 * Chapter: 2
 
-* Sections: TBD
+    - Sections: TBD
 
 * Main topics: TBD
   
@@ -45,13 +45,31 @@ class: inverse
 
 ---
 
-# Prerquisites&lt;sup&gt;1&lt;/sup&gt;
+# Prerquisites
 
 .scrollable[
 
 
 ```r
-# TBD
+# List of required (CRAN) packages
+pkgs &lt;- c(
+  "animation",  # for pre-built statistical animations
+  "dplyr",      # for data wrangling
+  "ggplot2",    # for awesome graphics
+  "HistData",   # for historical data sets
+  "tibble"      # for nicer data frames
+)
+
+# Install required (CRAN) packages
+for (pkg in pkgs) {
+  if (!requireNamespace(pkg)) {  # check if already installed first
+    install.packages(pkg)  # install it
+  }
+}
+
+# Install additional (optional) awesomeness
+install.packages(c("devtools", "magick"))
+devtools::install_github("bgreenwell/roundhouse")
 ```
 
 ]
@@ -73,9 +91,28 @@ roundhouse::kick("Chuck Norris counted to infinity, twice",
 
 
 ---
+class: clear 
 
 background-image: url(images/significance.png)
 background-size: 40%
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-02_files/figure-html/relationship-01-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-02_files/figure-html/relationship-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-02_files/figure-html/relationship-03-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -129,11 +166,11 @@ $$
 
 .large[
 
-* Recall from the previous lecture that LS estimation provides the best linear unbiasted estimates .blue[(BLUE)] of `\(\beta_0\)` and `\(\beta_1\)`; namely, `\(\widehat{\beta}_0\)` and `\(\widehat{\beta}_1\)`
+* Recall from the previous lecture that LS estimation provides the best linear unbiased estimates .blue[(BLUE)] of `\(\beta_0\)` and `\(\beta_1\)`; namely, `\(\widehat{\beta}_0\)` and `\(\widehat{\beta}_1\)`
 
     - Unbiased since `\(E\left[\widehat{\beta}_0\right] = \beta_0\)` and `\(E\left[\widehat{\beta}_1\right] = \beta_1\)`
 
-    - Best in the sense that `\(\widehat{\beta}_0\)` and `\(\widehat{\beta}_1\)` have the smallest variance among all other **linear unbiased** estimators of `\(\beta_0\)` and `\(\beta_1\)`, respectively
+    - Best in the sense that `\(\widehat{\beta}_0\)` and `\(\widehat{\beta}_1\)` have the smallest .purple[variance] among all other **linear unbiased** estimators of `\(\beta_0\)` and `\(\beta_1\)`, respectively
 
 ]
 
@@ -141,7 +178,7 @@ $$
 
 .large[
 
-* So what is `\(Var\left[\widehat{\beta}_0\right] = \beta_0\)` and `\(Var\left[\widehat{\beta}_1\right] = \beta_1\)`?
+* So what is `\(Var\left[\widehat{\beta}_0\right]\)` and `\(Var\left[\widehat{\beta}_1\right]\)`?
 
 ]
 
@@ -152,7 +189,7 @@ $$
 
 .large[
 
-* Recall that the LS estimate of the slope is a weighted average of the resonse values: `\(\widehat{\beta}_1 = \sum_{i=1}^n w_iY_i\)` 
+* Recall that the LS estimate of the slope is a weighted average of the (observed) response values: `\(\widehat{\beta}_1 = \sum_{i=1}^n w_iY_i\)` 
 
 ]
 
@@ -162,7 +199,11 @@ $$
 
 * Since the `\(Y_i\)` are independent, it follows that 
 
+.small[
+
 `$$Var\left(\widehat{\beta}_1\right) = Var\left(\sum_{i=1}^n w_iY_i\right) = \sum_{i=1}^n w_i^2Var\left(Y_i\right) = \dots = \sigma^2 / S_{xx}$$`
+
+]
 
 ]
 
@@ -189,7 +230,7 @@ $$
 
 .large[
 
-* But we don't know `\(\sigma^2\)`?
+* But we generally don't know `\(\sigma^2\)`, so how do we estimate it?
 
 ]
 
@@ -197,7 +238,7 @@ $$
 
 .large[
 
-* Sampling distribution: `\(\widehat{\beta}_1 \sim N\left(\beta_1, \widehat{\sigma}^2/S_{xx}\right)\)`
+* Replace `\(\sigma^2\)` with its point estimate ($\widehat{\sigma}^2 = MSE$), and the sampling distribution of `\(\widehat{\beta}_1\)` becomes `\(\widehat{\beta}_1 \stackrel{\cdot}{\sim} N\left(\beta_1, \widehat{\sigma}^2/S_{xx}\right)\)`
 
 ]
 
@@ -229,11 +270,11 @@ $$
 
 # Inference regarding `\(\beta_1\)`
 
-* Hypotheses: `\(H_0: \beta_1 = c \quad vs \quad H_1: \beta_1 \ne 0\)`
+* Hypothesis test: `\(H_0: \beta_1 = c \quad vs \quad H_1: \beta_1 \ne c\)`
 
 --
 
-* Test statistic: `\(t_{obs} = \frac{\widehat{\beta}_1 - c}{\widehat{SE}\left(\widehat{\beta}_1\right)} = \frac{\widehat{\beta}_1 - c}{\widehat{\sigma} / \sqrt{S_{xx}}} = \frac{\widehat{\beta}_1 - c}{\widehat{SE}\left(\widehat{\beta}_1\right)}\)`
+* Test statistic: `$$t_{obs} = \frac{\widehat{\beta}_1 - c}{\widehat{SE}\left(\widehat{\beta}_1\right)} = \frac{\widehat{\beta}_1 - c}{\widehat{\sigma} / \sqrt{S_{xx}}}$$`
 
 --
 
@@ -243,9 +284,9 @@ $$
     
 
 ```r
-    alpha &lt;- 0.05           # significance level
-    n &lt;- 30                 # sample size
-    qt(1 - alpha/2, n - 2)  # cutoff value
+alpha &lt;- 0.05           # significance level
+n &lt;- 30                 # sample size         
+*qt(1 - alpha/2, n - 2)  # cutoff value
 ```
 
 ```
@@ -259,43 +300,75 @@ $$
 
 ---
 
-# Arsenic example
+# Crystal weight example
 
 .scrollable[
 
 
 ```r
-data(arsenic, package = "investr")
-fit &lt;- lm(measured ~ actual, data = arsenic)
+# Load the rocket propellant data
+rocket &lt;- read.csv("https://raw.githubusercontent.com/bgreenwell/uc-bana7052/master/data/rocket.csv")
+
+# Fit an SLR model
+fit &lt;- lm(strength ~ age, data = rocket)
+
+# Plot the data with the fitted mean response
 investr::plotFit(fit)
 ```
 
 &lt;img src="lecture-02_files/figure-html/arsenic-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ```r
+# Print a summary of the fitted model
 summary(fit)
 ```
 
 ```
 ## 
 ## Call:
-## lm(formula = measured ~ actual, data = arsenic)
+## lm(formula = strength ~ age, data = rocket)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.44542 -0.08599  0.01156  0.14073  0.30229 
+##     Min      1Q  Median      3Q     Max 
+## -215.98  -50.68   28.74   66.61  106.76 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  0.10458    0.06051   1.728   0.0942 .  
-## actual       0.98771    0.01446  68.286   &lt;2e-16 ***
+## (Intercept) 2627.822     44.184   59.48  &lt; 2e-16 ***
+## age          -37.154      2.889  -12.86 1.64e-10 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 0.1875 on 30 degrees of freedom
-## Multiple R-squared:  0.9936,	Adjusted R-squared:  0.9934 
-## F-statistic:  4663 on 1 and 30 DF,  p-value: &lt; 2.2e-16
+## Residual standard error: 96.11 on 18 degrees of freedom
+## Multiple R-squared:  0.9018,	Adjusted R-squared:  0.8964 
+## F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
 ```
+
+```r
+# Compute a 95% CI for the slope
+confint(fit, level = 0.95)
+```
+
+```
+##                  2.5 %    97.5 %
+## (Intercept) 2534.99540 2720.6493
+## age          -43.22338  -31.0838
+```
+
+]
+
+
+---
+class: clear, middle
+
+.large[
+
+Can you interpret the confidence interval for `\(\beta_1\)` in the previous example?
+
+]
+
+--
+
 
 ```r
 confint(fit, level = 0.95)
@@ -303,9 +376,82 @@ confint(fit, level = 0.95)
 
 ```
 ##                  2.5 %    97.5 %
-## (Intercept) -0.0189910 0.2281577
-## actual       0.9581684 1.0172482
+## (Intercept) 2534.99540 2720.6493
+## age          -43.22338  -31.0838
 ```
+
+With 95% confidence, we estimate that the mean strength of rockets decreases by  31.08 psi to 43.22 psi for every one-week increase in age.
+
+
+---
+
+# Your turn 😱
+
+.huge[
+
+Fit an SLR model to the crystal weight data using `weight` as the response and `time` as the predictor. Find a 95% confidence interval for the slope and interpret the results in **plain english**.
+
+]
+
+
+---
+
+# Solution 🙌
+
+.scrollable[
+
+
+```r
+# Load the crystal weight data
+data(crystal, package = "investr")
+
+# Fit an SLR model
+fit &lt;- lm(weight ~ time, data = crystal)
+
+# Plot the data with the fitted mean response
+investr::plotFit(fit)
+```
+
+&lt;img src="lecture-02_files/figure-html/crystal-solution-01-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+```r
+# Print a summary of the model
+summary(fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = weight ~ time, data = crystal)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.96371 -0.73464  0.05629  0.89193  1.40800 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 0.001429   0.599387   0.002    0.998    
+## time        0.503429   0.035197  14.303 6.69e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.062 on 12 degrees of freedom
+## Multiple R-squared:  0.9446,	Adjusted R-squared:   0.94 
+## F-statistic: 204.6 on 1 and 12 DF,  p-value: 6.688e-09
+```
+
+```r
+# Compute a 95% CI for the regression coefficients
+confint(fit, level = 0.95)
+```
+
+```
+##                  2.5 %    97.5 %
+## (Intercept) -1.3045241 1.3073812
+## time         0.4267404 0.5801168
+```
+
+With 95% confidence, we estimate that the average weight of crystals will increase by 0.43 grams to 0.58 grams for every one-hour increase in growth time.
 
 ]
     </textarea>

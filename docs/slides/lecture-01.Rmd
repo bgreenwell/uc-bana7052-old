@@ -321,7 +321,7 @@ tibble::as_tibble(crystal)  # print a summary of the data
 
 ---
 
-# Your turn!
+# Your turn `r emo::ji("scream")`
 
 * Draw a scatter plot of `time` vs `weight` for the `crystal` data frame
 
@@ -338,7 +338,7 @@ tibble::as_tibble(crystal)  # print a summary of the data
 
 ---
 
-# Solution
+# Solution `r set.seed(205); emo::ji("raised")`
 
 .scrollable[
 
@@ -423,13 +423,15 @@ d. .red[A random cloud of data implies a negative correlation]
 
 
 ---
-class: inverse, center, middle
+class: clear, middle
 
-### "All models are wrong, but some are useful."
-
-```{r george-box, echo=FALSE, fig.cap="George E. Box", out.width="40%"}
+```{r george-box, echo=FALSE, out.width="30%", fig.pos="center"}
 knitr::include_graphics("images/george-box.jpg")
 ```
+
+> "All models are wrong, but some are useful."
+>
+> `r tufte::quote_footer('--- "George E. Box')`
 
 
 ---
@@ -813,14 +815,14 @@ class: inverse, center, middle
 
 ---
 
-# Your turn
+# Your turn `r emo::ji("scream")`
 
 .larger[Fit an SLR model to the crystal weight data using `weight` as the response and `time` as the predictor and interpret the estimated coefficients.]
 
 
 ---
 
-# Solution
+# Solution `r set.seed(205); emo::ji("raised")`
 
 .scrollable[
 
@@ -899,7 +901,7 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 ---
 
-# Your turn
+# Your turn `r emo::ji("scream")`
 
 .large[
 
@@ -912,7 +914,7 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 ---
 
-# Solution
+# Solution `r set.seed(205); emo::ji("raised")`
 
 .scrollable[
 
@@ -1020,7 +1022,7 @@ $$\widehat{\sigma}^2 = \frac{1}{n-2}\sum{i=1}^n e_i^2 = MSE$$
 
 ---
 
-# Your turn
+# Your turn `r emo::ji("scream")`
 
 .large[
 

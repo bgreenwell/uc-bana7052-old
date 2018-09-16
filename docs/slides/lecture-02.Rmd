@@ -6,13 +6,14 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   xaringan::moon_reader:
     mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
-    css: ["default", "custom.css", "hygge"]
+    css: ["default", "metropolis", "metropolis-fonts", "hygge", "custom.css"]
     lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
+class: clear 
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
@@ -20,7 +21,7 @@ options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
 # Global chunk options
 knitr::opts_chunk$set(
   echo = TRUE,
-  # dev = "svg",
+  dev = "png",
   fig.align = "center",
   fig.width = 6,
   fig.asp = 0.618,
@@ -32,16 +33,14 @@ knitr::opts_chunk$set(
 
 # Load required packages
 library(dplyr)
+library(ggplot2)
 library(patchwork)
 ```
 
-background-image: url(https://creativemaths.net/wp-content/uploads/2012/03/it_is_so_easy1-704x480.png)
-
-???
+background-image: url(images/research-walberg-normal-distribution.jpg)
 
 
 ---
-class: inverse
 
 # Reading assignment
 
@@ -49,7 +48,7 @@ class: inverse
 
 * Chapter: 2
 
-* Sections: TBD
+    - Sections: TBD
 
 * Main topics: TBD
   
@@ -58,12 +57,30 @@ class: inverse
 
 ---
 
-# Prerquisites<sup>1</sup>
+# Prerquisites
 
 .scrollable[
 
 ```{r prerequisites, eval=FALSE}
-# TBD
+# List of required (CRAN) packages
+pkgs <- c(
+  "animation",  # for pre-built statistical animations
+  "dplyr",      # for data wrangling
+  "ggplot2",    # for awesome graphics
+  "HistData",   # for historical data sets
+  "tibble"      # for nicer data frames
+)
+
+# Install required (CRAN) packages
+for (pkg in pkgs) {
+  if (!requireNamespace(pkg)) {  # check if already installed first
+    install.packages(pkg)  # install it
+  }
+}
+
+# Install additional (optional) awesomeness
+install.packages(c("devtools", "magick"))
+devtools::install_github("bgreenwell/roundhouse")
 ```
 
 ]
@@ -82,9 +99,51 @@ roundhouse::kick("Chuck Norris counted to infinity, twice",
 
 
 ---
+class: clear 
 
 background-image: url(images/significance.png)
 background-size: 40%
+
+
+---
+class: clear, middle
+
+```{r relationship-01, echo=FALSE, fig.width=6, fig.asp=0.618}
+set.seed(101)
+x <- rep(1:5, each = 10)
+y <- 1 + 1*x + rnorm(length(x), sd = 3)
+ggplot(data.frame(x, y), aes(x, y)) +
+  geom_point() +
+  labs(x = "X", y = "Y")
+```
+
+
+---
+class: clear, middle
+
+```{r relationship-02, echo=FALSE, fig.width=6, fig.asp=0.618}
+set.seed(101)
+x <- rep(1:5, each = 10)
+y <- 1 + 1*x + rnorm(length(x), sd = 3)
+ggplot(data.frame(x, y), aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, col = "red2") +
+  labs(x = "X", y = "Y")
+```
+
+
+---
+class: clear, middle
+
+```{r relationship-03, echo=FALSE, fig.width=6, fig.asp=0.618}
+set.seed(101)
+x <- rep(1:5, each = 10)
+y <- 1 + 1*x + rnorm(length(x), sd = 3)
+ggplot(data.frame(x, y), aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE, col = "red2") +
+  labs(x = "X", y = "Y")
+```
 
 
 ---
@@ -138,11 +197,11 @@ $$
 
 .large[
 
-* Recall from the previous lecture that LS estimation provides the best linear unbiasted estimates .blue[(BLUE)] of $\beta_0$ and $\beta_1$; namely, $\widehat{\beta}_0$ and $\widehat{\beta}_1$
+* Recall from the previous lecture that LS estimation provides the best linear unbiased estimates .blue[(BLUE)] of $\beta_0$ and $\beta_1$; namely, $\widehat{\beta}_0$ and $\widehat{\beta}_1$
 
     - Unbiased since $E\left[\widehat{\beta}_0\right] = \beta_0$ and $E\left[\widehat{\beta}_1\right] = \beta_1$
 
-    - Best in the sense that $\widehat{\beta}_0$ and $\widehat{\beta}_1$ have the smallest variance among all other **linear unbiased** estimators of $\beta_0$ and $\beta_1$, respectively
+    - Best in the sense that $\widehat{\beta}_0$ and $\widehat{\beta}_1$ have the smallest .purple[variance] among all other **linear unbiased** estimators of $\beta_0$ and $\beta_1$, respectively
 
 ]
 
@@ -150,7 +209,7 @@ $$
 
 .large[
 
-* So what is $Var\left[\widehat{\beta}_0\right] = \beta_0$ and $Var\left[\widehat{\beta}_1\right] = \beta_1$?
+* So what is $Var\left[\widehat{\beta}_0\right]$ and $Var\left[\widehat{\beta}_1\right]$?
 
 ]
 
@@ -161,7 +220,7 @@ $$
 
 .large[
 
-* Recall that the LS estimate of the slope is a weighted average of the resonse values: $\widehat{\beta}_1 = \sum_{i=1}^n w_iY_i$ 
+* Recall that the LS estimate of the slope is a weighted average of the (observed) response values: $\widehat{\beta}_1 = \sum_{i=1}^n w_iY_i$ 
 
 ]
 
@@ -171,7 +230,11 @@ $$
 
 * Since the $Y_i$ are independent, it follows that 
 
+.small[
+
 $$Var\left(\widehat{\beta}_1\right) = Var\left(\sum_{i=1}^n w_iY_i\right) = \sum_{i=1}^n w_i^2Var\left(Y_i\right) = \dots = \sigma^2 / S_{xx}$$
+
+]
 
 ]
 
@@ -198,7 +261,7 @@ $$Var\left(\widehat{\beta}_1\right) = Var\left(\sum_{i=1}^n w_iY_i\right) = \sum
 
 .large[
 
-* But we don't know $\sigma^2$?
+* But we generally don't know $\sigma^2$, so how do we estimate it?
 
 ]
 
@@ -206,7 +269,7 @@ $$Var\left(\widehat{\beta}_1\right) = Var\left(\sum_{i=1}^n w_iY_i\right) = \sum
 
 .large[
 
-* Sampling distribution: $\widehat{\beta}_1 \sim N\left(\beta_1, \widehat{\sigma}^2/S_{xx}\right)$
+* Replace $\sigma^2$ with its point estimate ($\widehat{\sigma}^2 = MSE$), and the sampling distribution of $\widehat{\beta}_1$ becomes $\widehat{\beta}_1 \stackrel{\cdot}{\sim} N\left(\beta_1, \widehat{\sigma}^2/S_{xx}\right)$
 
 ]
 
@@ -238,11 +301,11 @@ $$\widehat{SE}\left(\widehat{\beta}_1\right) = \widehat{\sigma}/\sqrt{S_{xx}}$$
 
 # Inference regarding $\beta_1$
 
-* Hypotheses: $H_0: \beta_1 = c \quad vs \quad H_1: \beta_1 \ne 0$
+* Hypothesis test: $H_0: \beta_1 = c \quad vs \quad H_1: \beta_1 \ne c$
 
 --
 
-* Test statistic: $t_{obs} = \frac{\widehat{\beta}_1 - c}{\widehat{SE}\left(\widehat{\beta}_1\right)} = \frac{\widehat{\beta}_1 - c}{\widehat{\sigma} / \sqrt{S_{xx}}} = \frac{\widehat{\beta}_1 - c}{\widehat{SE}\left(\widehat{\beta}_1\right)}$
+* Test statistic: $$t_{obs} = \frac{\widehat{\beta}_1 - c}{\widehat{SE}\left(\widehat{\beta}_1\right)} = \frac{\widehat{\beta}_1 - c}{\widehat{\sigma} / \sqrt{S_{xx}}}$$
 
 --
 
@@ -251,9 +314,9 @@ $$\widehat{SE}\left(\widehat{\beta}_1\right) = \widehat{\sigma}/\sqrt{S_{xx}}$$
     - In R, $t$ quantiles can be obtained using `qt(1 - alpha/2, df = n-2)`, for example
     
 ```{r qt}
-    alpha <- 0.05           # significance level
-    n <- 30                 # sample size
-    qt(1 - alpha/2, n - 2)  # cutoff value
+alpha <- 0.05           # significance level
+n <- 30                 # sample size         
+qt(1 - alpha/2, n - 2)  # cutoff value        #<<
 ```
 
 --
@@ -263,16 +326,82 @@ $$\widehat{SE}\left(\widehat{\beta}_1\right) = \widehat{\sigma}/\sqrt{S_{xx}}$$
 
 ---
 
-# Arsenic example
+# Crystal weight example
 
 .scrollable[
 
 ```{r arsenic}
-data(arsenic, package = "investr")
-fit <- lm(measured ~ actual, data = arsenic)
+# Load the rocket propellant data
+rocket <- read.csv("https://raw.githubusercontent.com/bgreenwell/uc-bana7052/master/data/rocket.csv")
+
+# Fit an SLR model
+fit <- lm(strength ~ age, data = rocket)
+
+# Plot the data with the fitted mean response
 investr::plotFit(fit)
+
+# Print a summary of the fitted model
 summary(fit)
+
+# Compute a 95% CI for the slope
 confint(fit, level = 0.95)
 ```
+
+]
+
+
+---
+class: clear, middle
+
+.large[
+
+Can you interpret the confidence interval for $\beta_1$ in the previous example?
+
+]
+
+--
+
+```{r, arsenic-ci}
+confint(fit, level = 0.95)
+```
+
+With 95% confidence, we estimate that the mean strength of rockets decreases by  31.08 psi to 43.22 psi for every one-week increase in age.
+
+
+---
+
+# Your turn `r emo::ji("scream")`
+
+.huge[
+
+Fit an SLR model to the crystal weight data using `weight` as the response and `time` as the predictor. Find a 95% confidence interval for the slope and interpret the results in **plain english**.
+
+]
+
+
+---
+
+# Solution `r set.seed(205); emo::ji("raised")`
+
+.scrollable[
+
+```{r crystal-solution-01}
+# Load the crystal weight data
+data(crystal, package = "investr")
+
+# Fit an SLR model
+fit <- lm(weight ~ time, data = crystal)
+
+# Plot the data with the fitted mean response
+investr::plotFit(fit)
+
+# Print a summary of the model
+summary(fit)
+
+# Compute a 95% CI for the regression coefficients
+confint(fit, level = 0.95)
+```
+
+With 95% confidence, we estimate that the average weight of crystals will increase by 0.43 grams to 0.58 grams for every one-hour increase in growth time.
 
 ]
