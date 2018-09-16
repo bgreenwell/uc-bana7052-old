@@ -19,6 +19,10 @@ Lectures
     [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw2);
     Quiz
 
+-   **Lecture 03:** Multiple Linear Regression;
+    [Slides](https://bgreenwell.github.io/uc-bana7052/slides/lecture-03#1);
+    Homework; Quiz
+
 ``` r
 # Some useful R code
 roundhouse::kick(
