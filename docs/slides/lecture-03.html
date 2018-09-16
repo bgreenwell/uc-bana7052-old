@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Multiple Linear Regression</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Brandon M. Greenwell" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link href="libs/remark-css/hygge.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Multiple Linear Regression
+## Lecture 03
+### Brandon M. Greenwell
+### 16 September, 2018
+
+---
+
+class: clear 
+
+
+
+background-image: url(images/matrix.jpg)
+
+
+---
+class: clear 
+
+background-image: url(images/linear-algebra.jpg)
+
+
+---
+# Reading assignment
+
+.larger[
+
+* Chapters: 5
+
+    - Sections: 5.9-5.11; 6.1-6.4
+
+* Main topics:
+
+    - Regression in matrix form (5.9-5.11)
+   
+    - Multiple linear regression (6.1-6.4)
+
+  
+]
+
+
+---
+
+# Prerquisites
+
+.scrollable[
+
+
+```r
+# List of required (CRAN) packages
+pkgs &lt;- c(
+  "animation",  # for pre-built statistical animations
+  "dplyr",      # for data wrangling
+  "ggplot2",    # for awesome graphics
+  "HistData",   # for historical data sets
+  "tibble"      # for nicer data frames
+)
+
+# Install required (CRAN) packages
+for (pkg in pkgs) {
+  if (!requireNamespace(pkg)) {  # check if already installed first
+    install.packages(pkg)  # install it
+  }
+}
+
+# Install additional (optional) awesomeness
+install.packages(c("devtools", "magick"))
+devtools::install_github("bgreenwell/roundhouse")
+```
+
+]
+
+
+---
+
+# Ready to begin?
+
+--
+
+
+```r
+roundhouse::kick("When someone tells you to memorize the formulas in SLR", 
+                 type = 2, fps = 10, width = 50)
+```
+
+&lt;img src="lecture-03_files/figure-html/roundhouse-01-1.gif" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# TBD
+
+TBD
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

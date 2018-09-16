@@ -330,7 +330,7 @@ qt(1 - alpha/2, n - 2)  # cutoff value        #<<
 
 .scrollable[
 
-```{r 02-rocket-01}
+```{r rocket-01}
 # Load the rocket propellant data
 rocket <- read.csv("https://bgreenwell.github.io/uc-bana7052/data/rocket.csv")
 
@@ -361,7 +361,7 @@ Can you interpret the confidence interval for $\beta_1$ in the previous example?
 
 --
 
-```{r 02-rocket-02}
+```{r rocket-02}
 confint(rocket_fit, level = 0.95)
 ```
 
@@ -415,7 +415,7 @@ With 95% confidence, we estimate that the average weight of crystals increases b
 
 Using the rocket propellant example, test whether the slope significantly differs from $-40$ psi/week at the $\alpha = 0.05$ level.
 
-```{r 02-rocket-03}
+```{r rocket-03}
 # Extract summary of estimated slope
 (slope <- summary(rocket_fit)$coef["age", ])  #<<
 
@@ -651,7 +651,7 @@ Is there a (linear) relationship between $X$ and $Y$? $$H_0: \beta_1 = 0 \quad v
 
 .scrollable[
 
-```{r 02-rocket-04}
+```{r rocket-04}
 # Compute ANOVA table for the fitted model
 anova(rocket_fit)  #<<
 
@@ -760,7 +760,7 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 
 .scrollable[
 
-```{r 02-rocket-05}
+```{r rocket-05}
 # Fit an intercept only model
 rocket_fit_reduced <- lm(strength ~ 1, data = rocket)
 mean(rocket$strength)  # compare to estimated intercept  #<<
@@ -858,7 +858,7 @@ Compute a 95% confidence interval for the mean response at 15 weeks
 
 .scrollable[
 
-```{r 02-rocket-06}
+```{r rocket-06}
 # Confidence interval for the mean response at age = 15
 new_data <- data.frame(age = 15)
 predict(rocket_fit, newdata = new_data, interval = "confidence")
@@ -938,7 +938,7 @@ class: clear, middle, center
 
 .scrollable[
 
-```{r 02-rocket-07}
+```{r rocket-07}
 # Print model summary
 summary(rocket_fit)
 
@@ -1063,7 +1063,7 @@ In SLR, there is a connection between $R^2$ and the Pearson correlation coeffici
 
 .medium[
 
-```{r 02-rocket-08}
+```{r rocket-08}
 # Compute coefficient of correlation
 (r_squared <- summary(rocket_fit)$r.squared)
 sqrt(r_squared)

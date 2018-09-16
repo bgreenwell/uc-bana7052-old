@@ -1,0 +1,108 @@
+---
+title: "Multiple Linear Regression"
+subtitle: "Lecture 03"
+author: "Brandon M. Greenwell"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  xaringan::moon_reader:
+    mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
+    css: [default, metropolis, metropolis-fonts, hygge, "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: clear 
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
+
+# Global chunk options
+knitr::opts_chunk$set(
+  echo = TRUE,
+  # dev = "svg",
+  fig.align = "center",
+  fig.width = 6,
+  fig.asp = 0.618,
+  out.width = "70%",
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE
+)
+
+# Load required packages
+library(dplyr)
+library(patchwork)
+```
+
+background-image: url(images/linear-algebra.jpg)
+
+
+---
+# Reading assignment
+
+.larger[
+
+* Chapters: 5
+
+    - Sections: 5.9-5.11; 6.1-6.4
+
+* Main topics:
+
+    - Regression in matrix form (5.9-5.11)
+   
+    - Multiple linear regression (6.1-6.4)
+
+  
+]
+
+
+---
+
+# Prerquisites
+
+.scrollable[
+
+```{r prerequisites, eval=FALSE}
+# List of required (CRAN) packages
+pkgs <- c(
+  "animation",  # for pre-built statistical animations
+  "dplyr",      # for data wrangling
+  "ggplot2",    # for awesome graphics
+  "HistData",   # for historical data sets
+  "tibble"      # for nicer data frames
+)
+
+# Install required (CRAN) packages
+for (pkg in pkgs) {
+  if (!requireNamespace(pkg)) {  # check if already installed first
+    install.packages(pkg)  # install it
+  }
+}
+
+# Install additional (optional) awesomeness
+install.packages(c("devtools", "magick"))
+devtools::install_github("bgreenwell/roundhouse")
+```
+
+]
+
+
+---
+
+# Ready to begin?
+
+--
+
+```{r roundhouse-01}
+roundhouse::kick("When someone tells you to memorize the formulas in SLR", 
+                 type = 2, fps = 10, width = 50)
+```
+
+
+---
+
+# TBD
+
+TBD

@@ -38,8 +38,6 @@ library(patchwork)
 
 background-image: url(https://creativemaths.net/wp-content/uploads/2012/03/it_is_so_easy1-704x480.png)
 
-???
-
 
 ---
 # Reading assignment
@@ -48,7 +46,7 @@ background-image: url(https://creativemaths.net/wp-content/uploads/2012/03/it_is
 
 * Chapter: 1
 
-* Sections: 1.1-1.8
+    - Sections: 1.1-1.8
 
 * Main topics:
 
