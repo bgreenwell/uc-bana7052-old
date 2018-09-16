@@ -657,11 +657,6 @@ anova(rocket_fit)  #<<
 
 # Print summary of fitted model
 summary(rocket_fit)
-
-# Fit an intercept only model
-rocket_fit_reduced <- lm(strength ~ 1, data = rocket)
-mean(rocket$strength)  # compare to estimated intercept  #<<
-anova(rocket_fit_reduced, rocket_fit)  # compare models  #<<
 ```
 
 ]
@@ -722,6 +717,55 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 * In the SLR model, these the approaches are equivalent 
 
     - The *F*-test becomes useful when we start adding more predictors (i.e., in multiple linear regression)
+
+]
+
+
+---
+
+# The general linear test
+
+.large[
+
+* Full model: $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$
+
+]
+
+--
+
+.large[
+
+* .magenta[Reduced] model: $Y_i = \beta_0 + \epsilon_i$
+
+]
+
+--
+
+.large[
+
+* Implied test: $H_0: \beta_1 = 0 \quad vs \quad H_1: \beta_1 \ne 0$
+
+    - $F_{obs} = \frac{SSE(R) - SSE(F)}{df_R - df_F} \div \frac{SSE(F)}{df_F}$
+    
+    - Reject $H_0$ whenever $F_{obs} > F_{1 - \alpha, df_R - df_F, df_F}$
+    
+    - More useful in multiple linear regression, but we'll introduce it here!
+
+]
+
+
+---
+
+# Rocket propellant example
+
+.scrollable[
+
+```{r 02-rocket-05}
+# Fit an intercept only model
+rocket_fit_reduced <- lm(strength ~ 1, data = rocket)
+mean(rocket$strength)  # compare to estimated intercept  #<<
+anova(rocket_fit_reduced, rocket_fit)  # compare models  #<<
+```
 
 ]
 
@@ -814,7 +858,7 @@ Compute a 95% confidence interval for the mean response at 15 weeks
 
 .scrollable[
 
-```{r 02-rocker-05}
+```{r 02-rocket-06}
 # Confidence interval for the mean response at age = 15
 new_data <- data.frame(age = 15)
 predict(rocket_fit, newdata = new_data, interval = "confidence")
@@ -861,8 +905,169 @@ plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, shade = TRUE,
 
 
 ---
+class: clear, middle, center
+
+
+.larger[[Confidence intervals vs prediction intervals](https://stats.stackexchange.com/questions/16493/difference-between-confidence-intervals-and-prediction-intervals)]
+
+
+---
 
 # Coefficient of determination
 
-TBD.
+.large[
 
+* A useful performance metric in linear regression, called the *coefficient of determination*, is defined as $$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$
+
+]
+
+--
+
+.large[
+
+* In linear regression, $R^2$ can be interpreted as the fraction of variance explained (FVE) (i.e., the proportion of the variation in $Y$ that can be explained by $X$)
+
+    - $0 \le R^2 \le 1$
+
+]
+
+
+---
+
+# Rocket propellant example
+
+.scrollable[
+
+```{r 02-rocket-07}
+# Print model summary
+summary(rocket_fit)
+
+# Extract R-squared from the model summary
+summary(rocket_fit)$r.squared
+
+# Compute R-squared by hand
+anova(rocket_fit)
+SSE <- anova(rocket_fit)["Residuals", "Sum Sq"]
+SST <- sum((rocket$strength - mean(rocket$strength)) ^ 2)
+1 - SSE/SST
+```
+
+]
+
+
+---
+
+# Your turn `r emo::ji("cry")`
+
+.huge[
+
+Compute the coefficient of determination (i.e., $R^2$) for the crystal weight example by hand .purple[and interpret its value].
+
+]
+
+
+---
+
+# Solution `r set.seed(205); emo::ji("raised")`
+
+.scrollable[
+
+```{r 01-crystal-solution-06}
+# Compute R-squared by hand
+anova(crystal_fit)
+SSE <- anova(crystal_fit)["Residuals", "Sum Sq"]
+SST <- sum((crystal$weight - mean(crystal$weight)) ^ 2)
+1 - SSE/SST
+```
+
+Roughly `r scales::percent(summary(crystal_fit)$r.squared)` of the variability in the final weight of crystals is explained by the growth time. (At least in this sample.)
+
+]
+
+
+---
+
+# Common misunderstandings about $R^2$
+
+.large[
+
+* A high $R^2$ (i.e., near 1) indicates that a useful (i.e., accurate) prediction can be made
+
+]
+
+--
+
+.large[
+
+* A high $R^2$ (i.e., near 1) indicates that the estimated regression line provides a good fit to the data
+
+]
+
+--
+
+.large[
+
+* A small $R^2$ (i.e., near zero) indicates that $X$ and $Y$ are not related
+
+]
+
+
+---
+
+# Other things to look out for `r emo::ji("eyes")`
+
+.large[
+
+* $R^2$ will .red[always] increase when more terms are added to the model (.orange[more on this in multiple linear regression])
+
+]
+
+--
+
+.large[
+
+* As the range of $X$ increases/decreases, $R^2$ also generally increases/decreases
+
+]
+
+--
+
+.large[
+
+* $R^2$ does not indicate the **appropriateness** of a linear model
+
+]
+
+--
+
+.larger[.center[.blue[So why even use the coefficient of determination?]]]
+
+
+---
+
+# Coefficient of correlation
+
+.larger[
+
+In SLR, there is a connection between $R^2$ and the Pearson correlation coefficient between $X$ and $Y$: $$r = \pm \sqrt{R^2}$$
+
+]
+
+-- 
+
+.large[.center[.blue[*r* will have the same sign as the estimated slope!]]]
+
+---
+
+# Rocket propellant example
+
+.medium[
+
+```{r 02-rocket-08}
+# Compute coefficient of correlation
+(r_squared <- summary(rocket_fit)$r.squared)
+sqrt(r_squared)
+cor(rocket)  # compare with correlation coefficient
+```
+
+]

@@ -802,32 +802,6 @@ summary(rocket_fit)
 ## F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
 ```
 
-```r
-# Fit an intercept only model
-rocket_fit_reduced &lt;- lm(strength ~ 1, data = rocket)
-*mean(rocket$strength)  # compare to estimated intercept
-```
-
-```
-## [1] 2131.358
-```
-
-```r
-*anova(rocket_fit_reduced, rocket_fit)  # compare models
-```
-
-```
-## Analysis of Variance Table
-## 
-## Model 1: strength ~ 1
-## Model 2: strength ~ age
-##   Res.Df     RSS Df Sum of Sq      F    Pr(&gt;F)    
-## 1     19 1693738                                  
-## 2     18  166255  1   1527483 165.38 1.643e-10 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
 ]
 
 ---
@@ -930,6 +904,75 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 * In the SLR model, these the approaches are equivalent 
 
     - The *F*-test becomes useful when we start adding more predictors (i.e., in multiple linear regression)
+
+]
+
+
+---
+
+# The general linear test
+
+.large[
+
+* Full model: `\(Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)`
+
+]
+
+--
+
+.large[
+
+* .magenta[Reduced] model: `\(Y_i = \beta_0 + \epsilon_i\)`
+
+]
+
+--
+
+.large[
+
+* Implied test: `\(H_0: \beta_1 = 0 \quad vs \quad H_1: \beta_1 \ne 0\)`
+
+    - `\(F_{obs} = \frac{SSE(R) - SSE(F)}{df_R - df_F} \div \frac{SSE(F)}{df_F}\)`
+    
+    - Reject `\(H_0\)` whenever `\(F_{obs} &gt; F_{1 - \alpha, df_R - df_F, df_F}\)`
+    
+    - More useful in multiple linear regression, but we'll introduce it here!
+
+]
+
+
+---
+
+# Rocket propellant example
+
+.scrollable[
+
+
+```r
+# Fit an intercept only model
+rocket_fit_reduced &lt;- lm(strength ~ 1, data = rocket)
+*mean(rocket$strength)  # compare to estimated intercept
+```
+
+```
+## [1] 2131.358
+```
+
+```r
+*anova(rocket_fit_reduced, rocket_fit)  # compare models
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: strength ~ 1
+## Model 2: strength ~ age
+##   Res.Df     RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1     19 1693738                                  
+## 2     18  166255  1   1527483 165.38 1.643e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
 
 ]
 
@@ -1046,13 +1089,13 @@ plotFit(rocket_fit, interval = "confidence")
 abline(v = 15, col = "red2")
 ```
 
-&lt;img src="lecture-02_files/figure-html/02-rocker-05-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/02-rocket-06-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ```r
 plotFit(rocket_fit, interval = "confidence", shade = TRUE, xlim = c(-20, 100))
 ```
 
-&lt;img src="lecture-02_files/figure-html/02-rocker-05-2.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/02-rocket-06-2.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -1099,10 +1142,260 @@ plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, shade = TRUE,
 
 
 ---
+class: clear, middle, center
+
+
+.larger[[Confidence intervals vs prediction intervals](https://stats.stackexchange.com/questions/16493/difference-between-confidence-intervals-and-prediction-intervals)]
+
+
+---
 
 # Coefficient of determination
 
-TBD.
+.large[
+
+* A useful performance metric in linear regression, called the *coefficient of determination*, is defined as `$$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$`
+
+]
+
+--
+
+.large[
+
+* In linear regression, `\(R^2\)` can be interpreted as the fraction of variance explained (FVE) (i.e., the proportion of the variation in `\(Y\)` that can be explained by `\(X\)`)
+
+    - `\(0 \le R^2 \le 1\)`
+
+]
+
+
+---
+
+# Rocket propellant example
+
+.scrollable[
+
+
+```r
+# Print model summary
+summary(rocket_fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = strength ~ age, data = rocket)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -215.98  -50.68   28.74   66.61  106.76 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2627.822     44.184   59.48  &lt; 2e-16 ***
+## age          -37.154      2.889  -12.86 1.64e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 96.11 on 18 degrees of freedom
+## Multiple R-squared:  0.9018,	Adjusted R-squared:  0.8964 
+## F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
+```
+
+```r
+# Extract R-squared from the model summary
+summary(rocket_fit)$r.squared
+```
+
+```
+## [1] 0.9018414
+```
+
+```r
+# Compute R-squared by hand
+anova(rocket_fit)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: strength
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## age        1 1527483 1527483  165.38 1.643e-10 ***
+## Residuals 18  166255    9236                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+SSE &lt;- anova(rocket_fit)["Residuals", "Sum Sq"]
+SST &lt;- sum((rocket$strength - mean(rocket$strength)) ^ 2)
+1 - SSE/SST
+```
+
+```
+## [1] 0.9018414
+```
+
+]
+
+
+---
+
+# Your turn 😢
+
+.huge[
+
+Compute the coefficient of determination (i.e., `\(R^2\)`) for the crystal weight example by hand .purple[and interpret its value].
+
+]
+
+
+---
+
+# Solution 🙌
+
+.scrollable[
+
+
+```r
+# Compute R-squared by hand
+anova(crystal_fit)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: weight
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## time       1 230.631 230.631  204.58 6.688e-09 ***
+## Residuals 12  13.528   1.127                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+SSE &lt;- anova(crystal_fit)["Residuals", "Sum Sq"]
+SST &lt;- sum((crystal$weight - mean(crystal$weight)) ^ 2)
+1 - SSE/SST
+```
+
+```
+## [1] 0.9445927
+```
+
+Roughly 94.5% of the variability in the final weight of crystals is explained by the growth time. (At least in this sample.)
+
+]
+
+
+---
+
+# Common misunderstandings about `\(R^2\)`
+
+.large[
+
+* A high `\(R^2\)` (i.e., near 1) indicates that a useful (i.e., accurate) prediction can be made
+
+]
+
+--
+
+.large[
+
+* A high `\(R^2\)` (i.e., near 1) indicates that the estimated regression line provides a good fit to the data
+
+]
+
+--
+
+.large[
+
+* A small `\(R^2\)` (i.e., near zero) indicates that `\(X\)` and `\(Y\)` are not related
+
+]
+
+
+---
+
+# Other things to look out for 👀
+
+.large[
+
+* `\(R^2\)` will .red[always] increase when more terms are added to the model (.orange[more on this in multiple linear regression])
+
+]
+
+--
+
+.large[
+
+* As the range of `\(X\)` increases/decreases, `\(R^2\)` also generally increases/decreases
+
+]
+
+--
+
+.large[
+
+* `\(R^2\)` does not indicate the **appropriateness** of a linear model
+
+]
+
+--
+
+.larger[.center[.blue[So why even use the coefficient of determination?]]]
+
+
+---
+
+# Coefficient of correlation
+
+.larger[
+
+In SLR, there is a connection between `\(R^2\)` and the Pearson correlation coefficient between `\(X\)` and `\(Y\)`: `$$r = \pm \sqrt{R^2}$$`
+
+]
+
+-- 
+
+.large[.center[.blue[*r* will have the same sign as the estimated slope!]]]
+
+---
+
+# Rocket propellant example
+
+.medium[
+
+
+```r
+# Compute coefficient of correlation
+(r_squared &lt;- summary(rocket_fit)$r.squared)
+```
+
+```
+## [1] 0.9018414
+```
+
+```r
+sqrt(r_squared)
+```
+
+```
+## [1] 0.9496533
+```
+
+```r
+cor(rocket)  # compare with correlation coefficient
+```
+
+```
+##            strength        age
+## strength  1.0000000 -0.9496533
+## age      -0.9496533  1.0000000
+```
+
+]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
