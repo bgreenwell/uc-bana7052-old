@@ -817,7 +817,11 @@ class: inverse, center, middle
 
 # Your turn `r emo::ji("scream")`
 
-.larger[Fit an SLR model to the crystal weight data using `weight` as the response and `time` as the predictor and interpret the estimated coefficients.]
+.larger[
+
+Fit an SLR model to the crystal weight data using `weight` as the response and `time` as the predictor and interpret the estimated coefficients.
+
+]
 
 
 ---

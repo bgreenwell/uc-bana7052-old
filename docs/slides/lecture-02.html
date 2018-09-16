@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 # Inferences in Simple Linear Regression
 ## Lecture 02
 ### Brandon M. Greenwell
-### 15 September, 2018
+### 16 September, 2018
 
 ---
 
@@ -300,27 +300,27 @@ n &lt;- 30                 # sample size
 
 ---
 
-# Crystal weight example
+# Rocket propellant example
 
 .scrollable[
 
 
 ```r
 # Load the rocket propellant data
-rocket &lt;- read.csv("https://raw.githubusercontent.com/bgreenwell/uc-bana7052/master/data/rocket.csv")
+rocket &lt;- read.csv("https://bgreenwell.github.io/uc-bana7052/data/rocket.csv")
 
 # Fit an SLR model
-fit &lt;- lm(strength ~ age, data = rocket)
+rocket_fit &lt;- lm(strength ~ age, data = rocket)
 
 # Plot the data with the fitted mean response
-investr::plotFit(fit)
+investr::plotFit(rocket_fit)
 ```
 
-&lt;img src="lecture-02_files/figure-html/arsenic-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/02-rocket-01-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ```r
 # Print a summary of the fitted model
-summary(fit)
+summary(rocket_fit)
 ```
 
 ```
@@ -346,7 +346,7 @@ summary(fit)
 
 ```r
 # Compute a 95% CI for the slope
-confint(fit, level = 0.95)
+*confint(rocket_fit, level = 0.95)
 ```
 
 ```
@@ -371,7 +371,7 @@ Can you interpret the confidence interval for `\(\beta_1\)` in the previous exam
 
 
 ```r
-confint(fit, level = 0.95)
+confint(rocket_fit, level = 0.95)
 ```
 
 ```
@@ -380,7 +380,7 @@ confint(fit, level = 0.95)
 ## age          -43.22338  -31.0838
 ```
 
-With 95% confidence, we estimate that the mean strength of rockets decreases by  31.08 psi to 43.22 psi for every one-week increase in age.
+With 95% confidence, we estimate that the mean strength of rockets decreases between 31.08 psi and 43.22 psi for every one-week increase in age.
 
 
 ---
@@ -406,17 +406,17 @@ Fit an SLR model to the crystal weight data using `weight` as the response and `
 data(crystal, package = "investr")
 
 # Fit an SLR model
-fit &lt;- lm(weight ~ time, data = crystal)
+crystal_fit &lt;- lm(weight ~ time, data = crystal)
 
 # Plot the data with the fitted mean response
-investr::plotFit(fit)
+investr::plotFit(crystal_fit)
 ```
 
-&lt;img src="lecture-02_files/figure-html/crystal-solution-01-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/01-crystal-solution-01-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ```r
 # Print a summary of the model
-summary(fit)
+summary(crystal_fit)
 ```
 
 ```
@@ -442,7 +442,7 @@ summary(fit)
 
 ```r
 # Compute a 95% CI for the regression coefficients
-confint(fit, level = 0.95)
+*confint(crystal_fit, level = 0.95)
 ```
 
 ```
@@ -451,7 +451,462 @@ confint(fit, level = 0.95)
 ## time         0.4267404 0.5801168
 ```
 
-With 95% confidence, we estimate that the average weight of crystals will increase by 0.43 grams to 0.58 grams for every one-hour increase in growth time.
+With 95% confidence, we estimate that the average weight of crystals increases between 0.43 grams and 0.58 grams for every one-hour increase in growth time.
+
+]
+
+
+---
+
+# Rocket propellant example
+
+.scrollable[
+
+Using the rocket propellant example, test whether the slope significantly differes from `\(-40\)` psi/week at the `\(\alpha = 0.05\)` level.
+
+
+```r
+# Extract summary of estimated slope
+*(slope &lt;- summary(rocket_fit)$coef["age", ])
+```
+
+```
+##      Estimate    Std. Error       t value      Pr(&gt;|t|) 
+## -3.715359e+01  2.889107e+00 -1.285989e+01  1.643344e-10
+```
+
+```r
+# Compute test statistic
+(t_obs &lt;- (slope["Estimate"] + 40) / slope["Std. Error"])  # &lt;&lt;
+```
+
+```
+##  Estimate 
+## 0.9852212
+```
+
+```r
+# Compute cutoff from reference distribution
+alpha &lt;- 0.05
+n &lt;- nrow(rocket)
+*(t_ref &lt;- qt(1 - alpha/2, df = n - 2))
+```
+
+```
+## [1] 2.100922
+```
+
+```r
+# Decision rule
+if (abs(t_obs) &gt; t_ref) "reject H0" else "fail to reject H0"
+```
+
+```
+## [1] "fail to reject H0"
+```
+
+]
+
+
+---
+
+# Your turn 😱
+
+.large[
+
+Using the crystal weight example, test whether the slope significantly differes from `\(3/4\)` grams/hour at the `\(\alpha = 0.1\)` level.
+
+]
+
+
+---
+
+# Solution 🙌
+
+.large[
+
+`$$H_0: \beta_1 = 3/4 \quad vs \quad H_1: \beta_1 \ne 3/4$$`
+
+
+```r
+# Compute a 90% CI for the slope
+confint(crystal_fit, parm = "time", level = 0.9)
+```
+
+```
+##           5 %      95 %
+## time 0.440697 0.5661602
+```
+
+Since 3/4 lies outside of the 90% confidence interval for `\(\beta_1\)`, we reject the null hypoethsis at the 0.1 level and conclude that the slope significantly differs from 3/4. 
+
+]
+
+
+---
+
+# Computing the *p*-value
+
+.scrollable[
+
+* One-sided test: `$$p = Pr\left(T_{n-2} &gt; \left|t_{obs}\right|\right)$$`
+
+* Two-sided test: `$$p = 2 \times Pr\left(T_{n-2} &gt; \left|t_{obs}\right|\right)$$`
+
+
+```r
+*# From the rocket propellant example. What test does this correspond to?
+*(t_obs &lt;- slope["Estimate"] / slope["Std. Error"])
+```
+
+```
+##  Estimate 
+## -12.85989
+```
+
+```r
+*(p_val &lt;- 2 * pt(abs(t_obs), df = nrow(rocket) - 2, lower.tail = FALSE))
+```
+
+```
+##     Estimate 
+## 1.643344e-10
+```
+
+]
+
+
+---
+
+# Your turn 😱
+
+.large[
+
+Compute the *p*-value for the previous test in the crystal weight example. What is your decision?
+
+]
+
+
+---
+
+# Solution 🙌
+
+.medium[
+
+`$$H_0: \beta_1 = 3/4 \quad vs \quad H_1: \beta_1 \ne 3/4$$`
+
+
+```r
+slope &lt;- summary(crystal_fit)$coef["time", ]
+*(t_obs &lt;- (slope["Estimate"] - 3/4) / slope["Std. Error"])
+```
+
+```
+##  Estimate 
+## -7.005421
+```
+
+```r
+*(p_val &lt;- 2 * pt(abs(t_obs), df = nrow(crystal) - 2, lower.tail = FALSE))
+```
+
+```
+##     Estimate 
+## 1.423506e-05
+```
+
+Since `\(p &lt; 0.1\)`, we reject the null hypothesis and conclude that the slope significantly differs from 3/4. 
+
+]
+
+
+---
+
+# Inferences concerning `\(\beta_0\)`
+
+* Similar results exist for the intercept, just replace `\(\widehat{SE}\left(\widehat{\beta}_1\right)\)` with `$$\widehat{SE}\left(\widehat{\beta}_0\right) = MSE\left(\frac{1}{n} + \frac{\bar{X}^2}{S_{xx}}\right)$$`
+
+
+---
+class: clear
+
+.larger[
+
+Consider the following hypotheses for the SLR model: `$$H_0: \beta_1 = 0 \quad vs \quad H_1: \beta_1 \ne 0$$`
+
+]
+
+--
+
+.larger[
+
+.center[
+
+.red[
+
+What does failing to reject `\(H_0\)` imply about the relationship between `\(X\)` and `\(Y\)`?
+
+]
+
+]
+
+]
+
+
+---
+
+# ANOVA approach
+
+.large[
+
+* What does ANOVA refer to? 🤔
+
+]
+
+--
+
+.large[
+
+* Partitioning sums of squares (SS)
+
+    - Total SS: `\(SST = SS_{tot} = \sum_{i=1}^n\left(Y_i - \bar{Y}\right)^2\)`
+    
+    - Error SS: `\(SSE = SS_{err} = \sum_{i=1}^n\left(Y_i - \widehat{Y}_i\right)^2\)`
+    
+    - Regression SS: `\(SSR = SS_{reg} = \sum_{i=1}^n\left(\widehat{Y}_i - \bar{Y}\right)^2\)`
+    
+]
+
+
+---
+
+# ANOVA approach
+
+.large[
+
+* `\(\left(Y_i - \bar{Y}\right) = \left(\widehat{Y}_i - \bar{Y}\right) + \left(Y_i - \widehat{Y}_i\right)\)`
+
+]
+
+-- 
+
+.large[
+
+* It is easy to show that the sums of these squared deviations have the same relationship: `$$\sum_{i=1}^n\left(Y_i - \bar{Y}\right) = \sum_{i=1}^n\left(\widehat{Y}_i - \bar{Y}\right) + \sum_{i=1}^n\left(Y_i - \widehat{Y}_i\right)$$`
+
+    - In other words, `\(SST = SSS + SSE\)` (.purple[much like in a one-way ANOVA])
+
+]
+
+
+---
+
+# ANOVA approach
+
+.larger[
+
+* Diving an SS by its associated *degrees of freedome* (df) produces mean squares (.purple[kind of like a standard deviation])
+
+]
+
+--
+
+.larger[
+
+* `\(MSR = \frac{SSR}{1}\)`
+
+* `\(MSE = \frac{SSE}{1}\)`
+
+]
+
+
+---
+class: clear, inverse, middle, center
+
+.huge[
+
+Is there a (linear) relationship between `\(X\)` and `\(Y\)`? `$$H_0: \beta_1 = 0 \quad vs \quad H_1: \beta_1 \ne 0$$`
+
+]
+
+
+---
+
+# ANOVA approach
+
+.large[
+
+* Test statistic: `$$F_{obs} = \frac{MSR}{MSE}$$` with 1 .darkorange[numerator degrees of freedom] and `\(n-2\)` .darkorange[denominator degrees of freedom]
+
+]
+
+--
+
+.large[
+
+* Reject `\(H_0\)` at the `\(\alpha\)` level whenever `\(F_{obs} &gt; F_{1-\alpha, 1, n-2}\)`
+
+    - Notice the use of `\(\alpha\)` as opposed to `\(\alpha/2\)` 🤔
+    
+    - Is a large value of `\(F_{obs}\)` good or bad?
+
+]
+
+
+---
+
+# Rocket propellant example
+
+.scrollable[
+
+
+```r
+# Compute ANOVA table for the fitted model
+*anova(rocket_fit)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: strength
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## age        1 1527483 1527483  165.38 1.643e-10 ***
+## Residuals 18  166255    9236                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+# Print summary of fitted model
+summary(rocket_fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = strength ~ age, data = rocket)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -215.98  -50.68   28.74   66.61  106.76 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 2627.822     44.184   59.48  &lt; 2e-16 ***
+## age          -37.154      2.889  -12.86 1.64e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 96.11 on 18 degrees of freedom
+## Multiple R-squared:  0.9018,	Adjusted R-squared:  0.8964 
+## F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
+```
+
+```r
+# Fit an intercept only model
+rocket_fit_reduced &lt;- lm(strength ~ 1, data = rocket)
+*mean(rocket$strength)  # compare to estimated intercept
+```
+
+```
+## [1] 2131.358
+```
+
+```r
+*anova(rocket_fit_reduced, rocket_fit)  # compare models
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: strength ~ 1
+## Model 2: strength ~ age
+##   Res.Df     RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1     19 1693738                                  
+## 2     18  166255  1   1527483 165.38 1.643e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+---
+
+# Your turn 😱
+
+.larger[
+
+Using the crystal weight example, use an `\(F\)`-test to test whether or not there is a relationship between `time` and `weight` at the `\(\alpha = 0.05\)` level. Manually compute the *p*-value for this test and 🙏 that it matches the output from `summary()`.
+
+]
+
+
+---
+
+# Solution 🙌
+
+.scrollable[
+
+
+```r
+# Print summary of the fitted model
+summary(crystal_fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = weight ~ time, data = crystal)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.96371 -0.73464  0.05629  0.89193  1.40800 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 0.001429   0.599387   0.002    0.998    
+## time        0.503429   0.035197  14.303 6.69e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.062 on 12 degrees of freedom
+## Multiple R-squared:  0.9446,	Adjusted R-squared:   0.94 
+## F-statistic: 204.6 on 1 and 12 DF,  p-value: 6.688e-09
+```
+
+```r
+# What values can we pull out from summary()
+names(summary(crystal_fit))
+```
+
+```
+##  [1] "call"          "terms"         "residuals"     "coefficients" 
+##  [5] "aliased"       "sigma"         "df"            "r.squared"    
+##  [9] "adj.r.squared" "fstatistic"    "cov.unscaled"
+```
+
+```r
+# Observed test statitic
+f_obs &lt;- summary(crystal_fit)$fstatistic
+
+# Compute p-value (one approach)
+pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
+```
+
+```
+##        value        numdf        dendf 
+## 6.687884e-09 3.370491e-01 4.681605e-03
+```
+
+```r
+# Compute p-value (another approach)
+1 - pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2)
+```
+
+```
+##        value        numdf        dendf 
+## 6.687884e-09 3.370491e-01 4.681605e-03
+```
 
 ]
     </textarea>
