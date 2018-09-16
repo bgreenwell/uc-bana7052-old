@@ -413,7 +413,7 @@ With 95% confidence, we estimate that the average weight of crystals increases b
 
 .scrollable[
 
-Using the rocket propellant example, test whether the slope significantly differes from $-40$ psi/week at the $\alpha = 0.05$ level.
+Using the rocket propellant example, test whether the slope significantly differs from $-40$ psi/week at the $\alpha = 0.05$ level.
 
 ```{r 02-rocket-03}
 # Extract summary of estimated slope
@@ -440,7 +440,7 @@ if (abs(t_obs) > t_ref) "reject H0" else "fail to reject H0"
 
 .large[
 
-Using the crystal weight example, test whether the slope significantly differes from $3/4$ grams/hour at the $\alpha = 0.1$ level.
+Using the crystal weight example, test whether the slope significantly differs from $3/4$ grams/hour at the $\alpha = 0.1$ level.
 
 ]
 
@@ -458,7 +458,7 @@ $$H_0: \beta_1 = 3/4 \quad vs \quad H_1: \beta_1 \ne 3/4$$
 confint(crystal_fit, parm = "time", level = 0.9)
 ```
 
-Since 3/4 lies outside of the 90% confidence interval for $\beta_1$, we reject the null hypoethsis at the 0.1 level and conclude that the slope significantly differs from 3/4. 
+Since 3/4 lies outside of the 90% confidence interval for $\beta_1$, we reject the null hypothesis at the 0.1 level and conclude that the slope significantly differs from 3/4. 
 
 ]
 
@@ -597,7 +597,7 @@ What does failing to reject $H_0$ imply about the relationship between $X$ and $
 
 .larger[
 
-* Diving an SS by its associated *degrees of freedome* (df) produces mean squares (.purple[kind of like a standard deviation])
+* Diving an SS by its associated *degrees of freedom* (df) produces mean squares (.purple[kind of like a standard deviation])
 
 ]
 
@@ -672,7 +672,7 @@ anova(rocket_fit_reduced, rocket_fit)  # compare models  #<<
 
 .larger[
 
-Using the crystal weight example, use an $F$-test to test whether or not there is a relationship between `time` and `weight` at the $\alpha = 0.05$ level. Manually compute the *p*-value for this test and `r emo::ji("pray")` that it matches the output from `summary()`.
+Using the crystal weight example, use an *F*-test to test whether or not there is a relationship between `time` and `weight` at the $\alpha = 0.05$ level. Manually compute the *p*-value for this test and `r emo::ji("pray")` that it matches the output from `summary()`.
 
 ]
 
@@ -701,3 +701,168 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 ```
 
 ]
+
+
+---
+
+# F or t?
+
+.large[
+
+* For every two-sided *t*-test, there is a corresponding *F*-test
+
+    - $t_{obs}^2 = F_{obs}$
+
+]
+
+--
+
+.large[
+
+* In the SLR model, these the approaches are equivalent 
+
+    - The *F*-test becomes useful when we start adding more predictors (i.e., in multiple linear regression)
+
+]
+
+
+---
+
+# Rule of thumb `r set.seed(101); emo::ji("thumb")`
+
+.large[
+
+Using 
+
+$$Esimtate \pm 2 \times SE$$
+
+for an approximate 95% CI is incredibly robust!
+
+```{r robust}
+sapply(c(10, 20, 30, 50, Inf), function(x)  #<<
+  qt(0.975, df = x))                        #<<
+```
+
+]
+
+
+---
+
+# CI for the mean response
+
+.large[
+
+* We can estimate the mean response given $X = X_0$ as $\widehat{Y}_0 = \widehat{\beta}_0 + \widehat{\beta}_1 X_0$ 
+
+]
+
+--
+
+.large[
+
+* How can we construct a CI for $\widehat{Y}$? `r emo::ji("thinking")`
+
+]
+
+--
+
+.large[
+
+* What is the sampling distribution of $\widehat{Y}_0$? `r emo::ji("thinking")`
+
+]
+
+--
+
+.large[
+
+For the normal error regression model $$\frac{\widehat{Y}_0 - E\left(\widehat{Y}_0\right)}{\widehat{SE}\left(\widehat{Y}_0\right)} \sim t_{n-2}$$
+
+]
+
+
+---
+
+# CI for the mean response
+
+.large[
+
+* $E\left(\widehat{Y}_0\right) = \beta_0 + \beta_1 x_0$
+
+* $\widehat{SE}\left(\widehat{Y}_0\right) = MSE\left[\frac{1}{n} + \frac{\left(X_0 - \bar{X}\right)^2}{S_{xx}}\right]$
+
+]
+
+--
+
+.large[
+
+A $1 - \alpha$ CI for the mean response at $X = X_0$ is given by $$\widehat{Y}_0 \pm t_{1 - \alpha/2, n-2} MSE\left[\frac{1}{n} + \frac{\left(X_0 - \bar{X}\right)^2}{S_{xx}}\right]$$
+
+]
+
+--
+
+.medium[.center[.red[At what point is this interval smallest?]]]
+
+
+---
+
+# Rocket propellant example
+
+Compute a 95% confidence interval for the mean response at 15 weeks
+
+.scrollable[
+
+```{r 02-rocker-05}
+# Confidence interval for the mean response at age = 15
+new_data <- data.frame(age = 15)
+predict(rocket_fit, newdata = new_data, interval = "confidence")
+
+# Plot the (pointwise) confidence band around the fitted regression line
+library(investr)  # for plotFit() function
+plotFit(rocket_fit, interval = "confidence")
+abline(v = 15, col = "red2")
+plotFit(rocket_fit, interval = "confidence", shade = TRUE, xlim = c(-20, 100))
+```
+
+]
+
+
+---
+
+# Your turn `r emo::ji("scream")`
+
+.larger[
+
+Using the crystal weight example, compute a 90% confidence interval for the mean response at $X = 20$ hours. Plot a (pointwise) 90% confidence band using the `investr::plotFit()` function. See `?predict.lm` and `?investr::plotFit` for help.
+
+]
+
+
+---
+
+# Solution `r set.seed(205); emo::ji("raised")`
+
+.scrollable[
+
+```{r 01-crystal-solution-05}
+# Confidence interval for the mean response at age = 15
+new_data <- data.frame(time = 20)
+predict(crystal_fit, newdata = new_data, interval = "confidence",
+        level = 0.9)  #<<
+
+# Plot the (pointwise) confidence band around the fitted regression line
+plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, shade = TRUE,
+        col.conf = adjustcolor("red2", alpha.f = 0.5))
+```
+
+]
+
+
+---
+
+# Coefficient of determination
+
+TBD.
+
