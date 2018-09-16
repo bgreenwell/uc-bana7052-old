@@ -4,7 +4,7 @@
 library(ggplot2)
 
 # Load the data
-rocket <- read.csv("https://raw.githubusercontent.com/bgreenwell/uc-bana7052/master/data/rocket.csv")
+rocket <- read.csv("https://bgreenwell.github.io/uc-bana7052/data/rocket.csv")
 
 # Print first few observations
 head(rocket)

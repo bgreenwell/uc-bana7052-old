@@ -332,7 +332,7 @@ qt(1 - alpha/2, n - 2)  # cutoff value        #<<
 
 ```{r arsenic}
 # Load the rocket propellant data
-rocket <- read.csv("https://raw.githubusercontent.com/bgreenwell/uc-bana7052/master/data/rocket.csv")
+rocket <- read.csv("https://bgreenwell.github.io/uc-bana7052/data/rocket.csv")
 
 # Fit an SLR model
 fit <- lm(strength ~ age, data = rocket)
