@@ -67,10 +67,7 @@ background-image: url(images/linear-algebra.jpg)
 ```{r prerequisites, eval=FALSE}
 # List of required (CRAN) packages
 pkgs <- c(
-  "animation",  # for pre-built statistical animations
-  "dplyr",      # for data wrangling
-  "ggplot2",    # for awesome graphics
-  "HistData",   # for historical data sets
+  "plotly",     # for interactive plots
   "tibble"      # for nicer data frames
 )
 
@@ -103,6 +100,82 @@ roundhouse::kick("When someone tells you to memorize the formulas in SLR",
 
 ---
 
-# TBD
+# Multiple linear regression models
 
-TBD
+Suppose that the yield in pounds of conversion in a chemical process depends on temperature and the catalyst concentration. A .darkorange[multiple linear regression] (MLR) model that might describe this relationship is $$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \epsilon_i, \quad i = 1, 2, \dots, n$$
+where $$\epsilon_i \stackrel{iid}{\sim} \left(0, \sigma^2\right)$$
+
+--
+
+Hence, the mean response is $$E\left(Y_i\right) = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i}$$
+
+--
+
+.center[.content-box-yellow[
+
+This is an MLR model in two features $X_1$ and $X_2$
+
+]]
+
+
+---
+class: clear
+
+.scrollable[
+
+```{r mlr-plotly-3d, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Load required packages
+library(plotly)
+library(tibble)
+
+# Simulate data from an MLR model
+set.seed(101)  # for reproducibility
+n <- 50
+sim <- tibble(
+  x1 = runif(n),
+  x2 = runif(n),
+  y = 1 + 2*x1 - 3*x2 + rnorm(n, sd = 1)
+)
+
+# Construct a scatterplot matrix
+pairs(sim, cex = 1.2, pch = 19, col = adjustcolor("purple", alpha.f = 0.5))
+
+# Draw (interactive) 3-D scatterplot
+plot_ly(data = sim, x = ~x1, y = ~x2, z = ~y, mode = "markers", 
+        type = "scatter3d",
+        marker = list(opacity = 0.7, symbol = 1, size = 5, color = "black")) %>%
+  layout(
+    scene = list(
+      aspectmode = "manual", aspectratio = list(x = 1, y = 1, z = 1),
+      xaxis = list(title = "X1", range = c(0, 1)),
+      yaxis = list(title = "X2", range = c(0, 1)),
+      zaxis = list(title = "Y")
+    )
+  )
+
+# Fit an MLR model to the simulated data
+fit <- lm(y ~ x1 + x2, data = sim)
+betas <- coef(fit)
+
+# Generate predictions over a fine grid
+.x1 <- .x2 <- seq(from = 0, to = 1, length = 50)
+yhat <- t(outer(.x1, .x2, function(x1, x2) betas[1] + betas[2]*x1 + betas[3]*x2))
+
+# Draw (interactive) 3-D scatterplot with fitted mean response
+plot_ly(x = ~.x1, y = ~.x2, z = ~yhat, type = "surface", opacity = 0.7) %>%
+  add_trace(data = sim, x = ~x1, y = ~x2, z = ~y, mode = "markers", 
+            type = "scatter3d",
+            marker = list(opacity = 0.7, symbol = 1, 
+                          size = 5, color = "black")) %>%
+  layout(
+    scene = list(
+      aspectmode = "manual", aspectratio = list(x = 1, y = 1, z = 1),
+      xaxis = list(title = "X1", range = c(0, 1)),
+      yaxis = list(title = "X2", range = c(0, 1)),
+      zaxis = list(title = "Y")
+    )
+  )
+
+```
+
+]
