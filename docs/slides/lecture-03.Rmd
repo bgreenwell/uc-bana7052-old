@@ -22,7 +22,7 @@ options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = TRUE,
-  # dev = "svg",
+  dev = "svg",
   fig.align = "center",
   fig.width = 6,
   fig.asp = 0.618,
@@ -400,7 +400,18 @@ head(delivery, n = 5)  # print first 5 observations
 
 # Delivery data example
 
-```{r delivery-02, fig.width=6, fig.asp=0.618, out.width="70%"}
+```{r delivery-pairs, fig.width=6, fig.asp=0.618, out.width="90%"}
 # Scatterplot matrix
-pairs(delivery, pch = 19, col = adjustcolor("purple", alpha.f = 0.75))
+pairs(delivery, pch = 19, col = adjustcolor("purple", alpha.f = 0.6))
+```
+
+
+---
+
+# Delivery data example
+
+```{r delivery-splom, fig.width=6, fig.asp=0.618, out.width="90%"}
+# Another scatterplot matrix
+lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19, 
+               col = 1, lty = "dotted", alpha = 0.6)
 ```
