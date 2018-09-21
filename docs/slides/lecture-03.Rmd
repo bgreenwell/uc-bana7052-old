@@ -20,6 +20,7 @@ options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
 
 # Global chunk options
 knitr::opts_chunk$set(
+  cache = TRUE,
   echo = TRUE,
   # dev = "svg",
   fig.align = "center",
@@ -179,3 +180,214 @@ plot_ly(x = ~.x1, y = ~.x2, z = ~yhat, type = "surface", opacity = 0.7) %>%
 ```
 
 ]
+
+
+---
+
+# The general MLR model
+
+.large[
+
+* Suppose we have a total of $k = p - 1$ predictors $X_1, X_2, \dots, X_{p-1}$. The MLR model is $$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \dots \beta_{p-1} X_{p-1} + \epsilon_i, \quad i = 1, 2, \dots, n$$ where we assume $\epsilon_i \stackrel{iid}{\sim} \left(0, \sigma^2\right)$
+
+]
+
+--
+
+.large[
+
+* In short, we have a mean response of the form $$E\left(Y_i\right) = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{ij} = \underbrace{\sum_{j = 0}^{p-1}\beta_j X_{ij}}_{\text{dot product}}, \quad \text{where } X_{i0} \equiv 1$$
+
+]
+
+
+---
+
+# The general MLR model
+
+The MLR model with normal errors $$Y_i = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{ij} + \epsilon_i, \quad i = 1, 2, \dots, n$$ where
+
+--
+
+* $\beta_0, \beta_1, \dots, \beta_{p-1}$ are (unknown) regression coefficients (AKA weights or parameters)
+
+* $X_{i1}, X_{i2}, \dots, X_{i,p-1}$ are known constants
+
+* $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$
+
+* $i = 1, 2, \dots, n$
+
+
+---
+class: clear, center, middle
+
+```{r example-table, echo=FALSE, out.width="100%"}
+knitr::include_graphics("images/mlr-data.png")
+```
+
+
+---
+
+# Categorical predictors
+
+* Also called .magenta[*qualitative*] predictors or .magenta[*factors*]
+
+    - [Free DataCamp exercise](https://campus.datacamp.com/courses/free-introduction-to-r/chapter-4-factors-4?ex=4)
+
+--
+
+* [Wikipedia states that](https://en.wikipedia.org/wiki/Categorical_variable) "In statistics, a categorical variable is a variable that can take on one of a limited, and usually fixed number of possible values, assigning each individual or other unit of observation to a particular group or nominal category on the basis of some qualitative property."
+
+    - Examples include gender (i.e., male/female), .red[**zip code**], political affiliation, etc.
+
+* In regression, we typically use *indicator variables* that take on the values 0 and 1 to identify the classes of a categorical variable
+
+---
+class: clear, center, middle
+
+```{r dummy-encoding, echo=FALSE, out.width="100%"}
+knitr::include_graphics("images/dummy-encoding.png")
+```
+
+
+---
+
+# Categorical variables in R
+
+.scrollable[
+
+```{r categorical-variables}
+# Categorical variable
+(dow <- c("Mon", "Tue", "Wed", "Thu", "Fri"))
+class(dow)
+
+# Coerce to a factor (needed for some functions, like lm())
+(dow2 <- as.factor(dow))
+class(dow2)
+```
+
+]
+
+
+---
+
+# Estimating the coefficients
+
+.center[.bold[.purple[.larger[
+ How can we estimate $\beta_0, \beta_1, \dots, \beta_{p-1}$?
+]]]]
+
+--
+
+.large[
+
+The regression coefficients can easily be obtained using the LS approach; that is, finding the values of the regression coefficients that minimize $$Q = \sum_{i = 1}^n\left(Y_i - \beta_0 - \beta_1 X_{i1} - \dots - \beta_{p-1} X_{i, p-1}\right)^2$$
+
+]
+
+--
+
+.center[.small[.content-box-yellow[Equating the partial derivatives to zero amounts to solving a system of *n* equations in *p* unknowns]]]
+
+
+---
+class: clear
+
+background-image: url(images/matrix-approach.png)
+
+
+---
+
+# Matrix form of the MLR model
+
+ In matrix form, the MLR can be expressed as $$\boldsymbol{Y} = \boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$$ where 
+ 
+ * $\boldsymbol{Y} = \left(Y_1, Y_2, \dots, Y_n\right)^\top$ is an $n \times 1$ vector of responses
+ 
+ * $\boldsymbol{\beta} = \left(\beta_0, \beta_1, \dots, \beta_{p-1}\right)^\top$ is an $p \times 1$ vector of coefficients
+ 
+ * $\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)$ .red[`r emo::ji("left")` What does this mean? `r emo::ji("thinking")`] 
+ 
+ * $\boldsymbol{X} = \begin{bmatrix} X_{11} & X_{12} & \cdots & X_{1,p-1} \\ X_{21} & X_{22} & \cdots & X_{2,p-1} \\ \vdots & \vdots & & \vdots \\ X_{n1} & X_{n2} & \cdots & X_{n,p-1} \\ \end{bmatrix}$ is an $n \times p$ *model matrix*
+
+
+---
+
+# Least squares estimation
+
+We want to find the value of $\boldsymbol{\beta}$ that minimizes $$\boldsymbol{Q} = \left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right)^\top\left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right)$$ which simplifies to $$\boldsymbol{Q} = \boldsymbol{Y}^\top\boldsymbol{Y} - 2\boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{Y} + \boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{Y}$$
+
+--
+
+Differentiating $\boldsymbol{Q}$ w.r.t. $\boldsymbol{\beta}$ and equating to zero yields $$\frac{\partial \boldsymbol{Q}}{\partial \boldsymbol{\beta}} = -2\boldsymbol{X}^\top\boldsymbol{Y} + 2\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} = \boldsymbol{0}_p$$
+
+--
+
+* The normal equations: $\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} = \boldsymbol{X}^\top\boldsymbol{Y}$
+
+.center[.content-box-yellow[
+
+$$\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}^\top\boldsymbol{Y}$$
+
+]]
+
+
+---
+class: clear, middle, center
+
+.larger[
+
+$\boldsymbol{X}$ has to be full rank in order for $\left(\boldsymbol{X}^\top\boldsymbol{X}\right)$ to be invertible!
+
+]
+
+
+---
+
+# The fitted model
+
+.large[
+
+* Fitted values: $\widehat{\boldsymbol{Y}} = \boldsymbol{X}\widehat{\boldsymbol{\beta}} = \boldsymbol{X}\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}^\top\boldsymbol{Y} = \boldsymbol{H}\boldsymbol{Y}$
+
+]
+
+--
+
+.large[
+
+* Residuals: $\boldsymbol{\epsilon} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}} = \boldsymbol{Y} - \boldsymbol{X}\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{I} - \boldsymbol{H}\right)\boldsymbol{X}$
+
+]
+
+--
+
+.large[.center[.content-box-yellow[
+
+$\boldsymbol{H}$ is both *symmetric* (i.e., $\boldsymbol{H}^\top = \boldsymbol{H}$) and *idempotent* (i.e., $\boldsymbol{H} = \boldsymbol{H}\boldsymbol{H}$) and is referred to as the *hat matrix* (the diagonal entries of $H$ are important in .red[detecting "influential" observations])
+
+]]]
+
+
+---
+
+# Properties of $\widehat{\boldsymbol{\beta}}$
+
+Assuming $\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsymbol{I}_n\right)$, what are some properties of the LS estimate of $\boldsymbol{\beta}$?
+
+--
+
+* Unbiased: $E\left(\widehat{\boldsymbol{\beta}}\right) = \boldsymbol{\beta}$
+
+* Variance-covariance matrix: $Var\left(\widehat{\boldsymbol{\beta}}\right) = \sigma^2 \left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}$
+
+* Sampling distirbution: $\widehat{\boldsymbol{\beta}} \sim N\left(\boldsymbol{\beta}, \sigma^2 \left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\right)$
+
+
+---
+
+# Delivery data
+
+```{r delivery-01}
+# delivery <- read.csv()
+```

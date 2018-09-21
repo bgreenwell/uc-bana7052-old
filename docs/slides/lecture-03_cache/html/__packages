@@ -1,0 +1,10 @@
+base
+dplyr
+patchwork
+ggplot2
+investr
+plotly
+bindrcpp
+tibble
+lattice
+tuneR
