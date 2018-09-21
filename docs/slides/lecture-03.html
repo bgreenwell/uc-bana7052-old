@@ -420,12 +420,37 @@ Assuming `\(\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsym
 
 ---
 
-# Delivery data
+# Delivery data example
 
 
 ```r
-# delivery &lt;- read.csv()
+# Load the delivery data
+url &lt;- "https://bgreenwell.github.io/uc-bana7052/data/delivery.csv"
+delivery &lt;- read.csv(url)
+head(delivery, n = 5)  # print first 5 observations
 ```
+
+```
+##   Index DeliveryTime NumberofCases Distance
+## 1     1        16.68             7      560
+## 2     2        11.50             3      220
+## 3     3        12.03             3      340
+## 4     4        14.88             4       80
+## 5     5        13.75             6      150
+```
+
+
+---
+
+# Delivery data example
+
+
+```r
+# Scatterplot matrix
+pairs(delivery, pch = 19, col = adjustcolor("purple", alpha.f = 0.75))
+```
+
+&lt;img src="lecture-03_files/figure-html/delivery-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
