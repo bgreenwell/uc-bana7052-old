@@ -124,7 +124,7 @@ Upon successful completion of this course, the learner will be able to:
 
 6. Use high-level statistical software, such as SAS and R, for the statistical analyses on real world data.
  
-7.To communicate the results of statistical analyses in language understandable to the general public such as a supervisor or colleague who may not have expertise in statistical methodology. 
+7. To communicate the results of statistical analyses in language understandable to the general public such as a supervisor or colleague who may not have expertise in statistical methodology. 
 
 Students will have homework assignments, quizzes (possibly), and exams on which the above objectives will be measured.  
 
