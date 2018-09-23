@@ -302,7 +302,7 @@ knitr::include_graphics("images/reading.jpg")
 
 ---
 
-# Crystal weight data
+# Crystal weight example `r emo::ji("crystal")`
 
 The data frame `investr::crystal` gives the growing time and final weight of `r nrow(investr::crystal)` crystals:
 

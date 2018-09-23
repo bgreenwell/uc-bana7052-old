@@ -202,7 +202,6 @@ What does the *bias* of a parameter estimate refer to? `r emo::ji("thinking")`
 ]
 
 
-
 ---
 
 # Properties of $\widehat{\beta}_1$
@@ -1151,5 +1150,16 @@ In SLR, there is a connection between $R^2$ and the Pearson correlation coeffici
 sqrt(r_squared)
 cor(rocket)  # compare with correlation coefficient
 ```
+
+]
+
+
+---
+
+# Crystal weight example `r emo::ji("crystal")`
+
+.larger[
+
+For the crystal weight data, rather than estimating the mean weight for crystals grown for 10 weeks, suppose we wanted to estimate how long we should grow the crystals such the average weight will be 10 grams. Use your intuition to derive a point estimate for this value. 
 
 ]
