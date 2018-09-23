@@ -20,13 +20,13 @@ options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
 
 # Global chunk options
 knitr::opts_chunk$set(
-  cache = TRUE,
+  cache = FALSE,
   echo = TRUE,
-  dev = "svg",
+  dev = "svglite",
   fig.align = "center",
-  fig.width = 6,
-  fig.asp = 0.618,
-  out.width = "70%",
+  # fig.width = 6,
+  # fig.asp = 0.618,
+  # out.width = "70%",
   message = FALSE,
   warning = FALSE,
   error = FALSE
@@ -68,6 +68,7 @@ background-image: url(images/linear-algebra.jpg)
 ```{r prerequisites, eval=FALSE}
 # List of required (CRAN) packages
 pkgs <- c(
+  "pdp",        # for (corrected) Boston housing data
   "plotly",     # for interactive plots
   "tibble"      # for nicer data frames
 )
@@ -124,7 +125,7 @@ class: clear
 
 .scrollable[
 
-```{r mlr-plotly-3d, fig.width=6, fig.asp=0.618, out.width="100%"}
+```{r mlr-3d-sim-01, fig.width=6, fig.asp=0.618, out.width="100%"}
 # Load required packages
 library(plotly)
 library(tibble)
@@ -135,11 +136,65 @@ n <- 50
 sim <- tibble(
   x1 = runif(n),
   x2 = runif(n),
-  y = 1 + 2*x1 - 3*x2 + rnorm(n, sd = 1)
+  y = 1 + 2*x1 - 3*x2 + rnorm(n, sd = 1)  #<<
 )
 
+# Print first few observations
+print(sim)
+```
+
+]
+
+
+---
+class: clear
+
+.scrollable[
+
+```{r mlr-3d-sim-02, fig.width=6, fig.asp=0.618, out.width="90%"}
 # Construct a scatterplot matrix
 pairs(sim, cex = 1.2, pch = 19, col = adjustcolor("purple", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear
+
+.medium[
+
+```{r mlr-3d-sim-03, eval=FALSE}
+# Load required packages
+library(plotly)  # for interactive plotting  #<<
+
+# Draw (interactive) 3-D scatterplot
+plot_ly(data = sim, x = ~x1, y = ~x2, z = ~y, mode = "markers", 
+        type = "scatter3d",
+        marker = list(opacity = 0.7, symbol = 1, 
+                      size = 5, color = "black")) %>%
+  layout(
+    scene = list(
+      aspectmode = "manual", 
+      aspectratio = list(x = 1, y = 1, z = 1),
+      xaxis = list(title = "X1", range = c(0, 1)),
+      yaxis = list(title = "X2", range = c(0, 1)),
+      zaxis = list(title = "Y")
+    )
+  )
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+.scrollable[
+
+```{r mlr-3d-sim-04, echo=FALSE, out.width="100%"}
+# Load required packages
+library(plotly)  # for interactive plotting
 
 # Draw (interactive) 3-D scatterplot
 plot_ly(data = sim, x = ~x1, y = ~x2, z = ~y, mode = "markers", 
@@ -153,30 +208,84 @@ plot_ly(data = sim, x = ~x1, y = ~x2, z = ~y, mode = "markers",
       zaxis = list(title = "Y")
     )
   )
+```
 
+]
+
+
+---
+class: clear
+
+.scrollable[
+
+```{r mlr-3d-sim-05, eval=FALSE}
 # Fit an MLR model to the simulated data
-fit <- lm(y ~ x1 + x2, data = sim)
-betas <- coef(fit)
+fit <- lm(y ~ x1 + x2, data = sim)  #<<
+(betas <- coef(fit))  #<<
+## (Intercept)          x1          x2  #<<
+##   0.8834363   2.3265433  -2.9942737  #<<
 
-# Generate predictions over a fine grid
+# Generate predictions over a fine grid  #<<
 .x1 <- .x2 <- seq(from = 0, to = 1, length = 50)
-yhat <- t(outer(.x1, .x2, function(x1, x2) betas[1] + betas[2]*x1 + betas[3]*x2))
+yhat <- t(outer(.x1, .x2, function(x1, x2) {
+  betas[1] + betas[2]*x1 + betas[3]*x2
+}))
 
 # Draw (interactive) 3-D scatterplot with fitted mean response
-plot_ly(x = ~.x1, y = ~.x2, z = ~yhat, type = "surface", opacity = 0.7) %>%
-  add_trace(data = sim, x = ~x1, y = ~x2, z = ~y, mode = "markers", 
+plot_ly(x = ~.x1, y = ~.x2, z = ~yhat, 
+        type = "surface", opacity = 0.7) %>%
+  add_trace(data = sim, x = ~x1, y = ~x2, z = ~y, 
+            mode = "markers", 
             type = "scatter3d",
             marker = list(opacity = 0.7, symbol = 1, 
                           size = 5, color = "black")) %>%
   layout(
     scene = list(
-      aspectmode = "manual", aspectratio = list(x = 1, y = 1, z = 1),
+      aspectmode = "manual", 
+      aspectratio = list(x = 1, y = 1, z = 1),
       xaxis = list(title = "X1", range = c(0, 1)),
       yaxis = list(title = "X2", range = c(0, 1)),
       zaxis = list(title = "Y")
     )
   )
+```
 
+]
+
+
+---
+class: clear, middle, center
+
+.scrollable[
+
+```{r mlr-3d-sim-06, echo=FALSE, out.width="100%"}
+# Fit an MLR model to the simulated data
+fit <- lm(y ~ x1 + x2, data = sim)
+betas <- coef(fit)                
+
+# Generate predictions over a fine grid  #<<
+.x1 <- .x2 <- seq(from = 0, to = 1, length = 50)
+yhat <- t(outer(.x1, .x2, function(x1, x2) {
+  betas[1] + betas[2]*x1 + betas[3]*x2
+}))
+
+# Draw (interactive) 3-D scatterplot with fitted mean response
+plot_ly(x = ~.x1, y = ~.x2, z = ~yhat, 
+        type = "surface", opacity = 0.7) %>%
+  add_trace(data = sim, x = ~x1, y = ~x2, z = ~y, 
+            mode = "markers", 
+            type = "scatter3d",
+            marker = list(opacity = 0.7, symbol = 1, 
+                          size = 5, color = "black")) %>%
+  layout(
+    scene = list(
+      aspectmode = "manual", 
+      aspectratio = list(x = 1, y = 1, z = 1),
+      xaxis = list(title = "X1", range = c(0, 1)),
+      yaxis = list(title = "X2", range = c(0, 1)),
+      zaxis = list(title = "Y")
+    )
+  )
 ```
 
 ]
@@ -308,7 +417,7 @@ background-image: url(images/matrix-approach.png)
  
  * $\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)$ .red[`r emo::ji("left")` What does this mean? `r emo::ji("thinking")`] 
  
- * $\boldsymbol{X} = \begin{bmatrix} X_{11} & X_{12} & \cdots & X_{1,p-1} \\ X_{21} & X_{22} & \cdots & X_{2,p-1} \\ \vdots & \vdots & & \vdots \\ X_{n1} & X_{n2} & \cdots & X_{n,p-1} \\ \end{bmatrix}$ is an $n \times p$ *model matrix*
+ * $\boldsymbol{X} = \begin{bmatrix} X_{11} & X_{12} & \cdots & X_{1,p-1} \\ X_{21} & X_{22} & \cdots & X_{2,p-1} \\ \vdots & \vdots & & \vdots \\ X_{n1} & X_{n2} & \cdots & X_{n,p-1} \\ \end{bmatrix}$ is an $n \times p$ .purple[*model matrix* (or *design matrix*)]
 
 
 ---
@@ -400,9 +509,9 @@ head(delivery, n = 5)  # print first 5 observations
 
 # Delivery data example
 
-```{r delivery-pairs, fig.width=6, fig.asp=0.618, out.width="90%"}
+```{r delivery-pairs, fig.width=5, fig.height=5, out.width="70%"}
 # Scatterplot matrix
-pairs(delivery, pch = 19, col = adjustcolor("purple", alpha.f = 0.6))
+pairs(delivery[, -1], pch = 19, col = adjustcolor("purple", alpha.f = 0.6))
 ```
 
 
@@ -410,8 +519,252 @@ pairs(delivery, pch = 19, col = adjustcolor("purple", alpha.f = 0.6))
 
 # Delivery data example
 
-```{r delivery-splom, fig.width=6, fig.asp=0.618, out.width="90%"}
+```{r delivery-splom, fig.width=6, fig.height=6, out.width="70%"}
 # Another scatterplot matrix
 lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19, 
                col = 1, lty = "dotted", alpha = 0.6)
 ```
+
+
+---
+
+# Delivery data example
+
+.large[
+
+```{r delivery-lm-01}
+# Fit a linear model
+(fit <- lm(DeliveryTime ~ NumberofCases + Distance, data = delivery))
+```
+
+]
+
+
+---
+
+# Delivery data example
+
+.large[
+
+```{r delivery-lm-02}
+# Fit a linear model
+(fit <- lm(DeliveryTime ~ ., data = delivery))
+```
+
+]
+
+.medium[.center[.content-box-red[
+
+`y ~ ., data = df` is shorthand for regress `y` on every other column in `df`
+
+]]]
+
+
+---
+
+# Delivery data example
+
+.large[
+
+```{r delivery-lm-03}
+# Fit a linear model
+delivery <- subset(delivery, select = -Index)  #<<
+(fit <- lm(DeliveryTime ~ ., data = delivery))
+```
+
+]
+
+
+---
+
+# How do we interpret $\widehat{\beta}_i$?
+
+.medium[
+
+```{r delivery-lm-04}
+round(coef(fit), digits = 3)  #<<
+```
+
+]
+
+--
+
+.medium[
+
+* .bold[.red[All else held constant]], for every one additional case, the mean delivery time increases by 1.616 minutes
+
+]
+
+--
+
+.medium[
+
+* .bold[.red[All else held constant]], for every one-unit increase in distance, the mean delivery time increases by 0.014 minutes
+
+]
+
+--
+
+.medium[.center[.content-box-green[
+
+In general, $\widehat{\beta}_j$ is the estimated increase in the mean repsonse per one-unit increase in $X_j$ (all else held constant)
+
+]]]
+
+
+---
+# Delivery data example
+
+.scrollable[
+
+.large[
+
+```{r delivery-matrix-wrong}
+xnames <- c("NumberofCases", "Distance")
+X <- data.matrix(delivery[, xnames])
+head(X)
+Y <- delivery$DeliveryTime
+solve(t(X) %*% X) %*% t(X) %*% Y  #<<
+```
+
+]
+
+]
+
+
+---
+# Delivery data example
+
+.scrollable[
+
+.large[
+
+```{r delivery-matrix-right}
+X <- model.matrix(~ NumberofCases + Distance, 
+                  data = delivery)
+head(X)
+Y <- delivery$DeliveryTime
+solve(t(X) %*% X) %*% t(X) %*% Y  #<<
+```
+
+]
+
+]
+
+
+---
+
+# Delivery data example
+
+.medium[
+
+```{r delivery-output}
+# Extract fitted values and residuals
+.fitted <- fitted(fit)
+.resids <- residuals(fit)
+head(cbind(delivery, .fitted, .resids))
+```
+
+]
+
+--
+
+.medium[.center[.content-box-green[
+
+What would `.fitted + .resids` produce?
+
+]]]
+
+
+---
+
+# Your turn `r emo::ji("poop")`
+
+.medium[
+
+Harrison and Rubinfeld (1978) were among the first to analyze the well-known Boston housing data. One of their goals was to find a housing value equation using data on median home values from $n =506$ census tracts in the suburbs of Boston from the 1970 census; see `?pdp::boston` for a description of each variable. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors and interpret the coefficients. Be sure to construct a scatterplot matrix as well. What do you predict the median value to be for a census tract with `lstat` = 20 and `rm` = 6? **Hint:** to load the data, use the following code chunk:
+
+```{r boston-load, eval=FALSE}
+data(boston, package = "pdp")
+```
+
+]
+
+
+---
+
+# Solution `r emo::ji("sunglasses")`
+
+```{r boston-spm-01, fig.width=6, fig.asp=0.618, out.width="80%"}
+pairs(pdp::boston[, c("cmedv", "lstat", "rm")], pch = 19,
+      col = "black")
+```
+
+---
+
+
+# Solution `r emo::ji("sunglasses")`
+
+```{r boston-spm-02, fig.width=6, fig.asp=0.618, out.width="80%"}
+pairs(pdp::boston[, c("cmedv", "lstat", "rm")], pch = 19, 
+      col = adjustcolor("black", alpha.f = 0.2))  #<<
+```
+
+
+---
+
+# Solution `r emo::ji("sunglasses")`
+
+.large[
+
+```{r boston-mlr}
+coef(boston_fit <- lm(cmedv ~ lstat + rm, 
+                      data = pdp::boston))
+```
+
+]
+
+--
+
+.larger[
+
+* All else held constant, within a census tract, we expect median home value to .red.bold[decrease] by `r scales::dollar(abs(coef(lm(cmedv ~ lstat + rm, data = pdp::boston))[2]*1000))` for every 1% increase in `lstat`
+
+]
+
+---
+
+# Solution `r emo::ji("sunglasses")`
+
+.scrollable[
+
+.medium[
+
+```{r boston-predict}
+predict(
+  object = boston_fit, 
+  newdata = data.frame(lstat = 20, rm = 6),  #<<
+  se.fit = TRUE,  #<<
+  interval = "confidence"  #<<
+)
+```
+
+]
+
+]
+
+
+---
+
+# Interaction effects
+
+* Lecture 05
+
+    - Give small introduction here and introduce polynomial regression as a special case
+
+
+---
+
+# Polynomial regression
+
+TBD
