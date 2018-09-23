@@ -481,7 +481,7 @@ $\boldsymbol{X}$ has to be .content-box-red[full rank] in order for $\left(\bold
 
 .center[.medium[.content-box-yellow[
 
-This is one reason why we dumme encode categorical variables
+This is one reason why we dummy encode categorical variables
 
 ]]]
 
@@ -832,7 +832,7 @@ predict(
 
 .medium[.center[.content-box-green[
 
-Statsitcial inference in the MLR model is not that different from inference in SLR (only a slight change in the formulas)
+Statistical inference in the MLR model is not that different from inference in SLR (only a slight change in the formulas)
 
 ]]]
 
@@ -980,7 +980,7 @@ summary(delivery2_fit)
 
 .large[
 
-Fit an MLR to the Boston housing data using all of the available predictors. Is the regression significant? Use the general *F*-test to determine whether the model with only the predcitors `lstat` and `rm` is adequate.
+Fit an MLR to the Boston housing data using all of the available predictors. Is the regression significant? Use the general *F*-test to determine whether the model with only the predictors `lstat` and `rm` is adequate.
 
 ]
 
@@ -1045,7 +1045,7 @@ class: clear, center, middle
 
 .larger[
 
-The absolute value of the $t$-statistics is a reasonable indicator for the relative importance of each predcitor in a linear model
+The absolute value of the $t$-statistics is a reasonable indicator for the relative importance of each predictor in a linear model
 
 ]
 
@@ -1078,13 +1078,13 @@ vip::vip(fit1)
 
 .pull-left[
 
-* It is never a good idea to make predicitons outside the region covered by the training data
+* It is never a good idea to make predictions outside the region covered by the training data
 
     - This region is difficult to visualize whenever $k > 2$
     
     - The diagonal entries of $\boldsymbol{H}$, denoted $h_{ii}$, can be useful for detecting outlying cases
     
-    - $X_{new}$ is concidered "outlying" if $h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}$ lies outside of the range of the diagonal entries of $\boldsymbol{H}$
+    - $X_{new}$ is considered "outlying" if $h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}$ lies outside of the range of the diagonal entries of $\boldsymbol{H}$
     
     - See `?influence.measures`
 
@@ -1138,7 +1138,11 @@ h_new > max(abs(h))
 ---
 class: clear, center, middle
 
-.larger[Polynomial regression]
+.larger[
+
+[Polynomial regression](https://github.com/bgreenwell/uc-bana7052/blob/master/code/hardwood.R)
+
+]
 
 
 ---
@@ -1151,8 +1155,55 @@ class: clear, center, middle
 
 * A second order model in a single predictor $$Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \epsilon$$
 
-* A *k*-th order model in a signle predictor $$Y = \beta_0 + \sum_{j=1}^k\beta_j X^j + \epsilon$$ 
+* A *k*-th order model in a single predictor $$Y = \beta_0 + \sum_{j=1}^k\beta_j X^j + \epsilon$$ 
 
     - Typically $k \le 3$
 
 ]
+
+
+---
+
+# Some cautions `r emo::ji("warning")`
+
+.pull-left[
+
+* Keep the order of the model as low as possible
+
+    - This is especially true if you are using the model as a predictor (*bias-variance trade off*)
+
+    - *Transformations* are often preferred over higher-order models
+
+    - Use the simplest model possible to explain the data, but no simpler (*parsimony*)
+
+    - An $n - 1$ order model can perfectly fit a data set with $n$ observations (Why is this bad `r emo::ji("thinking")`)
+
+]
+
+.pull-right[
+
+* Two model-building strategies:
+
+    1. Fit the lowest order polynomial possible and build up (forward selection)
+    
+    2. Fit the highest order polynomial of interest, and remove terms one at a time (backward elimination)
+    
+    - These two procedures may not result in the same final model
+
+* Increasing the order can result in an ill-conditioned $\boldsymbol{X}^\top\boldsymbol{X}$ and *multicollinearity* `r set.seed(102); emo::ji("sick")`
+
+]
+
+
+---
+class: clear, center, middle
+
+.large[
+
+If time permits, we'll cover *multivariate adaptive regression splines* (MARS), an automatic multiple linear regression procedure
+
+]
+
+```{r hell-yeah, echo=FALSE, out.width="40%"}
+RBitmoji::plot_comic("8b06e67b-d4e9-4f11-a355-f1236df17079-v1", tag = "hell yeah")
+```

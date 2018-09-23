@@ -1013,44 +1013,56 @@ response for a given value of the predictor `\(X\)`
 
      - However, as with any estimate, we need a measure of reliability associated with `\(\widehat{Y}_0\)`.
 
-* The fitted regression line for the rocket example is given by `$$\widehat{Y} = 0.83914 - 0.0045 X$$` where `\(X\)` is the water depth and `\(Y\)` is the weight of the Diporeia
+* The fitted regression line for the 🚀 example is given by `$$\widehat{Y} = 2627.822 - 37.154 X$$` where `\(X\)` is the age in weeks of the rocket and `\(Y\)` is its psi strength
 
-* Suppose we want to predict the weight of a Diporeia at a depth of 40 meters. Then we would simply plug `\(X = 40\)` into the estimated regression equation to get a predicted value of `\(\widehat{y} = 0.83914 − 0.0045(40) = 0.65914\)` mg.
+* Suppose we want to predict the strength of a new rocket at an age of 15 weeks. Then we would simply plug `\(X = 15\)` into the estimated regression equation to get a predicted value of `\(\widehat{Y} = 2627.822 − 37.154(15) = 2070.512\)` (psi).
 
 
 ---
 
-# Estimation versus prediction
+# Estimation versus prediction 😕
 
-* Regression analysis is really a problem of estimating a conditional mean or expectation, denoted `$$E\left(Y|X\right) = \beta_0 + \beta_1 X$$`
+* Regression analysis is really a problem of estimating a conditional mean or expectation, for example, in SLR we have `$$E\left(Y|X\right) = \beta_0 + \beta_1 X$$`
 
 * Here, `\(E\left(Y|X\right)\)` corresponds to the average value of the response `\(Y\)` for all
 units in the population with a specific `\(X\)` value
 
-* Suppose we want to estimate the mean weight of the Diporeia found at a depth of 40 meters
+* Suppose we want to estimate the mean strength of .bold[all rockets] with an age of 15 weeks
 
-    - For the prediction problem, we want to predict the weight of a **single Diporeia**
+    - For the prediction problem, we want to predict the strength of a **single rocket** at 15 weeks
     
-    - For the estimation problem, we want to estimate the mean of a conditional population (i.e., the population of Diporeia found at a depth of 40 meters) 
+    - For the estimation problem, we want to estimate the mean of the population of all rockets that are 15 weeks old 
     
-    - In both cases, we use `\(\widehat{y} = 0.65914\)` as the predicted weight and as the estimate of the mean weight of Diporeia found at a depth of 40 meters
-    
-* In other words, the point estimate is the same for prediction and estimation, the difference lies in the estimated standard error of each!
+    - In both cases, we use `\(\widehat{Y} = 2070.512\)` as the predicted strength and as the estimate of the mean strength of of rockets that are 15 weeks old
+
+--
+
+.center[.small[.content-box-yellow[
+
+In other words, the point estimate is the same for prediction and estimation, the difference lies in the estimated standard error of each!
+
+]
 
 
 ---
 
 # Estimation versus prediction
 
-* There is more uncertainty associated with prediction a single new observation (**why?**)
+* There is more uncertainty associated with prediction a single new observation (**Why?** 🤔)
 
-* For a given value of `\(x\)`, it is customary to compute **confidence intervals for an estimated mean response** and a **prediction interval for a single new response value**
+* For a given value of `\(X\)`, it is customary to compute **confidence intervals for an estimated mean response** and a **prediction interval for a single new response value**
 
 * The idea of a prediction interval is to determine an interval that will contain a certain percentage of the population
 
     - Because a prediction interval is attempting to capture a single, random future response, as opposed to the mean of the conditional population, it will be wider than the associated confidence interval
-    
-* Formulas on board (and in text)
+
+--
+
+.center[.small[.content-box-yellow[
+
+**My opinion:** confidence intervals for the mean response are far more common and useful in practice
+
+]]]
 
 
 ---

@@ -848,7 +848,7 @@ In other words, the point estimate is the same for prediction and estimation, th
 
 .center[.small[.content-box-yellow[
 
-**My opinion:** confidence intervals for the mean response are far mor common and useful in preactice
+**My opinion:** confidence intervals for the mean response are far more common and useful in practice
 
 ]]]
 
