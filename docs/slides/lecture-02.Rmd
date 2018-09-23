@@ -195,6 +195,18 @@ $$
 
 # Properties of $\widehat{\beta}_1$
 
+.huge[
+
+What does the *bias* of a parameter estimate refer to? `r emo::ji("thinking")`
+
+]
+
+
+
+---
+
+# Properties of $\widehat{\beta}_1$
+
 .large[
 
 * Recall from the previous lecture that LS estimation provides the best linear unbiased estimates .blue[(BLUE)] of $\beta_0$ and $\beta_1$; namely, $\widehat{\beta}_0$ and $\widehat{\beta}_1$
