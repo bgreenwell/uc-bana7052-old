@@ -21,7 +21,7 @@ Lectures
 
 -   **Lecture 03:** Multiple Linear Regression;
     [Slides](https://bgreenwell.github.io/uc-bana7052/slides/lecture-03#1);
-    Homework\](<https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw3>);
+    [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw3);
     Quiz
 
 ``` r
