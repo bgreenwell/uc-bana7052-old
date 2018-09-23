@@ -306,7 +306,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">BANA 7052: Applied Linear Regression</h1>
-<h3 class="subtitle"><em>Homework #2</em></h3>
+<h3 class="subtitle"><em>Homework #3</em></h3>
 
 </div>
 
@@ -314,21 +314,24 @@ $(document).ready(function () {
 <div id="computational-part-type-and-submit-your-answers-in-word-only" class="section level3">
 <h3>Computational part (type and submit your answers in WORD only)</h3>
 <p><strong>Please make sure that you include a cover page.</strong></p>
-<p><strong>Question 1.</strong> Alumni Donation Data (Simple Linear Regression). Continue with the same data from <a href="https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw1">homework 1</a> and fit a simple linear regression on the data, where the alumni giving rate is the response variable <span class="math inline">\(Y\)</span> of interest and the percentage of classes with fewer than 20 students as the predictor variable <span class="math inline">\(X\)</span>.</p>
+<p><strong>Question 1.</strong> Alumni Donation Data (Multiple Linear Regression). Continue with the same data from <a href="https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw1">homework 1</a> and fit a multiple linear regression model to the data, where the alumni giving rate is the response variable (<span class="math inline">\(Y\)</span>), and the percentage of classes with fewer than 20 students (<span class="math inline">\(X_1\)</span>) and Student/Faculty Ratio (<span class="math inline">\(X_2\)</span>) as the predictors.</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>What is the estimated slope? Is it significant at the <span class="math inline">\(\alpha = 0.05\)</span> level? Clearly write out the null and alternative hypotheses, observed <em>t</em>-statistic, <em>p</em>-value, and interpret the estimate and test results.</p></li>
-<li><p>Repeat part a. above using the equivalent <em>F</em>-test.</p></li>
-<li><p>What is the value of <span class="math inline">\(R^2\)</span>? Please interpret.</p></li>
-<li><p>What is the correlation coefficient <span class="math inline">\(r\)</span> between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>? What is the relationship between <span class="math inline">\(r\)</span> and <span class="math inline">\(R^2\)</span>?</p></li>
-<li><p>Plot the training data (i.e., the data used to fit the model) with the fitted regression line and include a 95% (pointwise) confidence band for the mean responses. What do you observe about the confidence band at the point <span class="math inline">\(\left(\bar{X}, \bar{Y}\right)\)</span>? Is it narrower or wider compared to the rest?</p></li>
+<li><p>What is your final estimated model?</p></li>
+<li><p>What is the predicted alumni giving rate for an observation with <span class="math inline">\(\left(X_1 = 50, X_2 = 10\right)\)</span>?</p></li>
+<li><p>Test the statistical significance of the regression coefficient using <em>t</em>-tests; use <span class="math inline">\(\alpha = 0.05\)</span>. Obtain the <em>t</em>-statistics and <em>p</em>-values, interpret the results, make a conclusion (i.e. reject or not reject) and explain why. <strong>Note:</strong> please explain what the null hypothesis is.</p></li>
+<li><p>What is the F statistics? Is it significant? Clearly write out the null hypothesis, F-statistics, and p-value and interpret the test results.</p></li>
+<li><p>What is the value of the coefficient of determination? Please interpret.</p></li>
+<li><p>What is the correlation coefficient <span class="math inline">\(r_1\)</span> between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(Y\)</span> and the correlation coefficient <span class="math inline">\(r_2\)</span> between <span class="math inline">\(X_2\)</span> and <span class="math inline">\(Y\)</span>? Do you see any relationship between <span class="math inline">\(r_1\)</span>, <span class="math inline">\(r_2\)</span>, and <span class="math inline">\(R^2\)</span>?</p></li>
+<li><p>Use a partial <em>F</em>-test to compare the reduced model with predictor <span class="math inline">\(X_1\)</span> to the full model with predictors <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> together. According to your results, what do you conclude?</p></li>
+<li><p>Plot the estimated regression plane in a 3-d plot along with the data.</p></li>
 </ol>
 <ul>
 <li>Write a brief report (<strong>no more than two pages</strong>). Please clearly label your figures and tables. No raw outputs please.</li>
 </ul>
-<p><strong>Question 2.</strong> Simulation Study (Simple Linear Regression). Assume mean function <span class="math inline">\(E\left(Y|X\right) = 10 + 5 * X\)</span></p>
+<p><strong>Question 2.</strong> Simulation Study (Simple Linear Regression). Assume mean function <span class="math inline">\(E\left(Y|X\right) = 10 + 5 X_1 - 2X_2\)</span></p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Generate data with <span class="math inline">\(X \sim N\left(\mu = 2, \sigma^2 = 0.1^2\right)\)</span>, sample size <span class="math inline">\(n = 100\)</span>, and error term <span class="math inline">\(\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)\)</span>.</p></li>
-<li><p>Fit a simple linear regression to the simulated data from part a. What is the estimated prediction equation? Report the estimated coefficients and their standard errors. Are they significant? Clearly write out the null and alternative hypotheses, observed <em>t</em>-statistic(s), <em>p</em>-value(s), and interpret the estimates and test results. What is fitted model’s MSE?</p></li>
+<li><p>Generate data with <span class="math inline">\(X_1 \sim N\left(\mu = 2, \sigma^2 = 0.1^2\right)\)</span>, <span class="math inline">\(X_2 \sim N\left(\mu = 0, \sigma^2 = 0.4^2\right)\)</span>, sample size <span class="math inline">\(n = 100\)</span>, and error term <span class="math inline">\(\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)\)</span>.</p></li>
+<li><p>Fit a multiple linear regression to the simulated data from part a. What is the estimated prediction equation? Report the estimated coefficients and their standard errors. Are they significant? Clearly write out the null and alternative hypotheses, observed <em>t</em>-statistic(s), <em>p</em>-value(s), and interpret the estimates and test results. What is fitted model’s MSE?</p></li>
 <li><p>Repeat part b., but re-simulate the data and change the error term to <span class="math inline">\(\epsilon \sim N\left(0, \sigma = 1\right)\)</span></p></li>
 <li><p>Repeat parts a.-c. using <span class="math inline">\(n = 400\)</span>. What do you conclude? What is the effect to the model parameter estimates when error variance gets smaller? What is the effect when sample size gets bigger?</p></li>
 <li><p>What about the MSE from each model?</p></li>
@@ -340,11 +343,14 @@ $(document).ready(function () {
 </div>
 <div id="mathematics-part-feel-free-to-type-or-handwrite-your-solutions" class="section level3">
 <h3>Mathematics part (feel free to type or handwrite your solutions)</h3>
-<p><strong>Question 3.</strong> Bias and Variance of Parameter Estimates.</p>
+<p><strong>Question 3.</strong> Multiple Linear Regression in Matrix Notation</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>What are the bias and variance of the OLS estimates <span class="math inline">\(\widehat{\beta}_0\)</span> and <span class="math inline">\(\widehat{\beta}_1\)</span>?</p></li>
-<li><p>What do you expect when the sample size <span class="math inline">\(n\)</span> increases? What do you expect when the error variance <span class="math inline">\(\sigma^2\)</span> increases?</p></li>
-<li><p>What is the bias of the model’s MSE? What about the ML estimate of <span class="math inline">\(\sigma^2\)</span>? What is the difference between these two estimates of <span class="math inline">\(\sigma^2\)</span>? Why do we use MSE instead of the ML estimate?</p></li>
+<li><p>Write out the multiple linear regression model with normal errors in matrix form</p></li>
+<li><p>State the model assumptions from part a.</p></li>
+<li><p>Write out the model matrix <span class="math inline">\(X\)</span> for the model in part a)</p></li>
+<li><p>Write out the normal equations for the multiple linear regression model</p></li>
+<li><p>What is the least squares estimate of <span class="math inline">\(\boldsymbol{\beta}\)</span> in part a)?</p></li>
+<li><p>What does it mean for estimate in part e) to be unbiased?</p></li>
 </ol>
 </div>
 

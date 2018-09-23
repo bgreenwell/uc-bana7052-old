@@ -1,0 +1,68 @@
+---
+title: "BANA 7052: Applied Linear Regression"
+subtitle: "Homework #3"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Computational part (type and submit your answers in WORD only)
+
+**Please make sure that you include a cover page.**
+
+**Question 1.** Alumni Donation Data (Multiple Linear Regression). Continue with the same data from [homework 1](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw1) and fit a multiple linear regression model to the data, where the alumni giving rate is the response variable ($Y$), and the percentage of classes with fewer than 20 students ($X_1$) and Student/Faculty Ratio ($X_2$) as the predictors.
+
+a. What is your final estimated model?
+
+b. What is the predicted alumni giving rate for an observation with $\left(X_1 = 50, X_2 = 10\right)$?
+
+c. Test the statistical significance of the regression coefficient using *t*-tests; use $\alpha = 0.05$. Obtain the *t*-statistics and *p*-values, interpret the results, make a conclusion (i.e. reject or not reject) and explain why. **Note:** please explain what the null hypothesis is.
+
+d. What is the F statistics? Is it significant? Clearly write out the null hypothesis, F-statistics, and p-value and interpret the test results. 
+
+e. What is the value of the coefficient of determination? Please interpret.
+
+f. What is the correlation coefficient $r_1$ between $X_1$ and $Y$ and the correlation coefficient $r_2$ between $X_2$ and $Y$? Do you see any relationship between $r_1$, $r_2$, and $R^2$? 
+
+h. Use a partial *F*-test to compare the reduced model with predictor $X_1$ to the full model with predictors $X_1$ and $X_2$ together. According to your results, what do you conclude? 
+
+i. Plot the estimated regression plane in a 3-d plot along with the data.
+
+* Write a brief report (**no more than two pages**). Please clearly label your figures and tables. No raw outputs please.
+
+
+**Question 2.** Simulation Study (Simple Linear Regression). Assume mean function $E\left(Y|X\right) = 10 + 5 X_1 - 2X_2$
+
+a. Generate data with $X_1 \sim N\left(\mu = 2, \sigma^2 = 0.1^2\right)$, $X_2 \sim N\left(\mu = 0, \sigma^2 = 0.4^2\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)$. 
+
+b. Fit a multiple linear regression to the simulated data from part a. What is the estimated prediction equation? Report the estimated coefficients and their standard errors. Are they significant? Clearly write out the null and alternative hypotheses, observed *t*-statistic(s), *p*-value(s), and interpret the estimates and test results. What is fitted model's MSE?
+
+c. Repeat part b., but re-simulate the data and change the error term to $\epsilon \sim N\left(0, \sigma = 1\right)$
+
+d. Repeat parts a.-c. using $n = 400$. What do you conclude? What is the effect to the model parameter estimates when error variance gets smaller? What is the effect when sample size gets bigger?
+
+e. What about the MSE from each model?
+
+* Please explain your conclusions using the mathematics learned in this class.
+
+* Write a brief report (**no more than two pages**). A table may be helpful to summarize your results.
+
+
+### Mathematics part (feel free to type or handwrite your solutions)
+
+**Question 3.** Multiple Linear Regression in Matrix Notation 
+
+a. Write out the multiple linear regression model with normal errors in matrix form
+
+b. State the model assumptions from part a.
+
+c. Write out the model matrix $X$ for the model in part a)
+
+d. Write out the normal equations for the multiple linear regression model
+
+e. What is the least squares estimate of $\boldsymbol{\beta}$ in part a)?
+
+f. What does it mean for estimate in part e) to be unbiased?
+

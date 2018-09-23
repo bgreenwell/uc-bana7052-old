@@ -1,6 +1,6 @@
 ---
 title: "BANA 7052: Applied Linear Regression"
-subtitle: "Homework #1"
+subtitle: "Homework #2"
 output: html_document
 ---
 
@@ -29,7 +29,7 @@ e. Plot the training data (i.e., the data used to fit the model) with the fitted
 
 **Question 2.** Simulation Study (Simple Linear Regression). Assume mean function $E\left(Y|X\right) = 10 + 5 * X$
 
-a. Generate data with $X \sim N\left(\mu = 2, \sigma^2 = 0.12\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)$. 
+a. Generate data with $X \sim N\left(\mu = 2, \sigma^2 = 0.1^2\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)$. 
 
 b. Fit a simple linear regression to the simulated data from part a. What is the estimated prediction equation? Report the estimated coefficients and their standard errors. Are they significant? Clearly write out the null and alternative hypotheses, observed *t*-statistic(s), *p*-value(s), and interpret the estimates and test results. What is fitted model's MSE?
 
