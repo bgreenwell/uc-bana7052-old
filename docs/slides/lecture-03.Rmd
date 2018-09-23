@@ -45,7 +45,7 @@ background-image: url(images/linear-algebra.jpg)
 
 .larger[
 
-* Chapters: 5
+* Chapters: 5; 6
 
     - Sections: 5.9-5.11; 6.1-6.4
 
@@ -65,17 +65,21 @@ background-image: url(images/linear-algebra.jpg)
 
 .scrollable[
 
+.medium[
+
 ```{r prerequisites, eval=FALSE}
 # List of required (CRAN) packages
 pkgs <- c(
+  "GGally",     # for gggplot2 extensions
   "pdp",        # for (corrected) Boston housing data
   "plotly",     # for interactive plots
-  "tibble"      # for nicer data frames
+  "tibble",     # for nicer data frames
+  "vip"         # for variable importance plots
 )
 
 # Install required (CRAN) packages
 for (pkg in pkgs) {
-  if (!requireNamespace(pkg)) {  # check if already installed first
+  if (!requireNamespace(pkg)) {  # check if already installed
     install.packages(pkg)  # install it
   }
 }
@@ -84,6 +88,8 @@ for (pkg in pkgs) {
 install.packages(c("devtools", "magick"))
 devtools::install_github("bgreenwell/roundhouse")
 ```
+
+]
 
 ]
 
@@ -314,9 +320,15 @@ plot_ly(x = ~.x1, y = ~.x2, z = ~yhat,
 
 # The general MLR model
 
+.medium[
+
 The MLR model with normal errors $$Y_i = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{ij} + \epsilon_i, \quad i = 1, 2, \dots, n$$ where
 
+]
+
 --
+
+.medium[
 
 * $\beta_0, \beta_1, \dots, \beta_{p-1}$ are (unknown) regression coefficients (AKA weights or parameters)
 
@@ -325,6 +337,8 @@ The MLR model with normal errors $$Y_i = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{
 * $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$
 
 * $i = 1, 2, \dots, n$
+
+]
 
 
 ---
@@ -339,17 +353,26 @@ knitr::include_graphics("images/mlr-data.png")
 
 # Categorical predictors
 
+.medium[
+
 * Also called .magenta[*qualitative*] predictors or .magenta[*factors*]
 
     - [Free DataCamp exercise](https://campus.datacamp.com/courses/free-introduction-to-r/chapter-4-factors-4?ex=4)
 
+]
+
 --
+
+.medium[
 
 * [Wikipedia states that](https://en.wikipedia.org/wiki/Categorical_variable) "In statistics, a categorical variable is a variable that can take on one of a limited, and usually fixed number of possible values, assigning each individual or other unit of observation to a particular group or nominal category on the basis of some qualitative property."
 
-    - Examples include gender (i.e., male/female), .red[**zip code**], political affiliation, etc.
+    - Examples include gender (i.e., male/female), **zip code**, political affiliation, etc.
 
 * In regression, we typically use *indicator variables* that take on the values 0 and 1 to identify the classes of a categorical variable
+
+]
+
 
 ---
 class: clear, center, middle
@@ -390,13 +413,17 @@ class(dow2)
 
 .large[
 
-The regression coefficients can easily be obtained using the LS approach; that is, finding the values of the regression coefficients that minimize $$Q = \sum_{i = 1}^n\left(Y_i - \beta_0 - \beta_1 X_{i1} - \dots - \beta_{p-1} X_{i, p-1}\right)^2$$
+The regression coefficients can be estimated by minimizing $$Q = \sum_{i = 1}^n\left(Y_i - \beta_0 - \beta_1 X_{i1} - \dots - \beta_{p-1} X_{i, p-1}\right)^2$$
 
 ]
 
 --
 
-.center[.small[.content-box-yellow[Equating the partial derivatives to zero amounts to solving a system of *n* equations in *p* unknowns]]]
+.center[.medium[.content-box-yellow[
+
+Equating the partial derivatives to zero amounts to solving a system of $n$ equations in $p$ unknowns
+
+]]]
 
 
 ---
@@ -415,7 +442,7 @@ background-image: url(images/matrix-approach.png)
  
  * $\boldsymbol{\beta} = \left(\beta_0, \beta_1, \dots, \beta_{p-1}\right)^\top$ is an $p \times 1$ vector of coefficients
  
- * $\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)$ .red[`r emo::ji("left")` What does this mean? `r emo::ji("thinking")`] 
+ * $\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)$ .medium[.red[`r emo::ji("left")` What does this mean? `r emo::ji("thinking")`]]
  
  * $\boldsymbol{X} = \begin{bmatrix} X_{11} & X_{12} & \cdots & X_{1,p-1} \\ X_{21} & X_{22} & \cdots & X_{2,p-1} \\ \vdots & \vdots & & \vdots \\ X_{n1} & X_{n2} & \cdots & X_{n,p-1} \\ \end{bmatrix}$ is an $n \times p$ .purple[*model matrix* (or *design matrix*)]
 
@@ -446,10 +473,17 @@ class: clear, middle, center
 
 .larger[
 
-$\boldsymbol{X}$ has to be full rank in order for $\left(\boldsymbol{X}^\top\boldsymbol{X}\right)$ to be invertible!
+$\boldsymbol{X}$ has to be .content-box-red[full rank] in order for $\left(\boldsymbol{X}^\top\boldsymbol{X}\right)$ to be invertible!
 
 ]
 
+--
+
+.center[.medium[.content-box-yellow[
+
+This is one reason why we dumme encode categorical variables
+
+]]]
 
 ---
 
@@ -482,44 +516,67 @@ $\boldsymbol{H}$ is both *symmetric* (i.e., $\boldsymbol{H}^\top = \boldsymbol{H
 
 # Properties of $\widehat{\boldsymbol{\beta}}$
 
+.large[
+
 Assuming $\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsymbol{I}_n\right)$, what are some properties of the LS estimate of $\boldsymbol{\beta}$?
 
+]
+
 --
+
+.large[
 
 * Unbiased: $E\left(\widehat{\boldsymbol{\beta}}\right) = \boldsymbol{\beta}$
 
 * Variance-covariance matrix: $Var\left(\widehat{\boldsymbol{\beta}}\right) = \sigma^2 \left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}$
 
-* Sampling distirbution: $\widehat{\boldsymbol{\beta}} \sim N\left(\boldsymbol{\beta}, \sigma^2 \left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\right)$
+* Sampling distribution: $\widehat{\boldsymbol{\beta}} \sim N\left(\boldsymbol{\beta}, \sigma^2 \left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\right)$
+
+]
 
 
 ---
 
-# Delivery data example
+# Delivery data example `r emo::ji("truck")`
+
+.medium[
+
+A soft drink bottler is analyzing vending machine service routes in his distribution system. He is interested in predicting the amount of time required by the route driver to service the vending machines in an outlet. This service activity includes stocking the machine with beverage products and minor maintenance or housekeeping. The industrial engineer responsible for the study has suggested that the two most important variables affecting delivery time in minutes ($Y$) are the number of cases of product stocked ($X_1$) and the distance walked by the route driver in feet ($X_2$). The engineer has collected $n = 25$ observations on delivery time which are stored in the file `delivery.csv`. We'll use these data to fit the MLR model $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon$$.
+
+]
+
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+.medium[
 
 ```{r delivery-01}
 # Load the delivery data
 url <- "https://bgreenwell.github.io/uc-bana7052/data/delivery.csv"
 delivery <- read.csv(url)
-head(delivery, n = 5)  # print first 5 observations
+head(delivery, n = 10)  # print first 10 observations
 ```
+
+]
 
 
 ---
 
-# Delivery data example
+# Delivery data example `r emo::ji("truck")`
 
-```{r delivery-pairs, fig.width=5, fig.height=5, out.width="70%"}
+```{r delivery-pairs, fig.width=5, fig.height=5, out.width="50%"}
 # Scatterplot matrix
-pairs(delivery[, -1], pch = 19, col = adjustcolor("purple", alpha.f = 0.6))
+GGally::ggpairs(delivery[, -1])  
 ```
 
 
 ---
 
-# Delivery data example
+# Delivery data example `r emo::ji("truck")`
 
-```{r delivery-splom, fig.width=6, fig.height=6, out.width="70%"}
+```{r delivery-splom, fig.width=5, fig.height=5, out.width="50%"}
 # Another scatterplot matrix
 lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19, 
                col = 1, lty = "dotted", alpha = 0.6)
@@ -528,13 +585,14 @@ lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19,
 
 ---
 
-# Delivery data example
+# Delivery data example `r emo::ji("truck")`
 
-.large[
+.medium[
 
 ```{r delivery-lm-01}
 # Fit a linear model
-(fit <- lm(DeliveryTime ~ NumberofCases + Distance, data = delivery))
+(delivery_fit <- lm(DeliveryTime ~ NumberofCases + Distance, 
+                    data = delivery))
 ```
 
 ]
@@ -542,13 +600,13 @@ lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19,
 
 ---
 
-# Delivery data example
+# Delivery data example `r emo::ji("truck")`
 
-.large[
+.medium[
 
 ```{r delivery-lm-02}
 # Fit a linear model
-(fit <- lm(DeliveryTime ~ ., data = delivery))
+(delivery_fit <- lm(DeliveryTime ~ ., data = delivery))
 ```
 
 ]
@@ -562,14 +620,14 @@ lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19,
 
 ---
 
-# Delivery data example
+# Delivery data example `r emo::ji("truck")`
 
-.large[
+.medium[
 
 ```{r delivery-lm-03}
 # Fit a linear model
 delivery <- subset(delivery, select = -Index)  #<<
-(fit <- lm(DeliveryTime ~ ., data = delivery))
+(delivery_fit <- lm(DeliveryTime ~ ., data = delivery))
 ```
 
 ]
@@ -582,7 +640,7 @@ delivery <- subset(delivery, select = -Index)  #<<
 .medium[
 
 ```{r delivery-lm-04}
-round(coef(fit), digits = 3)  #<<
+round(coef(delivery_fit), digits = 3)  #<<
 ```
 
 ]
@@ -607,13 +665,14 @@ round(coef(fit), digits = 3)  #<<
 
 .medium[.center[.content-box-green[
 
-In general, $\widehat{\beta}_j$ is the estimated increase in the mean repsonse per one-unit increase in $X_j$ (all else held constant)
+In general, $\widehat{\beta}_j$ is the estimated increase in the mean response per one-unit increase in $X_j$ (all else held constant)
 
 ]]]
 
 
 ---
-# Delivery data example
+
+# Delivery data example `r emo::ji("truck")`
 
 .scrollable[
 
@@ -633,7 +692,8 @@ solve(t(X) %*% X) %*% t(X) %*% Y  #<<
 
 
 ---
-# Delivery data example
+
+# Delivery data example `r emo::ji("truck")`
 
 .scrollable[
 
@@ -654,7 +714,7 @@ solve(t(X) %*% X) %*% t(X) %*% Y  #<<
 
 ---
 
-# Delivery data example
+# Delivery data example `r emo::ji("truck")`
 
 .medium[
 
@@ -756,15 +816,343 @@ predict(
 
 ---
 
-# Interaction effects
+# Inferences in the MLR model
 
-* Lecture 05
+.large[
 
-    - Give small introduction here and introduce polynomial regression as a special case
+* Once we fit an MLR model, we might ask ourselves:
+
+    - What is the overall accuracy of the model?
+    
+    - Which predictor variables seem "important"?
+
+]
+
+--
+
+.medium[.center[.content-box-green[
+
+Statsitcial inference in the MLR model is not that different from inference in SLR (only a slight change in the formulas)
+
+]]]
+
+
+---
+
+# Significance of the regression
+
+.large[.center[.content-box-purple[
+
+Is there a (statistically significant) linear relationship between the response and **ANY** of the features?
+
+]]]
+
+--
+
+</br>
+
+.large[
+
+Hypotheses:
+
+$\quad H_0: \beta_1 = \beta_2 = \dots = \beta_k = 0$
+
+$\quad H_1: \beta_j \ne 0$ for at least one $j$
+
+]
+
+
+---
+
+# The general linear test
+
+.large[
+
+* Full model: $Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_k X_{i, p-1} + \epsilon_i$
+
+]
+
+--
+
+.large[
+
+* .magenta[Reduced] model: $$Y_i = \beta_0 + \epsilon_i$$
+
+* $F_{obs} = \frac{SSE(R) - SSE(F)}{df_R - df_F} \div \frac{SSE(F)}{df_F} = \frac{MSR}{MSE}$
+    
+* Reject $H_0$ whenever $F_{obs} > F_{1 - \alpha, df_R - df_F, df_F}$
+    
+    - Here $df_R - df_F = p - 1$ and $df_F = n - p$
+    
+]
+
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+```{r delivery-ftest-01}
+summary(delivery_fit)
+```
+
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+.medium[
+
+```{r delivery-ftest-02}
+# Manually construct F-test
+delivery_fit_reduced <- lm(DeliveryTime ~ 1, data = delivery)
+anova(delivery_fit_reduced, delivery_fit)
+```
+
+]
+
+
+---
+
+# Coefficient of determination
+
+.large[
+
+* R-squared
+
+    - $R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$
+
+    - $R^2$ will always increase as more terms are added to the model
+
+]
+
+--
+
+.large[
+
+* Adjusted R-squared
+
+    - $R_{adj}^2 = 1 - \frac{SSR / \left(n - p\right)}{SST / \left(n - 1\right)} = 1 - \left(\frac{n - 1}{n - p}\right)\frac{SSR}{SST}$
+    
+    - Penalizes $R^2$ for "too many" terms in the model
+
+]
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+```{r delivery-rsquared-01}
+summary(delivery_fit)
+```
+
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+.scrollable[
+
+.medium[
+
+```{r delivery-rsquared-02}
+# Simulate new columns at random
+set.seed(101)  # for reproducibility
+delivery2 <- delivery
+delivery2$X3 <- rnorm(nrow(delivery))
+delivery2$X4 <- rnorm(nrow(delivery))
+delivery2$X5 <- rnorm(nrow(delivery))
+
+# Update the fitted mode
+delivery2_fit <- lm(DeliveryTime ~ ., data = delivery2)
+
+# Print model summary
+summary(delivery2_fit)
+```
+
+]
+
+]
+
+
+---
+
+# Your turn `r emo::ji("cry")`
+
+.large[
+
+Fit an MLR to the Boston housing data using all of the available predictors. Is the regression significant? Use the general *F*-test to determine whether the model with only the predcitors `lstat` and `rm` is adequate.
+
+]
+
+
+---
+
+# Solution `r emo::ji("sunglasses")`
+
+```{r boston-ftest}
+# General F-test
+data(boston, package = "pdp")  # Load the data
+fit1 <- lm(cmedv ~ ., data = boston)  # full model
+fit2 <- lm(cmedv ~ . - lstat - rm, data = boston)  # reduced model
+anova(fit2, fit1)  # reduced model goes first  #<<
+```
+
+
+---
+
+# Inference for $\beta_j$
+
+.large[
+
+* Hypothesis test for a **single coefficient** (this is called a *marginal test*)
+
+    - $H_0: \beta_j = 0$
+    
+    - $H_1: \beta_j \ne 0$
+
+* Test statistic: $t_{obs} = \widehat{\beta}_j / \widehat{SE}\left(\widehat{\beta}_j\right)$
+
+* Reject $H_0$ whenever $\left|t_{obs}\right| > t_{1 - \alpha/2, n - p}$
+
+* $\left(1 - \alpha\right)100$% CI for $\beta_j$: $\widehat{\beta}_j \pm t_{1 - \alpha/2, n - p} \widehat{SE}\left(\widehat{\beta}_j\right)$
+
+]
+
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+.scrollable[
+
+.medium[
+
+```{r delivery-inference}
+# Print summary of the model
+summary(delivery_fit)  # SEs and marginal tests  #<<
+
+# Construct 95% CIs for the coefficients
+confint(delivery_fit, level = 0.95)
+```
+
+]
+
+]
+
+
+---
+class: clear, center, middle
+
+.larger[
+
+The absolute value of the $t$-statistics is a reasonable indicator for the relative importance of each predcitor in a linear model
+
+]
+
+
+---
+class: clear
+
+.pull-left[
+
+```{r boston-vip-01}
+# Variable importance scores
+vip::vi(fit1)
+```
+
+]
+
+.pull-right[
+
+```{r boston-vip-02}
+# Variable importance scores
+vip::vip(fit1)
+```
+
+]
+
+
+---
+
+# Hidden extrapolation in MLR
+
+.pull-left[
+
+* It is never a good idea to make predicitons outside the region covered by the training data
+
+    - This region is difficult to visualize whenever $k > 2$
+    
+    - The diagonal entries of $\boldsymbol{H}$, denoted $h_{ii}$, can be useful for detecting outlying cases
+    
+    - $X_{new}$ is concidered "outlying" if $h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}$ lies outside of the range of the diagonal entries of $\boldsymbol{H}$
+    
+    - See `?influence.measures`
+
+]
+
+.pull-right[
+
+.middle[
+
+```{r chull, echo=FALSE}
+hull <- delivery[chull(delivery$NumberofCases, delivery$Distance), ]
+ggplot(delivery, aes(x = NumberofCases, y = Distance)) +
+  geom_polygon(data = hull, fill = "red", alpha = 0.1) +
+  geom_point(size = 2) +
+  geom_point(data = delivery[c(9, 22), ], size = 2, col = "red2")
+```
+
+]
+
+]
+
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+.scrollable[
+
+.medium[
+
+```{r delivery-hatvalue, fig.width=6, fig.asp=0.618, out.width="70%"}
+# Which training observations might be considered as outliers?
+h <- hatvalues(delivery_fit)
+plot(h, type = "h", ylim = extendrange(h, f = 0.1))
+abline(h = 2 * 3 / nrow(delivery), lty = "dotted")  #<<
+text(h, labels = seq_len(nrow(delivery)), pos = 3, col = "red2")
+
+# Determine outlyingness of new observations
+X <- model.matrix(delivery_fit)
+head(X)
+X_new <- rbind(c(1, 10, 1000), c(1, 40, 3))
+(h_new <- diag(X_new %*% solve(t(X) %*% X) %*% t(X_new)))
+h_new > max(abs(h))
+```
+
+]
+
+]
+
+
+---
+class: clear, center, middle
+
+.larger[Polynomial regression]
 
 
 ---
 
 # Polynomial regression
 
-TBD
+.large[
+
+* Just a special case of the MLR model
+
+* A second order model in a single predictor $$Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \epsilon$$
+
+* A *k*-th order model in a signle predictor $$Y = \beta_0 + \sum_{j=1}^k\beta_j X^j + \epsilon$$ 
+
+    - Typically $k \le 3$
+
+]

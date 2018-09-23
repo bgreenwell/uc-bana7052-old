@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 # Inferences in Simple Linear Regression
 ## Lecture 02
 ### Brandon M. Greenwell
-### 16 September, 2018
+### 23 September, 2018
 
 ---
 
@@ -1000,6 +1000,64 @@ for an approximate 95% CI is incredibly robust!
 ```
 
 ]
+
+
+---
+
+# Estimation versus prediction
+
+* Regression models are often used to predict a new response or estimate a mean
+response for a given value of the predictor `\(X\)`
+
+* We have seen how to compute a predicted value `\(\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X\)`
+
+     - However, as with any estimate, we need a measure of reliability associated with `\(\widehat{Y}_0\)`.
+
+* The fitted regression line for the rocket example is given by `$$\widehat{Y} = 0.83914 - 0.0045 X$$` where `\(X\)` is the water depth and `\(Y\)` is the weight of the Diporeia
+
+* Suppose we want to predict the weight of a Diporeia at a depth of 40 meters. Then we would simply plug `\(X = 40\)` into the estimated regression equation to get a predicted value of `\(\widehat{y} = 0.83914 − 0.0045(40) = 0.65914\)` mg.
+
+
+---
+
+# Estimation versus prediction
+
+* Regression analysis is really a problem of estimating a conditional mean or expectation, denoted `$$E\left(Y|X\right) = \beta_0 + \beta_1 X$$`
+
+* Here, `\(E\left(Y|X\right)\)` corresponds to the average value of the response `\(Y\)` for all
+units in the population with a specific `\(X\)` value
+
+* Suppose we want to estimate the mean weight of the Diporeia found at a depth of 40 meters
+
+    - For the prediction problem, we want to predict the weight of a **single Diporeia**
+    
+    - For the estimation problem, we want to estimate the mean of a conditional population (i.e., the population of Diporeia found at a depth of 40 meters) 
+    
+    - In both cases, we use `\(\widehat{y} = 0.65914\)` as the predicted weight and as the estimate of the mean weight of Diporeia found at a depth of 40 meters
+    
+* In other words, the point estimate is the same for prediction and estimation, the difference lies in the estimated standard error of each!
+
+
+---
+
+# Estimation versus prediction
+
+* There is more uncertainty associated with prediction a single new observation (**why?**)
+
+* For a given value of `\(x\)`, it is customary to compute **confidence intervals for an estimated mean response** and a **prediction interval for a single new response value**
+
+* The idea of a prediction interval is to determine an interval that will contain a certain percentage of the population
+
+    - Because a prediction interval is attempting to capture a single, random future response, as opposed to the mean of the conditional population, it will be wider than the associated confidence interval
+    
+* Formulas on board (and in text)
+
+
+---
+
+# Anscombe's quartet
+
+TBD
 
 
 ---

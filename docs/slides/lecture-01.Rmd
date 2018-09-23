@@ -1034,6 +1034,19 @@ Use the `fitted()`, `residuals()`, and `sigma()` functions to obtain the fitted 
 
 
 ---
+
+# Rocket propellant example
+
+.large[
+
+A rocket motor is manufactured by bonding an igniter propellant and a sustainer propellant together inside a metal housing. The shear strength of the bond ($Y$)
+between the two types of propellant is an important quality characteristic. It is suspected that the shear strength is related to the age ($X$) of the batch of
+sustainer propellant. $n = 20$ observations on shear strength (measured in psi) and age (measured in weeks) are availble in the file `rocket.csv`. We'll use these data to fit the SLR model $$Y = \beta_0 + \beta_1 X + \epsilon$$
+
+]
+
+
+---
 class: center, middle
 
 .huge[
