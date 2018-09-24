@@ -195,3 +195,12 @@ $e_i = Y_i - \widehat{Y}_i$
     - PRESS Residuals 
 
 ]
+
+
+---
+class: clear, middle, center
+
+```{r quittin-time, echo=FALSE, out.width="60%"}
+my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
+RBitmoji::plot_comic(my_id, tag = "quittin")
+```
