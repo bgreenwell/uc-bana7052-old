@@ -24,6 +24,11 @@ Lectures
     [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw3);
     Quiz
 
+-   **Lecture 04:** Residual Diagnostics and Remedial Measures;
+    [Slides](https://bgreenwell.github.io/uc-bana7052/slides/lecture-04#1);
+    [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw4);
+    Quiz
+
 ``` r
 # Some useful R code
 roundhouse::kick(
