@@ -115,7 +115,7 @@ class: clear
 
 .large[
 
-* Independent observations
+* Independent observations: `\(Cov\left(\epsilon_i, \epsilon_j\right) = 0\)` `\(\left(i \ne j\right)\)`
 
 ]
 
@@ -123,7 +123,7 @@ class: clear
 
 .large[
 
-* Constant variance: `\(Var\left(\epsilon_i\right) = \sigma^2\)`
+* Constant variance: `\(Var\left(\epsilon_i\right) = Cov\left(\epsilon_i, \epsilon_i\right) = \sigma^2\)`
 
 ]
 
@@ -165,9 +165,39 @@ class: clear, center, middle
 
 `\(e_i = Y_i - \widehat{Y}_i\)` 
 
-.red[error = data - fit]
+.red[observed error = data - fit]
 
 ]
+
+
+---
+
+# What can they tell us?
+
+.medium[
+
+* Plot of residuals against predictor variable (checking non-linearity).
+
+* Plot of absolute or squared residuals against predictor variable (check non-constant variance)
+
+* Plot of residuals against fitted values (non-constant variance and non-linearity)
+
+* Plot of residuals against time or another sequence (non-independence)
+
+* Plot of residuals against omitted predictor variables (missing potentially important predictors)
+
+* Boxplot of residuals (outlying observations)
+
+* Normal probability plot of residuals (non-normality).
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/example-diagnostics-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
 
 ---
 
@@ -179,7 +209,7 @@ class: clear, center, middle
 
 * *Scaled residuals* help in identifying outliers or extreme values
 
-* COmmon types of residuals:
+* Common types of residuals:
 
     - Standardized Residuals
     
@@ -188,6 +218,91 @@ class: clear, center, middle
     - PRESS Residuals 
 
 ]
+
+
+---
+class: clear, middle, center
+
+.huge[Normal Q-Q plot can be used to asses the "normalityness" of a set of observations]
+
+
+---
+class: clear 
+
+
+```r
+set.seed(101)
+x &lt;- rnorm(100)
+qqnorm(x, main = "Normal data")
+qqline(x, lty = "dotted", col = "red2")
+```
+
+&lt;img src="lecture-04_files/figure-html/qqnorm-normal-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear 
+
+
+```r
+set.seed(101)
+x &lt;- rlnorm(100)
+qqnorm(x, main = "Skew right data")
+qqline(x, lty = "dotted", col = "red2")
+```
+
+&lt;img src="lecture-04_files/figure-html/qqnorm-skew-right-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear 
+
+
+```r
+set.seed(101)
+x &lt;- -rlnorm(100)
+qqnorm(x, main = "Skew left data")
+qqline(x, lty = "dotted", col = "red2")
+```
+
+&lt;img src="lecture-04_files/figure-html/qqnorm-skew-left-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear 
+
+
+```r
+set.seed(101)
+x &lt;- rt(100, df = 1)
+qqnorm(x, main = "Heavy-tailed data")
+qqline(x, lty = "dotted", col = "red2")
+```
+
+&lt;img src="lecture-04_files/figure-html/qqnorm-heavy tails-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle, center
+
+.larger[When should you use normality tests?]
+
+--
+
+&lt;img src="lecture-04_files/figure-html/never-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clean, middle, center, inverse
+
+.huge[Scaling the residuals]
+
+
+---
+
+# Standardized residuals
+
+
 
 
 ---

@@ -122,7 +122,7 @@ $$Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i\\
 
 .large[
 
-* Independent observations
+* Independent observations: $Cov\left(\epsilon_i, \epsilon_j\right) = 0$ $\left(i \ne j\right)$
 
 ]
 
@@ -130,7 +130,7 @@ $$Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i\\
 
 .large[
 
-* Constant variance: $Var\left(\epsilon_i\right) = \sigma^2$
+* Constant variance: $Var\left(\epsilon_i\right) = Cov\left(\epsilon_i, \epsilon_i\right) = \sigma^2$
 
 ]
 
@@ -172,9 +172,87 @@ class: clear, center, middle
 
 $e_i = Y_i - \widehat{Y}_i$ 
 
-.red[error = data - fit]
+.red[observed error = data - fit]
 
 ]
+
+
+---
+
+# What can they tell us?
+
+.medium[
+
+* Plot of residuals against predictor variable (checking non-linearity).
+
+* Plot of absolute or squared residuals against predictor variable (check non-constant variance)
+
+* Plot of residuals against fitted values (non-constant variance and non-linearity)
+
+* Plot of residuals against time or another sequence (non-independence)
+
+* Plot of residuals against omitted predictor variables (missing potentially important predictors)
+
+* Boxplot of residuals (outlying observations)
+
+* Normal probability plot of residuals (non-normality).
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r example-diagnostics, echo=FALSE, fig.width=6, fig.asp=1, out.width="70%"}
+# Simualated data sets
+set.seed(101)
+n <- 100
+df1 <- tibble::tibble(
+  x = runif(n, min = -5, max = 5),
+  y = 1 + 2*x^2 + rnorm(n, sd = 2)
+)
+df2 <- tibble::tibble(
+  x = runif(n, min = 1, max = 10),
+  y = 1 + 4*x + rnorm(n, sd = 2*x)
+)
+df2 <- rbind(df2, data.frame(x = 2, y = 50))
+df3 <- tibble::tibble(
+  x = runif(n, min = 1, max = 10),
+  y = 1 + 4*x + arima.sim(list(order = c(1,0,0), ar = 0.7), n = n, sd = 20)
+)
+df4 <- tibble::tibble(
+  x = runif(n, min = 1, max = 10),
+  y = 1 + 4*x + rlnorm(n, sd = 1)
+)
+
+# Fitted models
+fit1 <- lm(y ~ x, data = df1)
+fit2 <- lm(y ~ x, data = df2)
+fit3 <- lm(y ~ x, data = df3)
+fit4 <- lm(y ~ x, data = df4)
+
+# Residuals
+r1 <- residuals(fit1)
+r2 <- rstandard(fit2)
+r3 <- residuals(fit3)
+r4 <- residuals(fit4)
+
+# Residual plots
+par(mfrow = c(2, 2))
+plot(df1$x, r1, xlab = "X", ylab = "Residual", 
+     main = "Misspecified mean structure")
+abline(h = 0, lty = "dotted", col = "red2")
+plot(df2$x, r2, xlab = "X", ylab = "Residual",
+     main = "Non-constant variance")
+points(df2$x[101L], r2[101L], pch = 19, col = "red2")
+abline(h = 0, lty = "dotted", col = "red2")
+plot(residuals(fit3), xlab = "Index", ylab = "Residual", type = "b",
+     main = "Serial correlation")
+abline(h = 0, lty = "dotted", col = "red2")
+qqnorm(r4, main = "Non-normal errors")
+qqline(r4, lty = "dotted", col = "red2")
+```
+
 
 ---
 
@@ -186,7 +264,7 @@ $e_i = Y_i - \widehat{Y}_i$
 
 * *Scaled residuals* help in identifying outliers or extreme values
 
-* COmmon types of residuals:
+* Common types of residuals:
 
     - Standardized Residuals
     
@@ -195,6 +273,82 @@ $e_i = Y_i - \widehat{Y}_i$
     - PRESS Residuals 
 
 ]
+
+
+---
+class: clear, middle, center
+
+.huge[Normal Q-Q plot can be used to asses the "normalityness" of a set of observations]
+
+
+---
+class: clear 
+
+```{r qqnorm-normal, fig.width=6, fig.asp=0.618, out.width="70%"}
+set.seed(101)
+x <- rnorm(100)
+qqnorm(x, main = "Normal data")
+qqline(x, lty = "dotted", col = "red2")
+```
+
+
+---
+class: clear 
+
+```{r qqnorm-skew-right, fig.width=6, fig.asp=0.618, out.width="70%"}
+set.seed(101)
+x <- rlnorm(100)
+qqnorm(x, main = "Skew right data")
+qqline(x, lty = "dotted", col = "red2")
+```
+
+
+---
+class: clear 
+
+```{r qqnorm-skew-left, fig.width=6, fig.asp=0.618, out.width="70%"}
+set.seed(101)
+x <- -rlnorm(100)
+qqnorm(x, main = "Skew left data")
+qqline(x, lty = "dotted", col = "red2")
+```
+
+
+---
+class: clear 
+
+```{r qqnorm-heavy tails, fig.width=6, fig.asp=0.618, out.width="70%"}
+set.seed(101)
+x <- rt(100, df = 1)
+qqnorm(x, main = "Heavy-tailed data")
+qqline(x, lty = "dotted", col = "red2")
+```
+
+
+---
+class: clear, middle, center
+
+.larger[When should you use normality tests?]
+
+--
+
+```{r never, echo=FALSE, out.width="50%"}
+my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
+set.seed(4); RBitmoji::plot_comic(my_id, tag = "never")
+```
+
+
+---
+class: clean, middle, center, inverse
+
+.huge[Scaling the residuals]
+
+
+---
+
+# Standardized residuals
+
+
 
 
 ---
