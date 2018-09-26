@@ -17,19 +17,13 @@ class: center, middle, inverse, title-slide
 # Residual Diagnostics and Remedial Measures
 ## Lecture 04
 ### Brandon M. Greenwell
-### 24 September, 2018
+### 25 September, 2018
 
 ---
 
-class: clear 
-
-
-
-background-image: url(images/linear-algebra.jpg)
-
-
----
 class: clear, middle
+
+
 
 .large[
 
@@ -78,6 +72,12 @@ devtools::install_github("bgreenwell/roundhouse")
 ]
 
 ]
+
+
+---
+class: clear, center, middle
+
+&lt;img src="lecture-04_files/figure-html/lets-go-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -293,6 +293,39 @@ class: clear, middle, center
 
 
 ---
+class: clear, middle
+
+.large[
+
+
+```r
+# Shapiro-Wilk test and sample size
+set.seed(101)  # for reproducibility
+x &lt;- replicate(100, c(
+  shapiro.test(rt(10, df = 40))$p.value,
+  shapiro.test(rt(100, df = 40))$p.value,
+  shapiro.test(rt(1000, df = 40))$p.value,
+  shapiro.test(rt(5000, df = 40))$p.value
+))
+rownames(x) &lt;- c("n=10", "n=100", "n=1000", "n=5000")
+rowMeans(x &lt; 0.05)
+```
+
+```
+##   n=10  n=100 n=1000 n=5000 
+##   0.07   0.06   0.13   0.43
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/normal-vs-t-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
 class: clean, middle, center, inverse
 
 .huge[Scaling the residuals]
@@ -301,8 +334,6 @@ class: clean, middle, center, inverse
 ---
 
 # Standardized residuals
-
-
 
 
 ---

@@ -13,7 +13,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
-class: clear 
+class: clear, middle
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
@@ -31,13 +31,10 @@ knitr::opts_chunk$set(
   warning = FALSE,
   error = FALSE
 )
+
+# Bitmoji id
+my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 ```
-
-background-image: url(images/linear-algebra.jpg)
-
-
----
-class: clear, middle
 
 .large[
 
@@ -85,6 +82,14 @@ devtools::install_github("bgreenwell/roundhouse")
 ]
 
 ]
+
+
+---
+class: clear, center, middle
+
+```{r lets-go, echo=FALSE, out.width="70%"}
+set.seed(4); RBitmoji::plot_comic(my_id, tag = "lets go")
+```
 
 
 ---
@@ -339,6 +344,47 @@ set.seed(4); RBitmoji::plot_comic(my_id, tag = "never")
 
 
 ---
+class: clear, middle
+
+.large[
+
+```{r normality-tests}
+# Shapiro-Wilk test and sample size
+set.seed(101)  # for reproducibility
+x <- replicate(100, c(
+  shapiro.test(rt(10, df = 40))$p.value,
+  shapiro.test(rt(100, df = 40))$p.value,
+  shapiro.test(rt(1000, df = 40))$p.value,
+  shapiro.test(rt(5000, df = 40))$p.value
+))
+rownames(x) <- c("n=10", "n=100", "n=1000", "n=5000")
+rowMeans(x < 0.05)
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r normal-vs-t, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="90%"}
+x <- seq(from = -5, to = 5, length = 500)
+y1 <- dnorm(x)
+y2 <- dt(x, df = 40)
+df <- data.frame(
+  x = c(x, x), 
+  y = c(y1, y2),
+  Distribution = rep(c("Standard\nnormal", "t(df = 50)"), each = length(x))
+)
+set.seed(2); comic <- RBitmoji::get_comic(my_id, tag = "fuck")
+ggplot(df, aes(x = x, y = y, color = Distribution)) +
+  geom_line(size = 1, alpha = 0.5) +
+  labs(x = expression(x), y = "Density") +
+  annotation_raster(comic, xmin = -5, xmax = -1.25, ymin = 0.25, ymax = 0.4)
+```
+
+
+---
 class: clean, middle, center, inverse
 
 .huge[Scaling the residuals]
@@ -349,12 +395,9 @@ class: clean, middle, center, inverse
 # Standardized residuals
 
 
-
-
 ---
 class: clear, middle, center
 
 ```{r quittin-time, echo=FALSE, out.width="60%"}
-my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 RBitmoji::plot_comic(my_id, tag = "quittin")
 ```
