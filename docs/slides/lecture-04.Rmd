@@ -397,6 +397,137 @@ class: clean, middle, center, inverse
 
 # Standardized residuals
 
+.large[
+
+$$r_i^{stan} = \frac{r_i}{\sqrt{Var\left(r_i\right)}}$$
+]
+
+--
+
+.large[
+
+* The $r_i^{stan}$s have mean zero and variance .bold[approximately equal to one]
+
+]
+
+--
+
+.large[
+
+* Large positive/negative values of $r_i^{stan}$, say $\left|r_i^{stan}\right| > 3$ may indicate an outlier
+
+]
+
+--
+
+.large[.center[.content-box-blue[
+
+So what is $Var\left(r_i\right)$? `r emo::ji("thinking")`
+
+]]]
+
+
+---
+
+# Standardized residuals
+
+.large[
+
+* If $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$, then $\epsilon_i/\sigma \stackrel{iid}{\sim} N\left(0, 1\right)$, so it seems intuitive to define a standardized residual as $$r_i^{stan} =\frac{r_i}{\sqrt{MSE}} = \frac{r_i}{RMSE}$$
+
+]
+
+--
+
+.large[
+
+However, $Var\left(r_i\right) \ne MSE$!! 
+
+]
+
+```{r say-what, echo=FALSE, out.width="20%"}
+set.seed(4); RBitmoji::plot_comic(my_id, tag = "say what")
+```
+
+
+---
+
+# Standardized residuals
+
+.large[
+
+* Recall that $r_i = Y_i - \widehat{Y}_i$, or, in matrix form $$\boldsymbol{r} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}}$$
+
+]
+
+--
+
+.large[
+
+* It can be shown that the variance of $r_i$ is given by $\sigma^2\left(1 - h_{ii}\right)$, which can be estimated with $MSE\left(1 - h_{ii}\right)$
+
+]
+
+--
+
+.large[
+
+* .purple[Studentized residual]: $r_i^{stud} = \frac{r_i}{\sqrt{MSE\left(1 - h_{ii}\right)}}$
+
+    - Variance of residuals depende on $\boldsymbol{X}$
+
+    - More effective at detecting outlying response values
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r residual-patterms, echo=FALSE, out.width="70%"}
+knitr::include_graphics("images/residual-patterns.png")
+```
+
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+.medium[
+
+```{r delivery-01}
+# Load the delivery data
+url <- "https://bgreenwell.github.io/uc-bana7052/data/delivery.csv"
+delivery <- read.csv(url)
+head(delivery, n = 10)  # print first 10 observations
+```
+
+]
+
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+.medium[
+
+```{r delivery-02}
+# Fit an MLR model
+delivery_fit <- lm(DeliveryTime ~ NumberofCases + Distance, 
+                   data = delivery)
+
+# Fitted values
+yhat <- fitted(delivery_fit)
+# equivalent to `yhat <- predict(delivery_fit)`  #<<
+
+# Residuals
+r <- residuals(delivery_fit)
+rstan <- rstandard(delivery_fit)
+rstud <- rstudent(delivery_fit)
+press <- rstandard(delivery_fit, type = "predictive")
+```
+
+]
 
 ---
 class: clear, middle, center
