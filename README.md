@@ -35,6 +35,11 @@ Lectures
     [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw5);
     Quiz
 
+-   **Lecture 06:** Variable Selection and Model Building;
+    [Slides](https://bgreenwell.github.io/uc-bana7052/slides/lecture-06#1);
+    [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw6);
+    Quiz
+
 ``` r
 # Some useful R code
 roundhouse::kick(
