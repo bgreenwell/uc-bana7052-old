@@ -1,0 +1,74 @@
+---
+title: "BANA 7052: Applied Linear Regression"
+subtitle: "Homework #4"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Computational part (type and submit your answers in WORD only)
+
+**Please make sure that you include a cover page.**
+
+**Question 1.** Alumni Donation Data (Multiple Linear Regression). Continue with the same data from [homework 1](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw1) and fit a multiple linear regression model to the data, where the alumni giving rate is the response variable ($Y$), and the percentage of classes with fewer than 20 students ($X_1$) and Student/Faculty Ratio ($X_2$) as the predictors.
+
+Explore various residual diagnostics and possible remedies, including but not limited to:
+ 
+a. Does the assumption of error normality appear to be violated?
+
+b. Does the assumption of constant error variance appear to be violated?
+
+c. Does there appear to be any $Y$ or $X$ outliers or influential points? 
+
+d. Is there any concern about multicollinearity?
+
+e. What is the predicted alumni giving rate for an observation with ($X_1 = 40$, $X_2 = 5$)? Is there any concern about this prediction? Please explain.
+
+
+* Write a brief report (**no more than three pages**). Please clearly label your figures and tables. No raw outputs please.
+
+
+**Question 2.** Simulation Study (Simple Linear Regression). Assume mean function $E\left(Y|X\right) = 10 + 5 X - 2X^2$
+
+a. Generate data with $X_1 \sim N\left(\mu = 3, \sigma^2 = 0.5^2\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)$. 
+
+b. First, fit a simple linear regression using just $X$. What is the estimated model? Please conduct model estimation, inference, and residual diagnostics. What do you conclude? 
+
+c. Update the model from part b) by adding a quadratic term to the model. Conduct model estimation, inference, and residual diagnostics. What do you conclude? 
+
+d. What is the variance inflation factor (VIF) for the quadratic model? Any concern of multicollinearity?
+
+e. Now center the $X$ variable and compare the VIF from d). What did you find? Which VIF is smaller? Please briefly explain the reason. **Hint:** you can center the $X$ variable in R using the following pseudocode:
+
+```{r pseudo-code, eval=FALSE}
+# Method 1: center x in the model formula
+fit <- lm(y ~ x + I(x^2), data = my_data)
+fit_centered <- lm(y ~ I(x - mean(x)) + I((x - mean(x))^2), data = my_data)
+
+# Method 2: center x in the training data
+my_data$x_centered <- my_data$x - mean(my_data$x)
+fit_centered <- lm(y ~ x_centered + I(x_centered^2), data = my_data)
+
+# Try it both ways to make sure you get the same answer!
+```
+
+* Please explain your conclusions using the mathematics learned in this class.
+
+* Write a brief report (**no more than two pages**). A table may be helpful to summarize your results.
+
+
+### Mathematics part (feel free to type or handwrite your solutions)
+
+**Question 3.** 
+
+a. What are the assumptions of the (normal) linear regression model? What are the assumptions of the corresponding model random error term $\epsilon$? Please carefully state using bulleted points.
+
+b. Are the residuals from linear regression uncorrelated in general? Please explain. What is the distribution of residuals? 
+
+c. Why do we plot the residuals against the fitted values ($\widehat{Y}_i$) rather than against the observed response values ($Y_i$)? Please explain.
+
+d. What is multicollinearity? Computationally, what kind of problems can multicollinearity cause when using ordinary least squares? Please explain.
+
+
