@@ -1207,3 +1207,11 @@ If time permits, we'll cover *multivariate adaptive regression splines* (MARS), 
 ```{r hell-yeah, echo=FALSE, out.width="40%"}
 RBitmoji::plot_comic("8b06e67b-d4e9-4f11-a355-f1236df17079-v1", tag = "hell yeah")
 ```
+
+
+---
+class: clear, middle, center
+
+```{r quittin-time, echo=FALSE, out.width="60%"}
+RBitmoji::plot_comic(my_id, tag = "quittin")
+```

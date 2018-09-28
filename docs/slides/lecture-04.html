@@ -8,6 +8,14 @@
     <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
     <link href="libs/remark-css/hygge.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/plotly-binding/plotly.js"></script>
+    <script src="libs/typedarray/typedarray.min.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <link href="libs/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="libs/plotly-main/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
   <body>
@@ -17,7 +25,7 @@ class: center, middle, inverse, title-slide
 # Residual Diagnostics and Remedial Measures
 ## Lecture 04
 ### Brandon M. Greenwell
-### 26 September, 2018
+### 28 September, 2018
 
 ---
 
@@ -478,6 +486,316 @@ press &lt;- rstandard(delivery_fit, type = "predictive")
 ```
 
 ]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/leverage-influence-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle, center
+
+.huge[Such problems are easy to see when there is only a single predictor!]
+
+
+---
+
+# Remedial measures
+
+.center[
+
+What do we do once we've discovered inadequacies in the model?
+
+]
+
+--
+
+* Misspecified mean structure: transformations and nonparametric algorithms (e.g., MARS or a decision tree), etc.
+
+* Non-constant variance: transformations, *weighted least squares* (WLS), and *generalized linear models* (GLMs)
+
+* Outliers and influential values: robust and resistant regression procedures
+
+    - See `?MASS::rlm` and `?MASS::lqs` for some options
+
+* Autocorrelation: time series modeling
+
+
+---
+
+# Your turn 😱
+
+.larger[
+
+Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Check the adquecy of the fitted model using the methods discussed in this lecture. Does the model appear adequate? What assumptions appear to be violated? Are there outlying and/or influential values?
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/boston-spm-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+
+
+.scrollable[
+
+
+```r
+library(broom)
+library(dplyr)
+pdp::boston %&gt;%
+  lm(cmedv ~ lstat + rm, data = .) %&gt;%
+  broom::augment() %&gt;%
+  mutate(row_num = 1:n())
+```
+
+```
+## # A tibble: 506 x 11
+##    cmedv lstat    rm .fitted .se.fit .resid    .hat .sigma .cooksd
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+##  1  24    4.98  6.58   29.0    0.367 -4.96  0.00446   5.50 1.22e-3
+##  2  21.6  9.14  6.42   25.5    0.275 -3.89  0.00249   5.50 4.18e-4
+##  3  34.7  4.03  7.18   32.7    0.419  2.03  0.00579   5.51 2.67e-4
+##  4  33.4  2.94  7.00   32.4    0.417  0.976 0.00574   5.51 6.10e-5
+##  5  36.2  5.33  7.15   31.6    0.396  4.57  0.00519   5.50 1.21e-3
+##  6  28.7  5.21  6.43   28.1    0.378  0.622 0.00472   5.51 2.03e-5
+##  7  22.9 12.4   6.01   21.3    0.275  1.61  0.00251   5.51 7.17e-5
+##  8  22.1 19.2   6.17   17.8    0.353  4.34  0.00412   5.50 8.63e-4
+##  9  16.5 29.9   5.63    8.05   0.663  8.45  0.0145    5.49 1.18e-2
+## 10  18.9 17.1   6.00   18.2    0.288  0.668 0.00275   5.51 1.36e-5
+## # ... with 496 more rows, and 2 more variables: .std.resid &lt;dbl&gt;,
+## #   row_num &lt;int&gt;
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-01-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-02-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-03-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-04-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-05-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-06-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle, center
+
+.huge[Leverage values]
+
+
+---
+class: clear, middle, center
+
+.huge[Multicollinearity]
+
+
+---
+
+# Multicolinearity
+
+* In many (typically non-experimental) situations, the predictor variables tend to be correlated among themselves
+
+* When this correlation is "high", *multicollinearity* is said to exist
+
+* Multicollinearity does not, in general, prevent us from obtaining a good fit! It can, however, cause other issues:
+
+    - **Multicollinearity can** cause some of the estimated coefficients to become unstable (i.e., high standard errors)
+    
+    - **Multicollinearity can** complicate the interpretation of the estimated coefficients (e.g., predicting crop yield from the amount of rainfall and hours of sunshine)
+    
+* A simple way to assess whether or not multicollinearity is present is to use *variance inflation factors* (VIFs)
+
+    - VIFs are available from the R package [car](https://cran.r-project.org/package=car) as the next example illustrates
+
+
+---
+
+# Heart catheter example
+
+.large[
+
+A study was conducted and data collected to fit a regression model to predict the length of a catheter needed to pass from a major artery at the femoral region and moved into the heart for children (Weisberg 1980). For 12 children, the proper catheter length was determined by checking with a fluoroscope that the catheter tip had reached the right position. The goal is to determine a model where a child’s height and weight could be used to predict the proper catheter length.
+
+* [heart.R](https://github.com/bgreenwell/stt7140-env/blob/master/code/heart.R)
+
+]
+
+---
+
+# Heart catheter example
+
+.large[
+
+
+```r
+# Load required packages
+library(car)     # for vif() function
+library(plotly)  # for interactive plotting
+
+# Load the data
+url &lt;- paste0("https://raw.githubusercontent.com/bgreenwell/",
+              "stt7140-env/master/data/heart")
+heart &lt;- read.table(url, header = TRUE)
+```
+
+]
+
+
+---
+
+# Heart catheter example
+
+.scrollable[
+
+
+```r
+# Scatterplot matrix
+pairs(heart)
+```
+
+&lt;img src="lecture-04_files/figure-html/heart-02-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+# Heart catheter example
+
+.scrollable[
+
+
+```r
+# Correlation matrix
+(cor_mat &lt;- cor(heart))
+```
+
+```
+##           Height    Weight    Length
+## Height 1.0000000 0.9610936 0.8927873
+## Weight 0.9610936 1.0000000 0.9045102
+## Length 0.8927873 0.9045102 1.0000000
+```
+
+]
+
+
+---
+
+# Heart catheter example
+
+.scrollable[
+
+
+```r
+# Interactive 3-D scatterplot
+p &lt;- plot_ly(heart, x = ~Height, y = ~Weight, z = ~Length) %&gt;%
+  add_markers() %&gt;%
+  layout(scene = list(xaxis = list(title = "Weight (pounds)"),
+                      yaxis = list(title = "Height (inches)"),
+                      zaxis = list(title = "Length (cm)")))
+p
+```
+
+<div id="htmlwidget-200564dcb7561409c5fe" style="width:504px;height:504px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-200564dcb7561409c5fe">{"x":{"visdat":{"3f9403a97f2":["function () ","plotlyVisDat"]},"cur_data":"3f9403a97f2","attrs":{"3f9403a97f2":{"x":{},"y":{},"z":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Weight (pounds)"},"yaxis":{"title":"Height (inches)"},"zaxis":{"title":"Length (cm)"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[42.8,63.5,37.5,39.5,45.5,38.5,43,22.5,37,23.5,33,58],"y":[40,93.5,35.5,30,52,17,38.5,8.5,33,9.5,21,79],"z":[37,50,34,36,43,28,37,20,34,30,38,47],"type":"scatter3d","mode":"markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+
+]
+
+
+---
+
+# Heart catheter example
+
+.scrollable[
+
+
+```r
+# Fit a linear model
+fit &lt;- lm(Length ~ Height + Weight, data = heart)
+summary(fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = Length ~ Height + Weight, data = heart)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -6.7419 -1.2034 -0.2595  1.8892  6.6566 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)  20.3758     8.3859   2.430    0.038 *
+## Height        0.2107     0.3455   0.610    0.557  
+## Weight        0.1911     0.1583   1.207    0.258  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.778 on 9 degrees of freedom
+## Multiple R-squared:  0.8254,	Adjusted R-squared:  0.7865 
+## F-statistic: 21.27 on 2 and 9 DF,  p-value: 0.0003888
+```
+
+```r
+# Compute variance inflation factors
+*vif(fit)
+```
+
+```
+##   Height   Weight 
+## 13.10633 13.10633
+```
+
+]
+
+
+---
+
+# Heart catheter example
+
+* Both variance inflation factors are greater than 10 😱
+
+* What are some potential remedies?
+
 
 ---
 class: clear, middle, center

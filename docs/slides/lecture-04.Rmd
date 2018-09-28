@@ -529,6 +529,329 @@ press <- rstandard(delivery_fit, type = "predictive")
 
 ]
 
+
+---
+class: clear, middle, center
+
+```{r leverage-influence, echo=FALSE, fig.width=6, fig.asp=0.5, out.width="90%"}
+set.seed(101)
+df1 <- tibble::tibble(
+  x = c(1:5, 20),
+  y = 1 + 2*x + rnorm(length(x))
+)
+set.seed(101)
+df2 <- tibble::tibble(
+  x = c(1:5),
+  y = 1 + 2*x + rnorm(length(x))
+)
+df2 <- rbind(df2, data.frame(x = 20, y = 5))
+p1 <- ggplot(df1, aes(x, y)) +
+  geom_point(size = 2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Pure leverage point") +
+  theme_light()
+p2 <- ggplot(df2, aes(x, y)) +
+  geom_point(size = 2) +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Influential point") +
+  theme_light()
+gridExtra::grid.arrange(p1, p2, nrow = 1)
+```
+
+
+---
+class: clear, middle, center
+
+.huge[Such problems are easy to see when there is only a single predictor!]
+
+
+---
+
+# Remedial measures
+
+.center[
+
+What do we do once we've discovered inadequacies in the model?
+
+]
+
+--
+
+* Misspecified mean structure: transformations and nonparametric algorithms (e.g., MARS or a decision tree), etc.
+
+* Non-constant variance: transformations, *weighted least squares* (WLS), and *generalized linear models* (GLMs)
+
+* Outliers and influential values: robust and resistant regression procedures
+
+    - See `?MASS::rlm` and `?MASS::lqs` for some options
+
+* Autocorrelation: time series modeling
+
+
+---
+
+# Your turn `r emo::ji("scream")`
+
+.larger[
+
+Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Check the adquecy of the fitted model using the methods discussed in this lecture. Does the model appear adequate? What assumptions appear to be violated? Are there outlying and/or influential values?
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r boston-spm, echo=FALSE, out.width="60%"}
+GGally::ggpairs(pdp::boston[, c("cmedv", "lstat", "rm")])
+```
+
+
+---
+class: clear, middle
+
+```{r boston-broom-01, echo=FALSE}
+library(broom)
+library(dplyr)
+boston2 <- pdp::boston %>%
+  lm(cmedv ~ lstat + rm, data = .) %>%
+  augment() %>%
+  mutate(row_num = 1:n())
+```
+
+.scrollable[
+
+```{r boston-broom-02}
+library(broom)
+library(dplyr)
+pdp::boston %>%
+  lm(cmedv ~ lstat + rm, data = .) %>%
+  broom::augment() %>%
+  mutate(row_num = 1:n())
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r boston-residual-plots-01, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+ggplot(boston2, aes(x = .fitted, y = .std.resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red2") +
+  geom_hline(yintercept = c(-2, 2), linetype = "dotted") +
+  # geom_smooth(color = "forestgreen", alpha = 0.1, se = FALSE) +
+  xlab("Fitted value") +
+  ylab("Standardized residual") +
+  theme_light()
+```
+
+
+---
+class: clear, middle, center
+
+```{r boston-residual-plots-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+ggplot(boston2, aes(sample = .std.resid)) +
+  geom_qq(alpha = 0.3) +
+  geom_qq_line(linetype = "dashed", color = "red2") +
+  xlab("Theoretical quantile") +
+  ylab("Sample quantile") +
+  theme_light()
+```
+
+
+---
+class: clear, middle, center
+
+```{r boston-residual-plots-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+ggplot(boston2, aes(x = .fitted, y = .hat)) +
+  geom_point(alpha = 0.3) +
+  xlab("Fitted value") +
+  ylab("Leverage (i.e., hat value)") +
+  theme_light()
+```
+
+
+---
+class: clear, middle, center
+
+```{r boston-residual-plots-04, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+ggplot(boston2, aes(x = row_num, y = .std.resid)) +
+  geom_point(alpha = 0.3) +
+  geom_line() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red2") +
+  xlab("Index") +
+  ylab("Standardized residual") +
+  theme_light()
+```
+
+
+---
+class: clear, middle, center
+
+```{r boston-residual-plots-05, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+ggplot(boston2, aes(x = lstat, y = .std.resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red2") +
+  geom_hline(yintercept = c(-2, 2), linetype = "dotted") +
+  geom_smooth(color = "forestgreen", alpha = 0.1, se = FALSE) +
+  ylab("Standardized residual") +
+  theme_light()
+```
+
+
+---
+class: clear, middle, center
+
+```{r boston-residual-plots-06, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+ggplot(boston2, aes(x = rm, y = .std.resid)) +
+  geom_point(alpha = 0.3) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red2") +
+  geom_hline(yintercept = c(-2, 2), linetype = "dotted") +
+  geom_smooth(color = "forestgreen", alpha = 0.1, se = FALSE) +
+  ylab("Standardized residual") +
+  theme_light()
+```
+
+
+---
+class: clear, middle, center
+
+.huge[Leverage values]
+
+
+---
+class: clear, middle, center
+
+.huge[Multicollinearity]
+
+
+---
+
+# Multicolinearity
+
+* In many (typically non-experimental) situations, the predictor variables tend to be correlated among themselves
+
+* When this correlation is "high", *multicollinearity* is said to exist
+
+* Multicollinearity does not, in general, prevent us from obtaining a good fit! It can, however, cause other issues:
+
+    - **Multicollinearity can** cause some of the estimated coefficients to become unstable (i.e., high standard errors)
+    
+    - **Multicollinearity can** complicate the interpretation of the estimated coefficients (e.g., predicting crop yield from the amount of rainfall and hours of sunshine)
+    
+* A simple way to assess whether or not multicollinearity is present is to use *variance inflation factors* (VIFs)
+
+    - VIFs are available from the R package [car](https://cran.r-project.org/package=car) as the next example illustrates
+
+
+---
+
+# Heart catheter example
+
+.large[
+
+A study was conducted and data collected to fit a regression model to predict the length of a catheter needed to pass from a major artery at the femoral region and moved into the heart for children (Weisberg 1980). For 12 children, the proper catheter length was determined by checking with a fluoroscope that the catheter tip had reached the right position. The goal is to determine a model where a child’s height and weight could be used to predict the proper catheter length.
+
+* [heart.R](https://github.com/bgreenwell/stt7140-env/blob/master/code/heart.R)
+
+]
+
+---
+
+# Heart catheter example
+
+.large[
+
+```{r heart-01}
+# Load required packages
+library(car)     # for vif() function
+library(plotly)  # for interactive plotting
+
+# Load the data
+url <- paste0("https://raw.githubusercontent.com/bgreenwell/",
+              "stt7140-env/master/data/heart")
+heart <- read.table(url, header = TRUE)
+```
+
+]
+
+
+---
+
+# Heart catheter example
+
+.scrollable[
+
+```{r heart-02, out.width="70%"}
+# Scatterplot matrix
+pairs(heart)
+```
+
+]
+
+
+---
+
+# Heart catheter example
+
+.scrollable[
+
+```{r heart-03, out.width="70%"}
+# Correlation matrix
+(cor_mat <- cor(heart))
+```
+
+]
+
+
+---
+
+# Heart catheter example
+
+.scrollable[
+
+```{r}
+# Interactive 3-D scatterplot
+p <- plot_ly(heart, x = ~Height, y = ~Weight, z = ~Length) %>%
+  add_markers() %>%
+  layout(scene = list(xaxis = list(title = "Weight (pounds)"),
+                      yaxis = list(title = "Height (inches)"),
+                      zaxis = list(title = "Length (cm)")))
+p
+```
+
+]
+
+
+---
+
+# Heart catheter example
+
+.scrollable[
+
+```{r}
+# Fit a linear model
+fit <- lm(Length ~ Height + Weight, data = heart)
+summary(fit)
+
+# Compute variance inflation factors
+vif(fit)  #<<
+```
+
+]
+
+
+---
+
+# Heart catheter example
+
+* Both variance inflation factors are greater than 10 `r emo::ji("scream")`
+
+* What are some potential remedies?
+
+
 ---
 class: clear, middle, center
 
