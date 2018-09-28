@@ -29,6 +29,12 @@ Lectures
     [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw4);
     Quiz
 
+-   **Lecture 05:** Regression Models for Quantitative and Qualitative
+    Predictors/Transformations;
+    [Slides](https://bgreenwell.github.io/uc-bana7052/slides/lecture-05#1);
+    [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw5);
+    Quiz
+
 ``` r
 # Some useful R code
 roundhouse::kick(

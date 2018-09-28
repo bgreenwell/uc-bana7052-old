@@ -767,6 +767,69 @@ class: clear, middle, center
 
 
 ---
+
+# Hidden extrapolation in MLR
+
+.pull-left[
+
+* It is never a good idea to make predictions outside the region covered by the training data
+
+    - This region is difficult to visualize whenever $k > 2$
+    
+    - The diagonal entries of $\boldsymbol{H}$, denoted $h_{ii}$, can be useful for detecting outlying cases
+    
+    - $X_{new}$ is considered "outlying" if $h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}$ lies outside of the range of the diagonal entries of $\boldsymbol{H}$
+    
+    - See `?influence.measures`
+
+]
+
+.pull-right[
+
+.middle[
+
+```{r chull, echo=FALSE}
+hull <- delivery[chull(delivery$NumberofCases, delivery$Distance), ]
+ggplot(delivery, aes(x = NumberofCases, y = Distance)) +
+  geom_polygon(data = hull, fill = "red", alpha = 0.1) +
+  geom_point(size = 2) +
+  geom_point(data = delivery[c(9, 22), ], size = 2, col = "red2")
+```
+
+]
+
+]
+
+
+---
+
+# Delivery data example `r emo::ji("truck")`
+
+.scrollable[
+
+.medium[
+
+```{r delivery-hatvalue, fig.width=6, fig.asp=0.618, out.width="70%"}
+# Which training observations might be considered as outliers?
+h <- hatvalues(delivery_fit)
+plot(h, type = "h", ylim = extendrange(h, f = 0.1))
+abline(h = 2 * 3 / nrow(delivery), lty = "dotted")  #<<
+text(h, labels = seq_len(nrow(delivery)), pos = 3, col = "red2")
+
+# Determine outlyingness of new observations
+X <- model.matrix(delivery_fit)
+head(X)
+X_new <- rbind(c(1, 10, 1000), c(1, 40, 3))
+(h_new <- diag(X_new %*% solve(t(X) %*% X) %*% t(X_new)))
+h_new > max(abs(h))
+```
+
+]
+
+]
+
+
+---
 class: clear, middle, center
 
 .huge[Multicollinearity]
@@ -943,7 +1006,7 @@ What are some potential remedies?
 
 .larger[
 
-* [*Regularized regression*](http://uc-r.github.io/regularized_regression)
+* [*Regularized regression*](https://koalaverse.github.io/AnalyticsSummit18/03-Regularization.html#1)
 
     - Ridge regression
     
