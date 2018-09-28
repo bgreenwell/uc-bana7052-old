@@ -85,6 +85,10 @@ rstan <- rstandard(delivery_fit)
 rstud <- rstudent(delivery_fit)
 press <- rstandard(delivery_fit, type = "predictive")
 
+# PRESS statistic
+sum(press ^ 2)  # more honest estimate of SSE
+sum(r ^ 2)  # much lower; not honest enough?
+
 # Compute PRESS residuals using LOOCV
 press2 <- R2.loocv <- numeric(length = nrow(delivery))
 for (i in seq_len(nrow(delivery))) {

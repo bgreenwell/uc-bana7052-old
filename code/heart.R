@@ -12,12 +12,12 @@
 # install.packages("plotly")
 
 # Load required packages
-library(car)     # for vif() function
-library(plotly)  # for interactive plotting
+library(car)            # for vif() function
+library(plotly)         # for interactive plotting
+library(scatterplot3d)  # for 3-D scatterplots
 
 # Load the data
-url <- paste0("https://raw.githubusercontent.com/bgreenwell/",
-              "stt7140-env/master/data/heart")
+url <- "https://bgreenwell.github.io/uc-bana7052/data/heart"
 heart <- read.table(url, header = TRUE)
 
 # Scatterplot matrix
@@ -35,8 +35,25 @@ p <- plot_ly(heart, x = ~Height, y = ~Weight, z = ~Length) %>%
 p
 
 # Fit a linear model
-fit <- lm(Length ~ Height + Weight, data = heart)
-summary(fit)
+heart_fit <- lm(Length ~ Height + Weight, data = heart)
+summary(heart_fit)
+
+# 3-D scatterplot with fitted surface
+p <- scatterplot3d(
+  x = heart$Height,
+  y = heart$Weight,
+  z = heart$Length,
+  color = "red2",
+  pch = 19,
+  xlab = "Height",
+  ylab = "Weight",
+  zlab = "Length"
+)
+p$plane3d(heart_fit, lty.box = "solid", draw_polygon = TRUE)
 
 # Compute variance inflation factors
-vif(fit)
+vif(heart_fit)
+
+# Verify formula
+fit <- lm(Height ~ Weight, data = heart)
+1 / (1 - summary(fit)$r.squared)

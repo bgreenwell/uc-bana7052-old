@@ -482,6 +482,25 @@ set.seed(4); RBitmoji::plot_comic(my_id, tag = "say what")
 
 
 ---
+
+# PRESS residuals
+
+.medium[
+
+* Another refinement to make the residuals more effective at detecting outlying $Y$ observations is to measure the *i*-th residual $r_i = Y_i - \widehat{Y}_i$ when the fitted regression is based on all of the cases except the *i*-th one
+
+    - Also referred to as the *deleted residuals* or *jackknife residuals*
+
+    - A form of *leave one out cross-validation* (LOOCV)
+
+* It can be shown that these residuals can be obtained without refitting the model $n$ times using $$d_i = \frac{r_i}{1 - h_{ii}}$$
+
+* PRESS statistic: $PRESS = \sum_{i=1}^n d_i^2$ (.red[useful for mdoel selection])
+
+]
+
+
+---
 class: clear, middle, center
 
 ```{r residual-patterms, echo=FALSE, out.width="70%"}
@@ -754,9 +773,14 @@ class: clear, middle, center
 
 A study was conducted and data collected to fit a regression model to predict the length of a catheter needed to pass from a major artery at the femoral region and moved into the heart for children (Weisberg 1980). For 12 children, the proper catheter length was determined by checking with a fluoroscope that the catheter tip had reached the right position. The goal is to determine a model where a child’s height and weight could be used to predict the proper catheter length.
 
-* [heart.R](https://github.com/bgreenwell/stt7140-env/blob/master/code/heart.R)
-
 ]
+
+.huge[.center[
+
+[heart.R](https://github.com/bgreenwell/stt7140-env/blob/master/code/heart.R)
+
+]]
+
 
 ---
 
@@ -770,9 +794,9 @@ library(car)     # for vif() function
 library(plotly)  # for interactive plotting
 
 # Load the data
-url <- paste0("https://raw.githubusercontent.com/bgreenwell/",
-              "stt7140-env/master/data/heart")
+url <- "https://bgreenwell.github.io/uc-bana7052/data/heart"
 heart <- read.table(url, header = TRUE)
+head(heart)  
 ```
 
 ]
@@ -796,7 +820,7 @@ pairs(heart)
 
 # Heart catheter example
 
-.scrollable[
+.larger[
 
 ```{r heart-03, out.width="70%"}
 # Correlation matrix
@@ -812,7 +836,7 @@ pairs(heart)
 
 .scrollable[
 
-```{r}
+```{r heart-04}
 # Interactive 3-D scatterplot
 p <- plot_ly(heart, x = ~Height, y = ~Weight, z = ~Length) %>%
   add_markers() %>%
@@ -831,13 +855,10 @@ p
 
 .scrollable[
 
-```{r}
+```{r heart-05}
 # Fit a linear model
-fit <- lm(Length ~ Height + Weight, data = heart)
-summary(fit)
-
-# Compute variance inflation factors
-vif(fit)  #<<
+heart_fit <- lm(Length ~ Height + Weight, data = heart)
+summary(heart_fit)
 ```
 
 ]
@@ -847,9 +868,80 @@ vif(fit)  #<<
 
 # Heart catheter example
 
+.large[
+
+```{r heart-06}
+# Compute variance inflation factors
+vif(heart_fit)  #<<
+```
+
+]
+
+--
+
+.large[
+
 * Both variance inflation factors are greater than 10 `r emo::ji("scream")`
 
-* What are some potential remedies?
+]
+
+--
+
+.large[.center[.content-box-blue[
+
+What are some potential remedies?
+
+]]]
+
+
+---
+
+# Your turn `r emo::ji("scream")`
+
+.larger[
+
+Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Does multicollinearity appear to be an issue here? Explain.
+
+]
+
+
+---
+
+# Solution `r emo::ji("sunglasses")`
+
+.large[
+
+```{r boston-vif}
+# Compute VIF scores for the Boston housing example
+pdp::boston %>%
+  lm(cmedv ~ lstat + rm, data = .) %>%
+  vif()
+```
+
+]
+
+--
+
+.center[.huger[
+
+`r emo::ji("thumbsup")`
+
+]]
+
+
+---
+
+# Other useful diagnostics
+
+.huge[
+
+* DFFITS
+
+* DFBETAS
+
+* Cook's distance
+
+]
 
 
 ---
