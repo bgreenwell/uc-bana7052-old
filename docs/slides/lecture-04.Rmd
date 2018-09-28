@@ -474,7 +474,7 @@ set.seed(4); RBitmoji::plot_comic(my_id, tag = "say what")
 
 * .purple[Studentized residual]: $r_i^{stud} = \frac{r_i}{\sqrt{MSE\left(1 - h_{ii}\right)}}$
 
-    - Variance of residuals depende on $\boldsymbol{X}$
+    - Variance of residuals depends on $\boldsymbol{X}$
 
     - More effective at detecting outlying response values
 
@@ -495,7 +495,7 @@ set.seed(4); RBitmoji::plot_comic(my_id, tag = "say what")
 
 * It can be shown that these residuals can be obtained without refitting the model $n$ times using $$d_i = \frac{r_i}{1 - h_{ii}}$$
 
-* PRESS statistic: $PRESS = \sum_{i=1}^n d_i^2$ (.red[useful for mdoel selection])
+* PRESS statistic: $PRESS = \sum_{i=1}^n d_i^2$ (.red[useful for model selection])
 
 ]
 
@@ -540,10 +540,36 @@ yhat <- fitted(delivery_fit)
 # equivalent to `yhat <- predict(delivery_fit)`  #<<
 
 # Residuals
-r <- residuals(delivery_fit)
-rstan <- rstandard(delivery_fit)
-rstud <- rstudent(delivery_fit)
-press <- rstandard(delivery_fit, type = "predictive")
+r <- residuals(delivery_fit)  # ordinary  #<<
+rstan <- rstandard(delivery_fit)  # studentized  #<<
+rstud <- rstudent(delivery_fit)  # studentized deleted  #<<
+press <- rstandard(delivery_fit, type = "predictive")  # PRESS  #<<
+```
+
+]
+
+
+---
+
+class: clear, middle
+
+.scrollable[
+
+```{r rstandard}
+getAnywhere("rstandard.lm")
+```
+
+]
+
+
+---
+
+class: clear, middle
+
+.medium[
+
+```{r rstudent}
+getAnywhere("rstudent.lm")
 ```
 
 ]
@@ -596,7 +622,7 @@ What do we do once we've discovered inadequacies in the model?
 
 --
 
-* Misspecified mean structure: transformations and nonparametric algorithms (e.g., MARS or a decision tree), etc.
+* Misspecified mean structure: transformations and non-parametric algorithms (e.g., MARS or a decision tree), etc.
 
 * Non-constant variance: transformations, *weighted least squares* (WLS), and *generalized linear models* (GLMs)
 
@@ -613,7 +639,7 @@ What do we do once we've discovered inadequacies in the model?
 
 .larger[
 
-Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Check the adquecy of the fitted model using the methods discussed in this lecture. Does the model appear adequate? What assumptions appear to be violated? Are there outlying and/or influential values?
+Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Check the adequacy of the fitted model using the methods discussed in this lecture. Does the model appear adequate? What assumptions appear to be violated? Are there outlying and/or influential values?
 
 ]
 
