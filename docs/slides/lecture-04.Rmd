@@ -637,7 +637,7 @@ What do we do once we've discovered inadequacies in the model?
 
 # Your turn `r emo::ji("scream")`
 
-.larger[
+.large[
 
 Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Check the adequacy of the fitted model using the methods discussed in this lecture. Does the model appear adequate? What assumptions appear to be violated? Are there outlying and/or influential values?
 
@@ -801,7 +801,7 @@ A study was conducted and data collected to fit a regression model to predict th
 
 ]
 
-.huge[.center[
+.large[.center[
 
 [heart.R](https://github.com/bgreenwell/stt7140-env/blob/master/code/heart.R)
 
@@ -920,11 +920,43 @@ What are some potential remedies?
 ]]]
 
 
+
+---
+
+# Remedies for multicollinearity
+
+.larger[
+
+* Omit some of the predictors
+
+]
+
+--
+
+.larger[
+
+* Standardize the predictor column(s) (.blue[useful in polyomial models])
+
+]
+
+--
+
+.larger[
+
+* [*Regularized regression*](http://uc-r.github.io/regularized_regression)
+
+    - Ridge regression
+    
+    - The LASSO
+
+]
+
+
 ---
 
 # Your turn `r emo::ji("scream")`
 
-.larger[
+.large[
 
 Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Does multicollinearity appear to be an issue here? Explain.
 

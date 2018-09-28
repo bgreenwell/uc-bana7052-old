@@ -1,0 +1,95 @@
+---
+title: "Residual Diagnostics and Remedial Measures"
+subtitle: "Lecture 0f"
+author: "Brandon M. Greenwell"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  xaringan::moon_reader:
+    mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
+    css: [default, metropolis, metropolis-fonts, hygge, "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: clear, middle
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
+
+# Global chunk options
+knitr::opts_chunk$set(
+  cache = FALSE,
+  echo = TRUE,
+  dev = "svglite",
+  fig.align = "center",
+  # fig.width = 6,
+  # fig.asp = 0.618,
+  # out.width = "70%",
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE
+)
+
+# Bitmoji id
+my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
+
+# Load required packages
+library(ggplot2)
+```
+
+.large[
+
+* Required reading
+
+    - Chapters: 3, 6, and 10
+
+    - Sections: 3.1-3.4, 3.7, 6.8, and 10.1-10.4
+
+* Main topics:
+
+    - Diagnostic and Remedial Measures (3.1-3.4, 3.7, 6.8,)
+  
+    - Model Adequacy and Outlying Observations (10.1-10.4)
+
+]
+
+
+---
+
+# Prerquisites
+
+.scrollable[
+
+.medium[
+
+```{r prerequisites, eval=FALSE}
+# List of required (CRAN) packages
+pkgs <- c(
+  NULL
+)
+
+# Install required (CRAN) packages
+for (pkg in pkgs) {
+  if (!requireNamespace(pkg)) {  # check if already installed
+    install.packages(pkg)  # install it
+  }
+}
+
+# Install additional (optional) awesomeness
+install.packages(c("devtools", "magick"))
+devtools::install_github("bgreenwell/roundhouse")
+```
+
+]
+
+]
+
+
+---
+class: clear, center, middle
+
+```{r lets-go, echo=FALSE, out.width="70%"}
+set.seed(4); RBitmoji::plot_comic(my_id, tag = "lets go")
+```
