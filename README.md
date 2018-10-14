@@ -51,7 +51,7 @@ Lectures
 roundhouse::kick(
   paste("The square-root of -1 is not imaginary.",
         "It is just hiding from Chuck Norris."),
-  width = 40, type = 2, fps = 10
+  width = 40, type = 2, fps = 5
 )
 ```
 
