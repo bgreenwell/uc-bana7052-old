@@ -774,7 +774,10 @@ color: #d14;
         }
 
         if (binding.resize) {
-          var lastSize = {};
+          var lastSize = {
+            w: sizeObj ? sizeObj.getWidth() : el.offsetWidth,
+            h: sizeObj ? sizeObj.getHeight() : el.offsetHeight
+          };
           var resizeHandler = function(e) {
             var size = {
               w: sizeObj ? sizeObj.getWidth() : el.offsetWidth,
@@ -2494,7 +2497,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">BANA 7052: Applied Linear Regression</h1>
-<h3 class="subtitle"><em>Homework #1</em></h3>
+<h3 class="subtitle"><em>Homework #1 (30 points)</em></h3>
 
 </div>
 
@@ -2502,14 +2505,14 @@ $(document).ready(function () {
 <div id="computational-part-type-and-submit-your-answers-in-word-only" class="section level3">
 <h3>Computational part (type and submit your answers in WORD only)</h3>
 <p><strong>Please make sure that you include a cover page.</strong></p>
-<p><strong>Question 1.</strong> Alumni donations are an important source of revenue for colleges and universities. If administrators could determine the factors that influence increases in the percentage of alumni who make a donation, they might be able to implement policies that could lead to increased revenues. Research shows that students who are more satisfied with their contact with teachers are more likely to graduate. As a result, one might suspect that smaller class sizes and lower student-faculty ratios might lead to a higher percentage of satisfied graduates, which in turn might lead to increases in the percentage of alumni who make a donation. The attached data alumni.xls shows data for 48 national universities (America’s Best Colleges, Year 2000 Edition). The column labeled % of Classes Under 20 shows the percentage of classes offered with fewer than 20 students. The column labeled Student/Faculty Ratio is the number of students enrolled divided by the total number of faculty. Finally, the column labeled Alumni Giving Rate is the percentage of alumni that made a donation to the university.</p>
+<p><strong>Question 1. (10 points)</strong> Alumni donations are an important source of revenue for colleges and universities. If administrators could determine the factors that influence increases in the percentage of alumni who make a donation, they might be able to implement policies that could lead to increased revenues. Research shows that students who are more satisfied with their contact with teachers are more likely to graduate. As a result, one might suspect that smaller class sizes and lower student-faculty ratios might lead to a higher percentage of satisfied graduates, which in turn might lead to increases in the percentage of alumni who make a donation. The attached data alumni.xls shows data for 48 national universities (America’s Best Colleges, Year 2000 Edition). The column labeled % of Classes Under 20 shows the percentage of classes offered with fewer than 20 students. The column labeled Student/Faculty Ratio is the number of students enrolled divided by the total number of faculty. Finally, the column labeled Alumni Giving Rate is the percentage of alumni that made a donation to the university.</p>
 <p>Use R to analyze the given data and answer the following questions. Consider the alumni giving rate as the response variable <span class="math inline">\(Y\)</span> and the percentage of classes with fewer than 20 students as the predictor variable <span class="math inline">\(X\)</span>.</p>
 <p>The data are available for download at <a href="https://github.com/bgreenwell/uc-bana7052/tree/master/data" class="uri">https://github.com/bgreenwell/uc-bana7052/tree/master/data</a>. Alternatively, you can import the data into R directly from the web:</p>
-<pre class="r"><code>url &lt;- &quot;https://bgreenwell.github.io/uc-bana7052/data/rocket.csv&quot;
+<pre class="r"><code>url &lt;- &quot;https://bgreenwell.github.io/uc-bana7052/data/alumni.csv&quot;
 alumni &lt;- read.csv(url)
 DT::datatable(alumni)  # requires DT package</code></pre>
-<div id="htmlwidget-56f570da9d9bf10b201d" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-56f570da9d9bf10b201d">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],[2158.7,1678.15,2316,2061.3,2207.5,1708.3,1784.7,2575,2357.9,2256.7,2165.2,2399.55,1779.8,2336.75,1765.3,2053.5,2414.4,2200.5,2654.2,1753.7],[15.5,23.75,8,17,5.5,19,24,2.5,7.5,11,13,3.75,25,9.75,22,18,6,12.5,2,21.5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>strength<\/th>\n      <th>age<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a996c2ec8ca55720557d" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a996c2ec8ca55720557d">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48"],["Boston College","Brandeis University ","Brown University","California Institute of Technology","Carnegie Mellon University","Case Western Reserve Univ.","College of William and Mary","Columbia University","Cornell University","Dartmouth College","Duke University","Emory University","Georgetown University","Harvard University","John Hopkins University","Lehigh University","Massachusetts Inst. of Technology","New York University","Northwestern University","Pennsylvania State Univ.","Princeton University","Rice University","Stanford University","Tufts University ","Tulane University","U. of California-Berleley","U. of California-Davis","U. of California-Irvine","U. of California-Los Angeles","U. of California-San Diego","U. of California-Santa Barbara","U. of Chicago","U. of Florida","U. of Illinois-Urbana Champaign","U. of Michigan-Ann Arbor","U. of North Carolina-Chapel Hill","U. of Notre Dame","U. of Pennsylvania","U. of Rochester","U. of Southern California","U. of Texas-Austin","U. of Virginia","U. of Washington","U. of Wisconsin-Madison","Vanderbuilt University","Wake Forest University","Washington University-St. Louis","Yale University"],[39,68,60,65,67,52,45,69,72,61,68,65,54,73,64,55,65,63,66,32,68,62,69,67,56,58,32,42,41,48,45,65,31,29,51,40,53,65,63,53,39,44,37,37,68,59,73,77],[13,8,8,3,10,8,12,7,13,10,8,7,10,8,9,11,6,13,8,19,5,8,7,9,12,17,19,20,18,19,20,4,23,15,15,16,13,7,10,13,21,13,12,13,9,11,7,7],[25,33,40,46,28,31,27,31,35,53,45,37,29,46,27,40,44,13,30,21,67,40,34,29,17,18,7,9,13,8,12,36,19,23,13,26,49,41,23,22,13,28,12,13,31,38,33,50],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,1,1,1,1,0,0,0,0,1,1,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>school<\/th>\n      <th>percent_of_classes_under_20<\/th>\n      <th>student_faculty_ratio<\/th>\n      <th>alumni_giving_rate<\/th>\n      <th>private<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <ol style="list-style-type: lower-alpha">
 <li><p>Start with a basic exploratory data analysis. Show summary statistics of the response variable and predictor variable.</p></li>
 <li><p>What is the nature of the variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>? Are there outliers? What is the correlation coefficient? Draw a scatter plot. Any major comments about the data?</p></li>
@@ -2519,9 +2522,9 @@ DT::datatable(alumni)  # requires DT package</code></pre>
 <ul>
 <li>Write a brief report (<strong>no more than two pages</strong>). Please clearly label your figures and tables. No raw outputs please.</li>
 </ul>
-<p><strong>Question 2.</strong> A Simulation Study (Simple Linear Regression). Assuming the mean response is <span class="math inline">\(E\left(Y|X\right)= 10 + 5X\)</span>:</p>
+<p><strong>Question 2. (10 points)</strong> A Simulation Study (Simple Linear Regression). Assuming the mean response is <span class="math inline">\(E\left(Y|X\right)= 10 + 5X\)</span>:</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Generate data with <span class="math inline">\(X \sim N\left(\mu = 2, \sigma^2 = 0.12\right)\)</span>, sample size <span class="math inline">\(n = 100\)</span>, and error term <span class="math inline">\(\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)\)</span>. <strong>Hint:</strong> You can use <code>rnorm(n = 50, mean = 5, sd = 3)</code> to simulate <span class="math inline">\(n = 50\)</span> observations from a <span class="math inline">\(N\left(\mu = 5, \sigma = 3\right)\)</span> distribution, but note that <code>rnorm()</code> specifies the standard deviation (<span class="math inline">\(\sigma\)</span>), rather than the variance (<span class="math inline">\(\sigma^2\)</span>), of the normal distribution. It is also good practice to specify the random seed via <code>set.seed()</code> whenever generating random data (otherwise, your results will differ from run to run! 😱).</p></li>
+<li><p>Generate data with <span class="math inline">\(X \sim N\left(\mu = 2, \sigma^2 = 0.12\right)\)</span>, sample size <span class="math inline">\(n = 100\)</span>, and error term <span class="math inline">\(\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)\)</span>. <strong>Hint:</strong> You can use <code>rnorm(n = 50, mean = 5, sd = 3)</code> to simulate <span class="math inline">\(n = 50\)</span> observations from a <span class="math inline">\(N\left(\mu = 5, \sigma = 3\right)\)</span> distribution, but note that <code>rnorm()</code> specifies the standard deviation (<span class="math inline">\(\sigma\)</span>), rather than the variance (<span class="math inline">\(\sigma^2\)</span>), of the normal distribution. It is also good practice to specify the random seed via <code>set.seed()</code> whenever generating random data (otherwise, your results will differ from run to run! 😱). <strong>For this exercise, use</strong> <code>set.seed(7052)</code> <strong>to ensure reproducibility.</strong></p></li>
 <li><p>Show summary statistics of the response variable and predictor variable. Are there outliers? What is the correlation coefficient? Draw a scatter plot.</p></li>
 <li><p>Fit a simple linear regression. What is the estimated model? Report the estimated coefficients. What is the model mean squared error (MSE)?</p></li>
 <li><p>What are the sample mean of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>? Plot the fitted regression line and point. What do you find?</p></li>
@@ -2532,7 +2535,7 @@ DT::datatable(alumni)  # requires DT package</code></pre>
 </div>
 <div id="mathematics-part-feel-free-to-type-or-handwrite-your-solutions" class="section level3">
 <h3>Mathematics part (feel free to type or handwrite your solutions)</h3>
-<p><strong>Question 3.</strong> Ordinary least squares (OLS) is typically used to estimate the regression coefficients <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in the simple linear regression model by minimizing the residual sum of squares (RSS)</p>
+<p><strong>Question 3. (8 points)</strong> Ordinary least squares (OLS) is typically used to estimate the regression coefficients <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> in the simple linear regression model by minimizing the residual sum of squares (RSS)</p>
 <p><span class="math display">\[
 RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right)^2 = \sum_{i=1}^n e_i^2
 \]</span></p>
@@ -2541,7 +2544,7 @@ RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i
 <li><p>How about minimizing <span class="math inline">\(\sum_{i=1}^n\left|Y_i - \beta_0 - \beta_1 X_i\right| = \sum_{i=1}^n \left|e_i\right|\)</span>?</p></li>
 <li><p>Why is OLS a popular choice for estimating <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>?</p></li>
 </ol>
-<p><strong>Question 4.</strong> Establish the following relationships for the simple linear regression model. (Some are trivial to show.)</p>
+<p><strong>Question 4. (12 points)</strong> Establish the following relationships for the simple linear regression model. (Some are trivial to show.)</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>The fitted line passes through the point <span class="math inline">\(\left(\bar{X}, \bar{Y}\right)\)</span>.</p></li>
 <li><p><span class="math inline">\(\sum_{i=1}^n e_i = 0\)</span>.</p></li>
