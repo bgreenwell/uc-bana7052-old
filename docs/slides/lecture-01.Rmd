@@ -6,14 +6,24 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   xaringan::moon_reader:
     mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
-    css: [default, metropolis, metropolis-fonts, hygge, "custom.css"]
+    css: [default, custom.css, hygge]
     lib_dir: libs
     nature:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
 ---
-class: clear 
+layout: true
+  
+<div class="my-header"></div>
+
+<div class="my-footer"><span>UC BANA 7051    
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+Lecture 01</span></div> 
+
+
+---
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
@@ -90,19 +100,6 @@ devtools::install_github("bgreenwell/roundhouse")
 
 ---
 
-# Ready to begin?
-
---
-
-```{r roundhouse-01}
-roundhouse::kick("Chuck Norris knows the last digit of pi", 
-                 width = 50)
-```
-
-
----
-class: center, middle
-
 # Read the `r emo::ji("book")`!
 
 ```{r wonka, echo=FALSE, out.width="60%"}
@@ -114,9 +111,9 @@ knitr::include_graphics("images/read-the-book.jpg")
 
 # Statistical relationships
 
-.scrollable[
+.code100[
 
-```{r statistical-relationships-01, eval=FALSE}
+```{r statistical-relationships-01}
 # Load required packages
 library(ggplot2)
 library(tibble)
@@ -130,7 +127,18 @@ d <- tibble(
   y3 = 1 + x^3 + rnorm(length(x)),
   y4 = 1 + rnorm(length(x))
 )
+```
 
+]
+
+
+---
+
+# Statistical relationships
+
+.code100[
+
+```{r statistical-relationships-02, fig.keep="none"}
 # Construct scatterplots
 p1 <- ggplot(d, aes(x = x, y = y1)) +
   geom_point(alpha = 0.5) + 
@@ -156,38 +164,7 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Statistical relationships
 
-```{r statistical-relationships-02, echo=FALSE, out.width="100%"}
-# Load required packages
-library(ggplot2)
-library(tibble)
-
-# Set ggplot2 theme
-theme_set(theme_light())
-
-# Generate some random data
-set.seed(101)
-d <- tibble(
-  x = seq(from = -2, to = 2, length = 100),
-  y1 = 1 + x + rnorm(length(x)),
-  y2 = 1 + x^2 + rnorm(length(x)),
-  y3 = 1 + x^3 + rnorm(length(x)),
-  y4 = 1 + rnorm(length(x))
-)
-
-# Construct scatterplots
-p1 <- ggplot(d, aes(x = x, y = y1)) +
-  geom_point(alpha = 0.5) + 
-  labs(y = "y", title = "Linear")
-p2 <- ggplot(d, aes(x = x, y = y2)) +
-  geom_point(alpha = 0.5) + 
-  labs(y = "y", title = "Quadratic")
-p3 <- ggplot(d, aes(x = x, y = y3)) +
-  geom_point(alpha = 0.5) + 
-  labs(y = "y", title = "Cubic")
-p4 <- ggplot(d, aes(x = x, y = y4)) +
-  geom_point(alpha = 0.5) + 
-  labs(y = "y", title = "None")
-
+```{r statistical-relationships-04, echo=FALSE, out.width="100%"}
 # Display plots in a grid
 gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 ```
@@ -362,6 +339,7 @@ with(crystal, cor.test(time, weight, conf.level = 0.95))
 
 
 ---
+class: clear, middle, center
 
 # Correlation and causation?
 
@@ -369,7 +347,7 @@ with(crystal, cor.test(time, weight, conf.level = 0.95))
 
 
 ---
-class: center, middle
+class: clear, center, middle
 
 .huge[
 
@@ -453,9 +431,7 @@ knitr::include_graphics("images/george-box.jpg")
 
 # Historical origins of regression
 
-.scrollable[
-
-```{r galton-01}
+```{r galton-01, eval=FALSE}
 # Scatterplot of Galton's data on the heights of parents and their children
 ggplot(HistData::Galton, aes(x = parent, y = child)) +
   geom_point(alpha = 0.5) +
@@ -464,7 +440,26 @@ ggplot(HistData::Galton, aes(x = parent, y = child)) +
   labs(x = "Height of mid-parent (in)", y = "Height of child (in)")
 ```
 
-]
+
+---
+
+# Historical origins of regression
+
+```{r galton-02, echo=FALSE, out.width="100%"}
+# Scatterplot of Galton's data on the heights of parents and their children
+ggplot(HistData::Galton, aes(x = parent, y = child)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed") + 
+  labs(x = "Height of mid-parent (in)", y = "Height of child (in)")
+```
+
+
+
+---
+class: clear, middle, center
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1tSqSMOyNFE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 ---
