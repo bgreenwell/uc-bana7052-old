@@ -5,6 +5,7 @@ Slide content
 .remark-slide-content {
   background-color: #FAFAFA;
   border-top: 80px solid #E00122; /* #23373B */
+  border-bottom: 50px solid #191919;
   font-size: 20px;
   font-weight: 300;
   line-height: 1.5;
@@ -30,10 +31,10 @@ Slide content
 }
 
 .remark-slide-content > inverse {
-width: 112px;
-height: 47px;
-border-bottom: 1px solid black;
-position: absolute;
+  width: 112px;
+  height: 47px;
+  border-bottom: 1px solid black;
+  position: absolute;
 }
 
 /* Removes colored bar from top of the slide resulting in a clear slide */
@@ -62,9 +63,11 @@ position: absolute;
   font-size: 30px;
 }
 
+/*
 .remark-slide-content .remark-slide-number {
   display: none;
 }
+*/
 
 
 /*******************************************************************************
@@ -115,7 +118,7 @@ Slide number
 .remark-slide-number {
   font-size: 13pt;
   font-family: 'Fira Sans';
-  color: #272822;
+  color: #FAFAFA;
   opacity: 1;
 }
 .inverse .remark-slide-number {

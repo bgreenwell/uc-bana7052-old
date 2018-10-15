@@ -12,18 +12,9 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
----
-layout: true
-  
-<div class="my-header"></div>
-
-<div class="my-footer"><span>UC BANA 7051    
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-Lecture 01</span></div> 
-
 
 ---
+class: clear, center, middle
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
@@ -46,13 +37,15 @@ library(dplyr)
 library(patchwork)
 ```
 
-background-image: url(https://creativemaths.net/wp-content/uploads/2012/03/it_is_so_easy1-704x480.png)
+```{r curve-fitting, echo=FALSE, out.width="40%"}
+knitr::include_graphics("images/curve-fitting.png")
+```
 
 
 ---
 # Reading assignment
 
-.larger[
+.font200[
 
 * Chapter: 1
 
@@ -100,9 +93,9 @@ devtools::install_github("bgreenwell/roundhouse")
 
 ---
 
-# Read the `r emo::ji("book")`!
+# Read the book!
 
-```{r wonka, echo=FALSE, out.width="60%"}
+```{r wonka, echo=FALSE, out.width="50%"}
 knitr::include_graphics("images/read-the-book.jpg")
 ```
 
@@ -111,7 +104,7 @@ knitr::include_graphics("images/read-the-book.jpg")
 
 # Statistical relationships
 
-.code100[
+.code90[
 
 ```{r statistical-relationships-01}
 # Load required packages
@@ -136,21 +129,21 @@ d <- tibble(
 
 # Statistical relationships
 
-.code100[
+.code90[
 
 ```{r statistical-relationships-02, fig.keep="none"}
 # Construct scatterplots
 p1 <- ggplot(d, aes(x = x, y = y1)) +
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "Linear")
 p2 <- ggplot(d, aes(x = x, y = y2)) +
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "Quadratic")
 p3 <- ggplot(d, aes(x = x, y = y3)) +
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "Cubic")
 p4 <- ggplot(d, aes(x = x, y = y4)) +
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "None")
 
 # Display plots in a grid
@@ -164,7 +157,7 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Statistical relationships
 
-```{r statistical-relationships-04, echo=FALSE, out.width="100%"}
+```{r statistical-relationships-04, echo=FALSE, out.width="80%"}
 # Display plots in a grid
 gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 ```
@@ -174,7 +167,7 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Pearson correlation
 
-```{r pearson-correlation-01, echo=FALSE, fig.width=7, fig.height=5, out.width="100%"}
+```{r pearson-correlation-01, echo=FALSE, fig.width=7, fig.height=5, out.width="80%"}
 set.seed(101)
 d <- tibble(
   x = seq(from = -2, to = 2, length = 100),
@@ -184,13 +177,13 @@ d <- tibble(
   y4 = 1 + rnorm(length(x))
 )
 p1 <- ggplot(d, aes(x = x, y = y1)) +
-  geom_point(alpha = 0.75) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "Positive")
 p2 <- ggplot(d, aes(x = x, y = y2)) +
-  geom_point(alpha = 0.75) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "Negative")
 p3 <- ggplot(d, aes(x = x, y = y4)) +
-  geom_point(alpha = 0.75) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "None")
 p4 <- "images/correlation-coefficient.png" %>%
   png::readPNG() %>%
@@ -198,7 +191,7 @@ p4 <- "images/correlation-coefficient.png" %>%
 p4 <- ggplot() +
   annotation_custom(p4, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
 p1 + p2 + p3 - p4 + 
-  plot_layout(ncol = 1, widths = c(1, 1, 1), heights = c(1, 1.5))
+  plot_layout(ncol = 1, widths = c(1, 1, 1), heights = c(1, 2.5))
 # (p1 | p2 | p3) / p4
 ```
 
@@ -209,16 +202,18 @@ p1 + p2 + p3 - p4 +
 
 ```{r pearson-correlation-02, echo=FALSE}
 ggplot(d, aes(x = x, y = y3)) +
-  geom_point(alpha = 0.5) + 
-  labs(y = "y", title = "?")
+  geom_point(alpha = 0.9) + 
+  labs(y = "y")
 ```
+
+.center[What's the correlation here?]
 
 
 ---
 
 # Pearson correlation
 
-.large[
+.font150[
 
 * The (Pearson) correlation coefficient (also called the *Pearson product-moment correlation coefficient*) between two random variables $X$ and $Y$ is given by 
 
@@ -235,7 +230,7 @@ $$Cor\left(X, Y\right) = \rho = \frac{Cov\left(X,Y\right)}{\sigma_X\sigma_Y}$$
 
 # Pearson correlation
 
-.medium[
+.font125[
 
 * It is common to test the hypothesis $H_0: \rho = 0$ vs. $H_1: \rho \ne 0$
 
@@ -256,7 +251,7 @@ $$Cor\left(X, Y\right) = \rho = \frac{Cov\left(X,Y\right)}{\sigma_X\sigma_Y}$$
 
 # Interpretting correlation(s) `r emo::ji("warning")`
 
-.large[
+.font150[
 
 * Correlation between $X$ and $Y$ does not imply causation
 
@@ -279,7 +274,7 @@ knitr::include_graphics("images/reading.jpg")
 
 ---
 
-# Crystal weight example `r emo::ji("crystal")`
+# Crystal weight example
 
 The data frame `investr::crystal` gives the growing time and final weight of `r nrow(investr::crystal)` crystals:
 
@@ -296,7 +291,7 @@ tibble::as_tibble(crystal)  # print a summary of the data
 
 ---
 
-# Your turn `r emo::ji("scream")`
+# Your turn
 
 * Draw a scatter plot of `time` vs `weight` for the `crystal` data frame
 
@@ -313,7 +308,7 @@ tibble::as_tibble(crystal)  # print a summary of the data
 
 ---
 
-# Solution `r set.seed(205); emo::ji("raised")`
+# Solution
 
 .scrollable[
 
@@ -349,7 +344,7 @@ class: clear, middle, center
 ---
 class: clear, center, middle
 
-.huge[
+.font250[
 
 [Fun with spurious correlations](http://www.tylervigen.com/spurious-correlations)
 
@@ -368,7 +363,7 @@ knitr::include_graphics("images/correlation-causation-comic.png")
 
 # Which of the following statements are true?
 
-.medium[
+.font125[
 
 a. The Pearson correlation coefficient is a measure of linear association
 
@@ -385,7 +380,7 @@ d. A random cloud of data implies a negative correlation.
 
 # Which of the following statements are true?
 
-.medium[
+.font125[
 
 a. .green[The Pearson correlation coefficient is a measure of linear association]
 
@@ -414,7 +409,7 @@ knitr::include_graphics("images/george-box.jpg")
 
 # Historical origins of regression
 
-.large[
+.font150[
 
 * First developed by Sir Francis Galton in the later part of the 19-th century
 
@@ -505,7 +500,7 @@ gridExtra::grid.arrange(p1, p2, nrow = 1)
 
 .scrollable[
 
-.medium[
+.font125[
 
 * Simple linear regression (SLR)
 
@@ -544,7 +539,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # Simple linear regression (SLR)
 
-.medium[
+.font125[
 
 * Data: $\left\{\left(X_i, Y_i\right)\right\}_{i=1}^n$
 
@@ -552,7 +547,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 --
 
-.medium[ 
+.font125[ 
 
 * Model: $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$
 
@@ -573,7 +568,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # Assumptions about the errors
 
-.large[
+.font150[
 
 * For $i/j = 1, 2, \dots, n$
 
@@ -587,7 +582,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 --
 
-.large[
+.font150[
 
 * Assumptions 1)-3) can be summarized as $\epsilon_i \stackrel{iid}{\sim} \left(0, \sigma^2\right)$
 
@@ -598,7 +593,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # Properites of SLR
 
-.large[
+.font150[
 
 * Simple linear regression: $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$
 
@@ -617,7 +612,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # SLR with normal errors
 
-.large[
+.font150[
 
 * $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \quad i = 1, 2, \dots, n$
 
@@ -629,7 +624,7 @@ where $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$
 
 .red[**OR, EQUIVALENTLY**]
 
-.large[
+.font150[
 
 * $Y_i \stackrel{indep.}{\sim} N\left(\beta_0 + \beta_1 X_i, \sigma^2\right), \quad i = 1, 2, \dots, n$
 
@@ -642,7 +637,7 @@ where $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$
 
 # Interpretting the regression coefficients
 
-.medium[
+.font125[
 
 * $\beta_0$ is the *y*-intercept (or *bias term*)
 
@@ -702,7 +697,7 @@ $$RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left[Y_i = \left(\beta_0 + \be
 
 --
 
-.large[
+.font150[
 
 * Why minimize $\sum_{i=1}^n\epsilon_i^2$? Why not $\sum_{i=1}^n\left|\epsilon_i\right|$ or something more general like $\sum_{i=1}^n\psi\left(\epsilon_i\right)$?
 
@@ -717,14 +712,14 @@ $$RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left[Y_i = \left(\beta_0 + \be
 
 --
 
-.center[.huger[Calculus!]]
+.center[.font300[Calculus!]]
 
 
 ---
 
 # Test to see if you remember calculus
 
-.huge[
+.font250[
 
 If $y = \int_a^af\left(x\right)dx$ and I have $y$ followers on Twitter `r emo::ji("bird")`, how many followers do I have? 
 
@@ -744,7 +739,7 @@ knitr::include_graphics("images/homer-simpson-smart.jpg")
 
 # The LS estimates of $\beta_0$ and $\beta_1$
 
-.medium[
+.font125[
 
 * $\widehat{\beta}_1 = \frac{\sum_{i=1}^n\left(X_i - \bar{X}\right)\left(Y_i - \bar{Y}\right)}{\sum_{i=1}^n\left(X_i - \bar{X}\right)^2} = \frac{S_{xy}}{ S_{xx}} = \sum_{i=1}^n\left(\frac{X_i - \bar{X}}{\sum_{i=1}^n\left(X_i - \bar{X}\right)^2}\right)Y_i = \sum_{i=1}^n w_iY_i$
     
@@ -754,7 +749,7 @@ knitr::include_graphics("images/homer-simpson-smart.jpg")
 
 --
 
-.medium[
+.font125[
 
 * Don't bother trying to memorize these formulas! `r set.seed(101); emo::ji("laugh")`
 
@@ -762,7 +757,7 @@ knitr::include_graphics("images/homer-simpson-smart.jpg")
 
 --
 
-.medium[
+.font125[
 
 * Once we start adding more predictors (.red[i.e., real life]), we lose the ability to easily find closed-form formulas like these and rely on numerical approximations to find them (e.g., in R or SAS)
 
@@ -775,7 +770,7 @@ knitr::include_graphics("images/homer-simpson-smart.jpg")
 
 # Visualizing least squares
 
-.large[
+.font150[
 
 Take five minutes and try running the following code:
 
@@ -808,9 +803,9 @@ class: inverse, center, middle
 
 ---
 
-# Your turn `r emo::ji("scream")`
+# Your turn
 
-.larger[
+.font200[
 
 Fit an SLR model to the crystal weight data using `weight` as the response and `time` as the predictor and interpret the estimated coefficients.
 
@@ -819,7 +814,7 @@ Fit an SLR model to the crystal weight data using `weight` as the response and `
 
 ---
 
-# Solution `r set.seed(205); emo::ji("raised")`
+# Solution
 
 .scrollable[
 
@@ -889,7 +884,7 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 # Properties of the residuals
 
-.large[
+.font150[
 
 * $\sum_{i=1}^n e_i = 0$ (.purple[**Why?**] `r emo::ji("thinking")`)
 
@@ -898,9 +893,9 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 ---
 
-# Your turn `r emo::ji("scream")`
+# Your turn
 
-.large[
+.font150[
 
 1. Simulate $Y_i \stackrel{indep.}{\sim} N\left(\mu = 1 + 2X_i, \sigma^2 = 1.2^2\right)$ for $i = 1, 2, \dots, 30$, where $X_i \stackrel{iid}{\sim} U\left(0, 5\right)$
 
@@ -911,7 +906,7 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 ---
 
-# Solution `r set.seed(205); emo::ji("raised")`
+# Solution
 
 .scrollable[
 
@@ -935,7 +930,7 @@ lm(y ~ x)
 
 # Properties of the fitted SLR model
 
-.medium[
+.font125[
 
 * $\sum_{i=1}^n e_i = 0$
 
@@ -951,7 +946,7 @@ lm(y ~ x)
 
 --
 
-.large[How can we prove the above properties?]
+.font150[How can we prove the above properties?]
 
 
 ---
@@ -971,7 +966,7 @@ lm(y ~ x)
 
 # Maximum likelihood estimation
 
-.medium[
+.font125[
 
 Since $Y_i \stackrel{indep.}{\sim} N\left(\beta_0 + \beta_1X_i, \sigma^2\right)$, the *likelihood function* for the data (as a function of $\beta_0$, $\beta_1$, and $\sigma^2$) is given by 
 
@@ -1003,7 +998,7 @@ $$l = -\frac{n}{2}\log\left(2\pi\right) - \frac{n}{2}\log\left(\sigma^2\right) -
 
 # Maximum likelihood estimation
 
-.medium[
+.font125[
 
 * As it turns out, the ML estimates of $\beta_0$ and $\beta_1$ (under our current assumptions) are the same as the corresponding LS estimates
 
@@ -1021,7 +1016,7 @@ $$\widehat{\sigma}^2 = \frac{1}{n-2}\sum{i=1}^n e_i^2 = MSE$$
 
 # Your turn `r emo::ji("scream")`
 
-.large[
+.font150[
 
 Use the `fitted()`, `residuals()`, and `sigma()` functions to obtain the fitted values, residuals, and RMSE, respectively, for the crystal weight example. Confirm the formula for the residuals.
 
@@ -1032,7 +1027,7 @@ Use the `fitted()`, `residuals()`, and `sigma()` functions to obtain the fitted 
 
 # Rocket propellant example
 
-.large[
+.font150[
 
 A rocket motor is manufactured by bonding an igniter propellant and a sustainer propellant together inside a metal housing. The shear strength of the bond ($Y$)
 between the two types of propellant is an important quality characteristic. It is suspected that the shear strength is related to the age ($X$) of the batch of
@@ -1044,7 +1039,7 @@ sustainer propellant. $n = 20$ observations on shear strength (measured in psi) 
 ---
 class: center, middle
 
-.huge[
+.font250[
 
 [Rocket propellant example](https://github.com/bgreenwell/uc-bana7052/blob/master/code/rocket.R)
 

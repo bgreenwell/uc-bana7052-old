@@ -15,31 +15,21 @@ class: center, middle, inverse, title-slide
 # Association and Simple Linear Regression
 ## Lecture 01
 ### Brandon M. Greenwell
-### 14 October, 2018
+### 15 October, 2018
 
 ---
 
-layout: true
-  
-&lt;div class="my-header"&gt;&lt;/div&gt;
-
-&lt;div class="my-footer"&gt;&lt;span&gt;UC BANA 7051    
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;
-Lecture 01&lt;/span&gt;&lt;/div&gt; 
-
-
----
+class: clear, center, middle
 
 
 
-background-image: url(https://creativemaths.net/wp-content/uploads/2012/03/it_is_so_easy1-704x480.png)
+&lt;img src="images/curve-fitting.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 # Reading assignment
 
-.larger[
+.font200[
 
 * Chapter: 1
 
@@ -88,16 +78,16 @@ devtools::install_github("bgreenwell/roundhouse")
 
 ---
 
-# Read the 📖!
+# Read the book!
 
-&lt;img src="images/read-the-book.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="images/read-the-book.jpg" width="50%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Statistical relationships
 
-.code100[
+.code90[
 
 
 ```r
@@ -123,22 +113,22 @@ d &lt;- tibble(
 
 # Statistical relationships
 
-.code100[
+.code90[
 
 
 ```r
 # Construct scatterplots
 p1 &lt;- ggplot(d, aes(x = x, y = y1)) +
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "Linear")
 p2 &lt;- ggplot(d, aes(x = x, y = y2)) +
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "Quadratic")
 p3 &lt;- ggplot(d, aes(x = x, y = y3)) +
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "Cubic")
 p4 &lt;- ggplot(d, aes(x = x, y = y4)) +
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.9) + 
   labs(y = "y", title = "None")
 
 # Display plots in a grid
@@ -152,14 +142,14 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Statistical relationships
 
-&lt;img src="lecture-01_files/figure-html/statistical-relationships-04-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/statistical-relationships-04-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Pearson correlation
 
-&lt;img src="lecture-01_files/figure-html/pearson-correlation-01-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/pearson-correlation-01-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -168,12 +158,14 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 &lt;img src="lecture-01_files/figure-html/pearson-correlation-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
+.center[What's the correlation here?]
+
 
 ---
 
 # Pearson correlation
 
-.large[
+.font150[
 
 * The (Pearson) correlation coefficient (also called the *Pearson product-moment correlation coefficient*) between two random variables `\(X\)` and `\(Y\)` is given by 
 
@@ -190,7 +182,7 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Pearson correlation
 
-.medium[
+.font125[
 
 * It is common to test the hypothesis `\(H_0: \rho = 0\)` vs. `\(H_1: \rho \ne 0\)`
 
@@ -211,7 +203,7 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Interpretting correlation(s) ⚠️
 
-.large[
+.font150[
 
 * Correlation between `\(X\)` and `\(Y\)` does not imply causation
 
@@ -232,7 +224,7 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 ---
 
-# Crystal weight example 🔮
+# Crystal weight example
 
 The data frame `investr::crystal` gives the growing time and final weight of 14 crystals:
 
@@ -270,7 +262,7 @@ tibble::as_tibble(crystal)  # print a summary of the data
 
 ---
 
-# Your turn 😱
+# Your turn
 
 * Draw a scatter plot of `time` vs `weight` for the `crystal` data frame
 
@@ -287,7 +279,7 @@ tibble::as_tibble(crystal)  # print a summary of the data
 
 ---
 
-# Solution 🙌
+# Solution
 
 .scrollable[
 
@@ -368,7 +360,7 @@ class: clear, middle, center
 ---
 class: clear, center, middle
 
-.huge[
+.font250[
 
 [Fun with spurious correlations](http://www.tylervigen.com/spurious-correlations)
 
@@ -388,7 +380,7 @@ class: center, middle
 
 # Which of the following statements are true?
 
-.medium[
+.font125[
 
 a. The Pearson correlation coefficient is a measure of linear association
 
@@ -405,7 +397,7 @@ d. A random cloud of data implies a negative correlation.
 
 # Which of the following statements are true?
 
-.medium[
+.font125[
 
 a. .green[The Pearson correlation coefficient is a measure of linear association]
 
@@ -432,7 +424,7 @@ class: clear, middle
 
 # Historical origins of regression
 
-.large[
+.font150[
 
 * First developed by Sir Francis Galton in the later part of the 19-th century
 
@@ -508,7 +500,7 @@ ggplot(data.frame(x = 1:10, y = 15*1:10), aes(x, y)) +
 
 .scrollable[
 
-.medium[
+.font125[
 
 * Simple linear regression (SLR)
 
@@ -550,7 +542,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # Simple linear regression (SLR)
 
-.medium[
+.font125[
 
 * Data: `\(\left\{\left(X_i, Y_i\right)\right\}_{i=1}^n\)`
 
@@ -558,7 +550,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 --
 
-.medium[ 
+.font125[ 
 
 * Model: `\(Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)`
 
@@ -579,7 +571,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # Assumptions about the errors
 
-.large[
+.font150[
 
 * For `\(i/j = 1, 2, \dots, n\)`
 
@@ -593,7 +585,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 --
 
-.large[
+.font150[
 
 * Assumptions 1)-3) can be summarized as `\(\epsilon_i \stackrel{iid}{\sim} \left(0, \sigma^2\right)\)`
 
@@ -604,7 +596,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # Properites of SLR
 
-.large[
+.font150[
 
 * Simple linear regression: `\(Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)`
 
@@ -623,7 +615,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # SLR with normal errors
 
-.large[
+.font150[
 
 * `\(Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \quad i = 1, 2, \dots, n\)`
 
@@ -635,7 +627,7 @@ where `\(\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)\)`
 
 .red[**OR, EQUIVALENTLY**]
 
-.large[
+.font150[
 
 * `\(Y_i \stackrel{indep.}{\sim} N\left(\beta_0 + \beta_1 X_i, \sigma^2\right), \quad i = 1, 2, \dots, n\)`
 
@@ -648,7 +640,7 @@ where `\(\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)\)`
 
 # Interpretting the regression coefficients
 
-.medium[
+.font125[
 
 * `\(\beta_0\)` is the *y*-intercept (or *bias term*)
 
@@ -699,7 +691,7 @@ class: center, middle
 
 --
 
-.large[
+.font150[
 
 * Why minimize `\(\sum_{i=1}^n\epsilon_i^2\)`? Why not `\(\sum_{i=1}^n\left|\epsilon_i\right|\)` or something more general like `\(\sum_{i=1}^n\psi\left(\epsilon_i\right)\)`?
 
@@ -714,14 +706,14 @@ class: center, middle
 
 --
 
-.center[.huger[Calculus!]]
+.center[.font300[Calculus!]]
 
 
 ---
 
 # Test to see if you remember calculus
 
-.huge[
+.font250[
 
 If `\(y = \int_a^af\left(x\right)dx\)` and I have `\(y\)` followers on Twitter 🐦, how many followers do I have? 
 
@@ -739,7 +731,7 @@ If `\(y = \int_a^af\left(x\right)dx\)` and I have `\(y\)` followers on Twitter �
 
 # The LS estimates of `\(\beta_0\)` and `\(\beta_1\)`
 
-.medium[
+.font125[
 
 * `\(\widehat{\beta}_1 = \frac{\sum_{i=1}^n\left(X_i - \bar{X}\right)\left(Y_i - \bar{Y}\right)}{\sum_{i=1}^n\left(X_i - \bar{X}\right)^2} = \frac{S_{xy}}{ S_{xx}} = \sum_{i=1}^n\left(\frac{X_i - \bar{X}}{\sum_{i=1}^n\left(X_i - \bar{X}\right)^2}\right)Y_i = \sum_{i=1}^n w_iY_i\)`
     
@@ -749,7 +741,7 @@ If `\(y = \int_a^af\left(x\right)dx\)` and I have `\(y\)` followers on Twitter �
 
 --
 
-.medium[
+.font125[
 
 * Don't bother trying to memorize these formulas! 🤣
 
@@ -757,7 +749,7 @@ If `\(y = \int_a^af\left(x\right)dx\)` and I have `\(y\)` followers on Twitter �
 
 --
 
-.medium[
+.font125[
 
 * Once we start adding more predictors (.red[i.e., real life]), we lose the ability to easily find closed-form formulas like these and rely on numerical approximations to find them (e.g., in R or SAS)
 
@@ -770,7 +762,7 @@ If `\(y = \int_a^af\left(x\right)dx\)` and I have `\(y\)` followers on Twitter �
 
 # Visualizing least squares
 
-.large[
+.font150[
 
 Take five minutes and try running the following code:
 
@@ -804,9 +796,9 @@ class: inverse, center, middle
 
 ---
 
-# Your turn 😱
+# Your turn
 
-.larger[
+.font200[
 
 Fit an SLR model to the crystal weight data using `weight` as the response and `time` as the predictor and interpret the estimated coefficients.
 
@@ -815,7 +807,7 @@ Fit an SLR model to the crystal weight data using `weight` as the response and `
 
 ---
 
-# Solution 🙌
+# Solution
 
 .scrollable[
 
@@ -865,7 +857,7 @@ summary(fit)
 ## F-statistic: 204.6 on 1 and 12 DF,  p-value: 6.688e-09
 ```
 
-* The average final weight of crystals increases by an estimated 0.503 grams for every one-hour increase in growth time ⏲
+* The average final weight of crystals increases by an estimated 0.503 grams for every one-hour increase in growth time ⏰
 
 * Does interpreting the intercept make sense in this problem?
 
@@ -933,7 +925,7 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 # Properties of the residuals
 
-.large[
+.font150[
 
 * `\(\sum_{i=1}^n e_i = 0\)` (.purple[**Why?**] 🤔)
 
@@ -942,9 +934,9 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 ---
 
-# Your turn 😱
+# Your turn
 
-.large[
+.font150[
 
 1. Simulate `\(Y_i \stackrel{indep.}{\sim} N\left(\mu = 1 + 2X_i, \sigma^2 = 1.2^2\right)\)` for `\(i = 1, 2, \dots, 30\)`, where `\(X_i \stackrel{iid}{\sim} U\left(0, 5\right)\)`
 
@@ -955,7 +947,7 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 ---
 
-# Solution 🙌
+# Solution
 
 .scrollable[
 
@@ -994,7 +986,7 @@ lm(y ~ x)
 
 # Properties of the fitted SLR model
 
-.medium[
+.font125[
 
 * `\(\sum_{i=1}^n e_i = 0\)`
 
@@ -1010,7 +1002,7 @@ lm(y ~ x)
 
 --
 
-.large[How can we prove the above properties?]
+.font150[How can we prove the above properties?]
 
 
 ---
@@ -1030,7 +1022,7 @@ lm(y ~ x)
 
 # Maximum likelihood estimation
 
-.medium[
+.font125[
 
 Since `\(Y_i \stackrel{indep.}{\sim} N\left(\beta_0 + \beta_1X_i, \sigma^2\right)\)`, the *likelihood function* for the data (as a function of `\(\beta_0\)`, `\(\beta_1\)`, and `\(\sigma^2\)`) is given by 
 
@@ -1062,7 +1054,7 @@ Since `\(Y_i \stackrel{indep.}{\sim} N\left(\beta_0 + \beta_1X_i, \sigma^2\right
 
 # Maximum likelihood estimation
 
-.medium[
+.font125[
 
 * As it turns out, the ML estimates of `\(\beta_0\)` and `\(\beta_1\)` (under our current assumptions) are the same as the corresponding LS estimates
 
@@ -1080,7 +1072,7 @@ Since `\(Y_i \stackrel{indep.}{\sim} N\left(\beta_0 + \beta_1X_i, \sigma^2\right
 
 # Your turn 😱
 
-.large[
+.font150[
 
 Use the `fitted()`, `residuals()`, and `sigma()` functions to obtain the fitted values, residuals, and RMSE, respectively, for the crystal weight example. Confirm the formula for the residuals.
 
@@ -1091,7 +1083,7 @@ Use the `fitted()`, `residuals()`, and `sigma()` functions to obtain the fitted 
 
 # Rocket propellant example
 
-.large[
+.font150[
 
 A rocket motor is manufactured by bonding an igniter propellant and a sustainer propellant together inside a metal housing. The shear strength of the bond ($Y$)
 between the two types of propellant is an important quality characteristic. It is suspected that the shear strength is related to the age ($X$) of the batch of
@@ -1103,7 +1095,7 @@ sustainer propellant. `\(n = 20\)` observations on shear strength (measured in p
 ---
 class: center, middle
 
-.huge[
+.font250[
 
 [Rocket propellant example](https://github.com/bgreenwell/uc-bana7052/blob/master/code/rocket.R)
 
