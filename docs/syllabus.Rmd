@@ -137,7 +137,8 @@ Students will have homework assignments, quizzes (possibly), and exams on which 
 | 2 | Oct 24/Oct 25 | Inferences for SLR | 2 | Homework 2 |
 | 3 | Oct 31/Nov 01 | Multiple linear regression/matrix approach | 5, 6, 7 | Homework 3 |
 | 4 | Nov 07/Nov 08 | Diagnostics and remedial measures | 3, 10 | Homework 4 |
-| 5 | Nov 14/Nov 15 | Quantitative and qualitative predictors; Transformations | 7.6, 10.5, 8 | Homework 5 |
-| 6 | Nov 28/Nov 29 | Model selection and validation; Introduction to MARS | 9 | |
-| 7 | Dec 05/Dec 06 | Review; final exam (7--9) | | |
+| 5 | No class | | | |
+| 6 | Nov 14/Nov 15 | Quantitative and qualitative predictors; Transformations | 7.6, 10.5, 8 | Homework 5 |
+| 7 | Nov 28/Nov 29 | Model selection and validation; Introduction to MARS | 9 | |
+| 8 | Dec 05/Dec 06 | Review; final exam (7--9) | | |
 
