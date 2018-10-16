@@ -46,9 +46,9 @@ Course materials including syllabus, lecture notes, reading assignments, homewor
 
 ### Grading:	
 
-* Homework (group) 50%
+* Homework (group) 70%
 <!-- * Quiz				     20% -->
-* Exam				     50%
+* Exam				     30%
 
 
 ### Grade scale:
@@ -131,13 +131,13 @@ Students will have homework assignments, quizzes (possibly), and exams on which 
 
 ### Tentative schedule (please bring your laptop to all classes)
 
-|  Week | Date | Topic | Chapters | Deliverables |
+|  Week | Date (001/002) | Topic | Chapters | Assignment |
 |:------|:-----|:------|:---------|:-------------|
-| 1 | ? | Correlation and simple linear regression   | 1       | |
-| 2 | ? | Inferences for SLR                         | 2       | Homework 1 due by noon |
-| 3 | ? | Multiple linear regression/matrix approach | 5, 6, 7 | Homework 2 due by noon |
-| 4 | ? | Diagnostics and remedial measures          | 3, 10   | Homework 3 due by noon |
-| 5 | ? | Multicollinearity; quantitative and qualitative predictors | 7.6, 10.5, 8 | Homework 4 due by noon |
-| 6 | ? | Model selection and validation; summary    | 9       | Homework 5 due by noon |
-| 7 | ? | Review; final exam (7--9)                  | | |
+| 1 | Oct 17/Oct 18 | Correlation and simple linear regression | 1 | Homework 1 |
+| 2 | Oct 24/Oct 25 | Inferences for SLR | 2 | Homework 2 |
+| 3 | Oct 31/Nov 01 | Multiple linear regression/matrix approach | 5, 6, 7 | Homework 3 |
+| 4 | Nov 07/Nov 08 | Diagnostics and remedial measures | 3, 10 | Homework 4 |
+| 5 | Nov 14/Nov 15 | Quantitative and qualitative predictors; Transformations | 7.6, 10.5, 8 | Homework 5 |
+| 6 | Nov 28/Nov 29 | Model selection and validation; Introduction to MARS | 9 | |
+| 7 | Dec 05/Dec 06 | Review; final exam (7--9) | | |
 

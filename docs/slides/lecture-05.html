@@ -260,7 +260,62 @@ The actual cutting tool data are availble in [here](https://bgreenwell.github.io
 
 # Solution
 
-.font300[[R code](https://bgreenwell.github.io/uc-bana7052/code/cutting_tool.R)]
+.font300[[R code](https://github.com/bgreenwell/uc-bana7052/blob/master/code/cutting-tool.R)]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="images/thinking-picard.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Unequal slopes
+
+.font150.center.bold[
+
+What if the slopes are expected to differ?
+
+]
+
+--
+
+.font150[
+
+Continuing with the previous cutting tool example:
+
+* To model differing slopes, we can include an **interaction** (i.e., the product) between the qualitative and quantitative variables: `$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2 + \epsilon$$`
+
+]
+
+--
+
+.font150.center.bold.blue[What models are implied here?]
+
+
+---
+
+# Cutting tool example
+
+.font150[
+
+`$$Y = \begin{cases} \beta_0 + \beta_1 X_1 + \epsilon, &amp; \quad \text{if tool A} \\ \left(\beta_0 + \beta_2\right) + \left(\beta_1 + \beta_3\right) X_1 + \epsilon, &amp; \quad \text{if tool B} \end{cases}$$`
+
+]
+
+&lt;img src="lecture-05_files/figure-html/cutting-tool-unequal-slopes-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Your turn
+
+.font150[
+
+Refit your previous regression model to the cutting tool data, but be sure to include an interaction between `rpm` and `ToolType`. **Hint:** use `:` to model an intercation between two predictors in `lm()` (i.e., `x1 + x2 + x1:x2`). Reinterpret your results. What are the two estimated prediction equations implied by this model? Use the general linear test aproach to compare this model with the previous one. Which model do you conclude is "better"?
+
+]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
