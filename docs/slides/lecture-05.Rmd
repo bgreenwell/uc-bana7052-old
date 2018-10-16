@@ -320,3 +320,143 @@ ggplot(cutting_tool, aes(x = rpm, y = Hour, color = ToolType)) +
 Refit your previous regression model to the cutting tool data, but be sure to include an interaction between `rpm` and `ToolType`. **Hint:** use `:` to model an intercation between two predictors in `lm()` (i.e., `x1 + x2 + x1:x2`). Reinterpret your results. What are the two estimated prediction equations implied by this model? Use the general linear test aproach to compare this model with the previous one. Which model do you conclude is "better"?
 
 ]
+
+
+---
+
+# Analysis of covariance (ANCOVA)
+
+.font120[
+
+* In many statistical studies, the goal is to compare two or more groups in terms of a continuous response $y$ (e.g., the two-sample $t$-test or ANOVA)
+
+* Oftentimes, however, additional information in the form of a continuous variable $x$ may available to help in the comparison
+
+    - Ideally, $x$ will be correlated with $y$
+    
+* Our main interest lies in comparing the populations, but we would like to take into account the additional information contained in $x$
+
+    - In this case, we call $x$ a covariate
+
+* We'll illustrate with an example
+
+]
+
+
+---
+
+# Fruitfly example
+
+.font125[
+
+**It has been established that increased reproduction reduces longevity in female fruit flies. A study was conducted to see if the same effect exists for male fruit flies** (Hanley and Shapiro, 1994). The experiment consisted of five groups: males forced to (i) live alone, (ii) to live with one pregnant female, (iii) to live with eight pregnant females, (iv) to live with one fertile female, and (v) to live with eight fertile females. The response of interest is `lifespan` (measured in days). Variables also measured were `thorax` length (mm), and the percentage of each day spent sleeping. For our analysis, we will only focus on two groups: control group of males living with one pregnant female and an experiment group of males living with one fertile female; these are stored in the factor variable `group` with levels `"control"` and `"treatment"`. 
+
+]
+
+
+---
+
+# Loading the data
+
+```{r fruitfly-01}
+url <- "https://bgreenwell.github.io/uc-bana7052/data/fruitfly.csv"
+fruitfly <- read.csv(url)
+tibble::as_tibble(fruitfly)
+```
+
+
+---
+class: clear, middle, center
+
+```{r fruitfly-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+ggplot(fruitfly, aes(x = thorax, y = lifespan, color = group)) +
+  geom_point(size = 3, alpha = 0.7) +
+  theme_light() +
+  labs(x = "Thorax length (mm)", y = "Lifespan (days)") +
+  theme(legend.title = element_blank(), legend.position = c(0.1, 0.8))
+```
+
+
+---
+
+# A two-sample $t$-test
+
+.scrollable[
+
+```{r fruitfly-03}
+# Two-sample t-test
+t.test(lifespan ~ group, data = fruitfly)
+
+# Linear model (equivalent)
+summary(lm(lifespan ~ group, data = fruitfly))
+```
+
+]
+
+
+---
+
+# Full model
+
+.scrollable[
+
+```{r fruitfly-04}
+# Full model
+fit1 <- lm(lifespan ~ thorax + group + thorax * group, 
+           data = fruitfly)
+
+# Print model summary
+summary(fit1)
+```
+
+]
+
+
+---
+
+# Reduced model
+
+.scrollable[
+
+```{r fruitfly-05}
+# Thorax only
+fit2 <- lm(lifespan ~ thorax, data = fruitfly)
+
+# Print model summary
+summary(fit2)
+
+# Compare models
+anova(fit2, fit1)
+```
+
+]
+
+
+---
+
+# Testing for parallel slopes
+
+.scrollable[
+
+```{r fruitfly-06}
+# Parallel regression lines
+fit3 <- lm(lifespan ~ thorax + group, data = fruitfly)
+
+# Print model summary
+summary(fit3)
+
+# Compare models
+anova(fit3, fit1)
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r fruitfly-07, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+xyplot(lifespan ~ thorax, groups = group, data = fruitfly, pch = 19, 
+       alpha = 0.5, type = c("p", "r"), xlab = "Thorax length (mm)",
+       ylab = "Lifespan (days)", auto.key = list(corner = c(0, 1)))
+```

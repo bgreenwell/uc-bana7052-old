@@ -316,6 +316,287 @@ Continuing with the previous cutting tool example:
 Refit your previous regression model to the cutting tool data, but be sure to include an interaction between `rpm` and `ToolType`. **Hint:** use `:` to model an intercation between two predictors in `lm()` (i.e., `x1 + x2 + x1:x2`). Reinterpret your results. What are the two estimated prediction equations implied by this model? Use the general linear test aproach to compare this model with the previous one. Which model do you conclude is "better"?
 
 ]
+
+
+---
+
+# Analysis of covariance (ANCOVA)
+
+.font120[
+
+* In many statistical studies, the goal is to compare two or more groups in terms of a continuous response `\(y\)` (e.g., the two-sample `\(t\)`-test or ANOVA)
+
+* Oftentimes, however, additional information in the form of a continuous variable `\(x\)` may available to help in the comparison
+
+    - Ideally, `\(x\)` will be correlated with `\(y\)`
+    
+* Our main interest lies in comparing the populations, but we would like to take into account the additional information contained in `\(x\)`
+
+    - In this case, we call `\(x\)` a covariate
+
+* We'll illustrate with an example
+
+]
+
+
+---
+
+# Fruitfly example
+
+.font125[
+
+**It has been established that increased reproduction reduces longevity in female fruit flies. A study was conducted to see if the same effect exists for male fruit flies** (Hanley and Shapiro, 1994). The experiment consisted of five groups: males forced to (i) live alone, (ii) to live with one pregnant female, (iii) to live with eight pregnant females, (iv) to live with one fertile female, and (v) to live with eight fertile females. The response of interest is `lifespan` (measured in days). Variables also measured were `thorax` length (mm), and the percentage of each day spent sleeping. For our analysis, we will only focus on two groups: control group of males living with one pregnant female and an experiment group of males living with one fertile female; these are stored in the factor variable `group` with levels `"control"` and `"treatment"`. 
+
+]
+
+
+---
+
+# Loading the data
+
+
+```r
+url &lt;- "https://bgreenwell.github.io/uc-bana7052/data/fruitfly.csv"
+fruitfly &lt;- read.csv(url)
+tibble::as_tibble(fruitfly)
+```
+
+```
+## # A tibble: 50 x 3
+##    lifespan group   thorax
+##       &lt;int&gt; &lt;fct&gt;    &lt;dbl&gt;
+##  1       46 control   0.64
+##  2       42 control   0.68
+##  3       65 control   0.72
+##  4       46 control   0.76
+##  5       58 control   0.76
+##  6       42 control   0.8 
+##  7       48 control   0.8 
+##  8       58 control   0.8 
+##  9       50 control   0.82
+## 10       80 control   0.82
+## # ... with 40 more rows
+```
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-05_files/figure-html/fruitfly-02-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# A two-sample `\(t\)`-test
+
+.scrollable[
+
+
+```r
+# Two-sample t-test
+t.test(lifespan ~ group, data = fruitfly)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  lifespan by group
+## t = 1.8585, df = 47.893, p-value = 0.06925
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.6585072 16.7385072
+## sample estimates:
+##   mean in group control mean in group treatment 
+##                   64.80                   56.76
+```
+
+```r
+# Linear model (equivalent)
+summary(lm(lifespan ~ group, data = fruitfly))
+```
+
+```
+## 
+## Call:
+## lm(formula = lifespan ~ group, data = fruitfly)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -35.76  -8.79   0.20  10.46  32.20 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      64.800      3.059  21.184   &lt;2e-16 ***
+## grouptreatment   -8.040      4.326  -1.859   0.0692 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 15.29 on 48 degrees of freedom
+## Multiple R-squared:  0.06713,	Adjusted R-squared:  0.0477 
+## F-statistic: 3.454 on 1 and 48 DF,  p-value: 0.06923
+```
+
+]
+
+
+---
+
+# Full model
+
+.scrollable[
+
+
+```r
+# Full model
+fit1 &lt;- lm(lifespan ~ thorax + group + thorax * group, 
+           data = fruitfly)
+
+# Print model summary
+summary(fit1)
+```
+
+```
+## 
+## Call:
+## lm(formula = lifespan ~ thorax + group + thorax * group, data = fruitfly)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -25.9509  -9.2539   0.9361   7.3027  30.3071 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            -43.725     29.766  -1.469 0.148655    
+## thorax                 131.450     35.931   3.658 0.000651 ***
+## grouptreatment         -14.267     42.200  -0.338 0.736836    
+## thorax:grouptreatment    5.551     50.575   0.110 0.913072    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 12.3 on 46 degrees of freedom
+## Multiple R-squared:  0.4217,	Adjusted R-squared:  0.384 
+## F-statistic: 11.18 on 3 and 46 DF,  p-value: 1.244e-05
+```
+
+]
+
+
+---
+
+# Reduced model
+
+.scrollable[
+
+
+```r
+# Thorax only
+fit2 &lt;- lm(lifespan ~ thorax, data = fruitfly)
+
+# Print model summary
+summary(fit2)
+```
+
+```
+## 
+## Call:
+## lm(formula = lifespan ~ thorax, data = fruitfly)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -24.111  -8.825   1.207   7.707  35.143 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -45.82      22.22  -2.062   0.0447 *  
+## thorax        128.18      26.63   4.813 1.52e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 13.01 on 48 degrees of freedom
+## Multiple R-squared:  0.3255,	Adjusted R-squared:  0.3115 
+## F-statistic: 23.17 on 1 and 48 DF,  p-value: 1.519e-05
+```
+
+```r
+# Compare models
+anova(fit2, fit1)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: lifespan ~ thorax
+## Model 2: lifespan ~ thorax + group + thorax * group
+##   Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
+## 1     48 8118.4                              
+## 2     46 6961.1  2    1157.3 3.8239 0.02909 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+]
+
+
+---
+
+# Testing for parallel slopes
+
+.scrollable[
+
+
+```r
+# Parallel regression lines
+fit3 &lt;- lm(lifespan ~ thorax + group, data = fruitfly)
+
+# Print model summary
+summary(fit3)
+```
+
+```
+## 
+## Call:
+## lm(formula = lifespan ~ thorax + group, data = fruitfly)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -26.103  -9.123   1.092   7.273  30.267 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     -46.038     20.799  -2.214  0.03175 *  
+## thorax          134.252     25.019   5.366 2.42e-06 ***
+## grouptreatment   -9.651      3.456  -2.793  0.00753 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 12.17 on 47 degrees of freedom
+## Multiple R-squared:  0.4215,	Adjusted R-squared:  0.3969 
+## F-statistic: 17.12 on 2 and 47 DF,  p-value: 2.593e-06
+```
+
+```r
+# Compare models
+anova(fit3, fit1)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: lifespan ~ thorax + group
+## Model 2: lifespan ~ thorax + group + thorax * group
+##   Res.Df    RSS Df Sum of Sq     F Pr(&gt;F)
+## 1     47 6962.9                          
+## 2     46 6961.1  1    1.8233 0.012 0.9131
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-05_files/figure-html/fruitfly-07-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
