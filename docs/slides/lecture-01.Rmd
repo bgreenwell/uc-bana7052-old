@@ -1,6 +1,6 @@
 ---
-title: "Association and Simple Linear Regression"
-subtitle: "Lecture 01"
+title: "BANA 7052: Lecture 01"
+subtitle: "Association and Simple Linear Regression"
 author: "Brandon M. Greenwell"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
@@ -43,6 +43,7 @@ knitr::include_graphics("images/curve-fitting.png")
 
 
 ---
+
 # Reading assignment
 
 .font200[
@@ -62,40 +63,39 @@ knitr::include_graphics("images/curve-fitting.png")
 
 ---
 
-# Prerquisites
+# Prerequisites
 
 .scrollable[
 
 ```{r prerequisites, eval=FALSE}
 # List of required (CRAN) packages
 pkgs <- c(
-  "animation",  # for pre-built statistical animations
-  "dplyr",      # for data wrangling
-  "ggplot2",    # for awesome graphics
-  "HistData",   # for historical data sets
-  "tibble"      # for nicer data frames
+  "animation",   # for pre-built statistical animations
+  "dplyr",       # for data wrangling
+  "ggplot2",     # for drawing nicer graphics
+  "gridExtra",   # for grid.arrange() function
+  "HistData",    # for historical data sets
+  "investr",     # for inverse estimation
+  "magick",      # for working with images
+  "roundhouse",  # for pure awesomeness
+  "tibble"       # for nicer data frames
 )
 
 # Install required (CRAN) packages
 for (pkg in pkgs) {
-  if (!requireNamespace(pkg)) {  # check if already installed first
-    install.packages(pkg)  # install it
+  if (!(pkg %in% installed.packages()[, "Package"])) {
+    install.packages(pkg)
   }
 }
-
-# Install additional (optional) awesomeness
-install.packages(c("devtools", "magick"))
-devtools::install_github("bgreenwell/roundhouse")
 ```
 
 ]
 
 
 ---
+class: clear, middle, center
 
-# Read the book!
-
-```{r wonka, echo=FALSE, out.width="50%"}
+```{r wonka, echo=FALSE, out.width="70%"}
 knitr::include_graphics("images/read-the-book.jpg")
 ```
 
@@ -213,7 +213,7 @@ ggplot(d, aes(x = x, y = y3)) +
 
 # Pearson correlation
 
-.font150[
+.font160[
 
 * The (Pearson) correlation coefficient (also called the *Pearson product-moment correlation coefficient*) between two random variables $X$ and $Y$ is given by 
 
@@ -230,7 +230,7 @@ $$Cor\left(X, Y\right) = \rho = \frac{Cov\left(X,Y\right)}{\sigma_X\sigma_Y}$$
 
 # Pearson correlation
 
-.font125[
+.font130[
 
 * It is common to test the hypothesis $H_0: \rho = 0$ vs. $H_1: \rho \ne 0$
 
@@ -265,10 +265,29 @@ $$Cor\left(X, Y\right) = \rho = \frac{Cov\left(X,Y\right)}{\sigma_X\sigma_Y}$$
 
 
 ---
-# Reading data into R
+class: clear, middle, center
 
-```{r reading, echo=FALSE, out.width="80%"}
-knitr::include_graphics("images/reading.jpg")
+# Correlation and causation?
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ntnalq-2nNU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+
+
+---
+class: clear, center, middle
+
+.font300[
+
+[Fun with spurious correlations](http://www.tylervigen.com/spurious-correlations)
+
+]
+
+
+---
+class: clear, center, middle
+
+```{r correlation-causation, echo=FALSE, out.width="100%", fig.cap="If you get the joke in this comic, then you probably undestand enough about correlation!"}
+knitr::include_graphics("images/correlation-causation-comic.png")
 ```
 
 
@@ -293,6 +312,8 @@ tibble::as_tibble(crystal)  # print a summary of the data
 
 # Your turn
 
+.font130[
+
 * Draw a scatter plot of `time` vs `weight` for the `crystal` data frame
 
     - Does there appear to be an association between these two variables?
@@ -305,27 +326,53 @@ tibble::as_tibble(crystal)  # print a summary of the data
     
     - Interpret the *p*-value in the output
 
+]
+
 
 ---
 
 # Solution
 
-.scrollable[
-
-```{r your-turn-01}
+```{r your-turn-01-01, fig.width=6, fig.asp=0.618, out.width="70%"}
 # Scatterplot using base R graphics
-# plot(crystal)  # OK  #<<
-plot(weight ~ time, data = crystal)  # better  #<<
+# plot(crystal)  # OK
+plot(weight ~ time, data = crystal)  # better
+```
 
+
+---
+
+# Solution
+
+```{r your-turn-01-02, fig.width=6, fig.asp=0.618, out.width="70%"}
 # Scatterplot using ggplot2
 ggplot(crystal, aes(x = time, y = weight)) +
-  geom_point()
+  geom_point(size = 3)
+```
 
-# Correlation matrix
-cor(crystal)
-with(crystal, cor(time, weight))   #<< 
-cor(crystal$time, crystal$weight)  #<< 
 
+---
+
+# Solution
+
+.code125[
+
+```{r your-turn-01-03}
+cor(crystal)  # correlation matrix
+with(crystal, cor(time, weight))  # using with() 
+cor(crystal$time, crystal$weight)  # using $
+```
+
+]
+
+
+---
+
+# Solution
+
+.code110[
+
+```{r your-turn-01-04}
 # Test for (linear) association
 with(crystal, cor.test(time, weight, conf.level = 0.95))
 ```
@@ -334,36 +381,10 @@ with(crystal, cor.test(time, weight, conf.level = 0.95))
 
 
 ---
-class: clear, middle, center
-
-# Correlation and causation?
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ntnalq-2nNU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-
----
-class: clear, center, middle
-
-.font250[
-
-[Fun with spurious correlations](http://www.tylervigen.com/spurious-correlations)
-
-]
-
-
----
-class: center, middle
-
-```{r correlation-causation, echo=FALSE, out.width="100%", fig.cap="If you get the joke in this comic, then you probably undestand enough about correlation!"}
-knitr::include_graphics("images/correlation-causation-comic.png")
-```
-
-
----
 
 # Which of the following statements are true?
 
-.font125[
+.font170[
 
 a. The Pearson correlation coefficient is a measure of linear association
 
@@ -380,7 +401,7 @@ d. A random cloud of data implies a negative correlation.
 
 # Which of the following statements are true?
 
-.font125[
+.font170[
 
 a. .green[The Pearson correlation coefficient is a measure of linear association]
 
@@ -396,20 +417,20 @@ d. .red[A random cloud of data implies a negative correlation]
 ---
 class: clear, middle
 
-```{r george-box, echo=FALSE, out.width="30%", fig.pos="center"}
-knitr::include_graphics("images/george-box.jpg")
-```
+.font300.center[
 
-> "All models are wrong, but some are useful."
->
-> `r tufte::quote_footer('--- "George E. Box')`
+"All models are wrong, but some are useful."
+
+--- George E. Box ---
+
+]
 
 
 ---
 
 # Historical origins of regression
 
-.font150[
+.font170[
 
 * First developed by Sir Francis Galton in the later part of the 19-th century
 
@@ -426,21 +447,25 @@ knitr::include_graphics("images/george-box.jpg")
 
 # Historical origins of regression
 
+.code100[
+
 ```{r galton-01, eval=FALSE}
-# Scatterplot of Galton's data on the heights of parents and their children
+# Scatterplot of Galton's height data
 ggplot(HistData::Galton, aes(x = parent, y = child)) +
   geom_point(alpha = 0.5) +
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
   geom_abline(intercept = 0, slope = 1, linetype = "dashed") + 
   labs(x = "Height of mid-parent (in)", y = "Height of child (in)")
 ```
+
+]
 
 
 ---
 
 # Historical origins of regression
 
-```{r galton-02, echo=FALSE, out.width="100%"}
+```{r galton-02, echo=FALSE, out.width="90%"}
 # Scatterplot of Galton's data on the heights of parents and their children
 ggplot(HistData::Galton, aes(x = parent, y = child)) +
   geom_point(alpha = 0.5) +
@@ -448,7 +473,6 @@ ggplot(HistData::Galton, aes(x = parent, y = child)) +
   geom_abline(intercept = 0, slope = 1, linetype = "dashed") + 
   labs(x = "Height of mid-parent (in)", y = "Height of child (in)")
 ```
-
 
 
 ---
@@ -461,13 +485,13 @@ class: clear, middle, center
 
 # Functional relationships
 
-.scrollable[
+.code100[
 
-```{r functional-relation}
+```{r functional-relation-01, eval=FALSE}
 # Scatterplot of (fake) functional data
 ggplot(data.frame(x = 1:10, y = 15*1:10), aes(x, y)) +
   geom_line() +
-  geom_point(size = 2, color = "red2") +
+  geom_point(size = 3, color = "red2") +
   labs(x = "Hours worked (X)", y = "Rate of pay (Y)", 
        title = expression(paste("Relation: ", Y == 15 %*% X)))
 ```
@@ -477,9 +501,23 @@ ggplot(data.frame(x = 1:10, y = 15*1:10), aes(x, y)) +
 
 ---
 
+# Functional relationships
+
+```{r functional-relation-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="70%"}
+# Scatterplot of (fake) functional data
+ggplot(data.frame(x = 1:10, y = 15*1:10), aes(x, y)) +
+  geom_line() +
+  geom_point(size = 3, color = "red2") +
+  labs(x = "Hours worked (X)", y = "Rate of pay (Y)", 
+       title = expression(paste("Relation: ", Y == 15 %*% X)))
+```
+
+
+---
+
 # Statistical relationships
 
-```{r linear-relationships, echo=FALSE, fig.width=7, fig.height=3.5}
+```{r linear-relationships, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="90%"}
 p1 <- ggplot(investr::crystal, aes(x = time, y = weight)) +
   geom_point() +
   labs(x = "Time (hours)", 
@@ -496,7 +534,7 @@ gridExtra::grid.arrange(p1, p2, nrow = 1)
 
 ---
 
-## Examples of statistical relationships
+# Examples of statistical relationships
 
 .scrollable[
 
@@ -527,8 +565,6 @@ gridExtra::grid.arrange(p1, p2, nrow = 1)
 
 # Still with me?
 
---
-
 ```{r roundhouse-02}
 roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
                  width = 40, type = 2, fps = 10)
@@ -539,15 +575,9 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # Simple linear regression (SLR)
 
-.font125[
+.font140[
 
 * Data: $\left\{\left(X_i, Y_i\right)\right\}_{i=1}^n$
-
-]
-
---
-
-.font125[ 
 
 * Model: $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$
 
@@ -568,7 +598,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # Assumptions about the errors
 
-.font150[
+.font170[
 
 * For $i/j = 1, 2, \dots, n$
 
@@ -582,7 +612,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 --
 
-.font150[
+.font170[
 
 * Assumptions 1)-3) can be summarized as $\epsilon_i \stackrel{iid}{\sim} \left(0, \sigma^2\right)$
 
@@ -612,7 +642,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 # SLR with normal errors
 
-.font150[
+.font170[
 
 * $Y_i = \beta_0 + \beta_1 X_i + \epsilon_i, \quad i = 1, 2, \dots, n$
 
@@ -624,7 +654,7 @@ where $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$
 
 .red[**OR, EQUIVALENTLY**]
 
-.font150[
+.font170[
 
 * $Y_i \stackrel{indep.}{\sim} N\left(\beta_0 + \beta_1 X_i, \sigma^2\right), \quad i = 1, 2, \dots, n$
 
@@ -637,7 +667,7 @@ where $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$
 
 # Interpretting the regression coefficients
 
-.font125[
+.font130[
 
 * $\beta_0$ is the *y*-intercept (or *bias term*)
 
@@ -649,21 +679,21 @@ where $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$
 
     - The slope of a line represents a *rate of change*
     
-    - It represents the change in the mean response per one-unit increase in $X$
+    - It represents the average change in $Y$ per one-unit increase in $X$
 
 ]
 
 
 ---
-class: center, middle 
+class: clear, middle, center
 
-```{r slr-conditional-distribution, echo=FALSE, fig.width=7, fig.height=7, out.width="90%"}
+```{r slr-conditional-distribution, echo=FALSE, out.width="80%"}
 knitr::include_graphics("images/slr-conditional-distribution.png")
 ```
 
 
 ---
-class: center, middle
+class: clear, middle, center
 
 ```{r arsenic-conditional-distribution, echo=FALSE, out.width="100%"}
 # Scatterplot of arsenic data
@@ -681,11 +711,17 @@ ggplot(investr::arsenic, aes(x = actual, y = measured)) +
 
 --
 
+.font120[
+
 * Ideally, we want estimates of $\beta_0$ and $\beta_1$ that give us the "best fitting" line
 
     - But what is meant by "best fitting"?
 
+]
+
 --
+
+.font120[
 
 * The most common approach is to use the method of *least squares* (LS) estimation
 
@@ -695,9 +731,11 @@ $$RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left[Y_i = \left(\beta_0 + \be
 
 * $Y_i - \left(\beta_0 + \beta_1 X_i\right) = \epsilon_i$ are called the *residual errors*
 
+]
+
 --
 
-.font150[
+.font120[
 
 * Why minimize $\sum_{i=1}^n\epsilon_i^2$? Why not $\sum_{i=1}^n\left|\epsilon_i\right|$ or something more general like $\sum_{i=1}^n\psi\left(\epsilon_i\right)$?
 
@@ -705,32 +743,36 @@ $$RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left[Y_i = \left(\beta_0 + \be
 
 
 ---
+class: clear, middle, center
 
-# LS estimation
+.font200[
 
-* How do me minimize $RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right)^2$?
+How do me minimize $RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right)^2$?
+
+]
 
 --
 
-.center[.font300[Calculus!]]
+.font300.purple[
+
+Calculus!
+
+]
 
 
 ---
+class: clear, middle, center
 
-# Test to see if you remember calculus
-
-.font250[
-
-If $y = \int_a^af\left(x\right)dx$ and I have $y$ followers on Twitter `r emo::ji("bird")`, how many followers do I have? 
-
-]
+```{r calculus-joke, echo=FALSE, out.width="100%"}
+knitr::include_graphics("images/calculus-joke.jpg")
+```
 
 
 ---
 
 # Derive the LS estimates of $\beta_0$ and $\beta_1$
 
-```{r homer-simpson-smart, echo=FALSE, out.width="40%"}
+```{r homer-simpson-smart, echo=FALSE, out.width="45%"}
 knitr::include_graphics("images/homer-simpson-smart.jpg")
 ```
 
@@ -739,7 +781,7 @@ knitr::include_graphics("images/homer-simpson-smart.jpg")
 
 # The LS estimates of $\beta_0$ and $\beta_1$
 
-.font125[
+.font130[
 
 * $\widehat{\beta}_1 = \frac{\sum_{i=1}^n\left(X_i - \bar{X}\right)\left(Y_i - \bar{Y}\right)}{\sum_{i=1}^n\left(X_i - \bar{X}\right)^2} = \frac{S_{xy}}{ S_{xx}} = \sum_{i=1}^n\left(\frac{X_i - \bar{X}}{\sum_{i=1}^n\left(X_i - \bar{X}\right)^2}\right)Y_i = \sum_{i=1}^n w_iY_i$
     
@@ -749,7 +791,7 @@ knitr::include_graphics("images/homer-simpson-smart.jpg")
 
 --
 
-.font125[
+.font130[
 
 * Don't bother trying to memorize these formulas! `r set.seed(101); emo::ji("laugh")`
 
@@ -757,7 +799,7 @@ knitr::include_graphics("images/homer-simpson-smart.jpg")
 
 --
 
-.font125[
+.font130[
 
 * Once we start adding more predictors (.red[i.e., real life]), we lose the ability to easily find closed-form formulas like these and rely on numerical approximations to find them (e.g., in R or SAS)
 
@@ -770,14 +812,25 @@ knitr::include_graphics("images/homer-simpson-smart.jpg")
 
 # Visualizing least squares
 
-.font150[
+.font175[
 
-Take five minutes and try running the following code:
+Take five minutes to run the following code (see `?animation::least.squares` for details):
+
+]
+
+.code125[
 
 ```{r animation, eval=FALSE}
 animation::least.squares(ani.type = "slope")
 animation::least.squares(ani.type = "intercept")
 ```
+
+]
+
+<br>
+<br>
+
+.font200.center.forestgreen.bold[
 
 What do you think is happening here?
 
@@ -785,20 +838,24 @@ What do you think is happening here?
 
 
 ---
-class: inverse, center, middle
+class: clear, middle, center
 
-# Fitting the SLR Model in R
+.font300[Fitting the SLR Model in R]
 
 
 ---
 
-# The `lm()` function
+# The lm() function
+
+.font200[
 
 * The `lm()` function can be used to fit the SLR model (or any LM for that matter!)
 
 * The statement `lm(y ~ x, data = df)` fits an SLR model by regressing `y` on `x`, where `y` and `x` are columns in `df`
 
 * To suppress the intercept term, use `y ~ x - 1`
+
+]
 
 
 ---
@@ -816,21 +873,33 @@ Fit an SLR model to the crystal weight data using `weight` as the response and `
 
 # Solution
 
-.scrollable[
-
-```{r your-turn-02}
+```{r your-turn-02-01}
 # Load the data (if not already loaded)
 data(crystal, package = "investr")
 
 # Fit an SLR model to the data
 fit <- lm(weight ~ time, data = crystal)
 print(fit)  # print a basic summary
+```
 
+
+---
+
+# Solution
+
+```{r your-turn-02-02}
 # More verbose summary
 summary(fit)
 ```
 
-* The average final weight of crystals increases by an estimated `r round(coef(fit)[2L], digits = 3)` grams for every one-hour increase in growth time `r emo::ji("clock")`
+
+---
+
+# Solution
+
+.font200[
+
+* The average final weight of crystals increases by an estimated `r round(coef(fit)[2L], digits = 3)` grams for every one-hour increase in growth time `r emo::ji("time")`
 
 * Does interpreting the intercept make sense in this problem?
 
@@ -841,7 +910,7 @@ summary(fit)
 
 # The fitted SLR model
 
-.scrollable[
+.font200[
 
 * The fitted model is given by $\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1$
 
@@ -849,7 +918,16 @@ summary(fit)
 
 * The fitted values: $\widehat{Y}_i = \widehat{\beta}_0 + \widehat{\beta}_1 X_i, \quad i = 1, 2, \dots, n$
 
-* Use `fitted()` to obtain the fitted values:
+* Use `fitted()` to obtain the fitted values
+
+]
+
+
+---
+
+# The fitted SLR model
+
+.code110[
 
 ```{r fitted-values}
 head(cbind(crystal, "fitted_values" = fitted(fit)))
@@ -862,14 +940,16 @@ head(cbind(crystal, "fitted_values" = fitted(fit)))
 
 # Residuals: $Y_i - \widehat{Y}_i$
 
-.scrollable[
+.code100[
 
-```{r crystal-residuals}
+```{r crystal-residuals-01, eval=FALSE}
 # Residual plot
 ggplot(data = crystal, aes(x = time, y = weight)) +
-  geom_point(size = 2) +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, alpha = 0.5) +
-  geom_segment(aes(x = time, y = fitted(fit), xend = time, yend = weight), 
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", formula = y ~ x,  #<<
+              se = FALSE, alpha = 0.5) +       #<<
+  geom_segment(aes(x = time, y = fitted(fit), 
+                   xend = time, yend = weight), 
                alpha = 0.75, col = "red2", linetype = "solid") +
   theme_light() +
   xlab("Time (weeks)") +
@@ -882,13 +962,20 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 ---
 
-# Properties of the residuals
+# Residuals: $Y_i - \widehat{Y}_i$
 
-.font150[
-
-* $\sum_{i=1}^n e_i = 0$ (.purple[**Why?**] `r emo::ji("thinking")`)
-
-]
+```{r crystal-residuals-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="90%"}
+# Residual plot
+ggplot(data = crystal, aes(x = time, y = weight)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, alpha = 0.5) +  
+  geom_segment(aes(x = time, y = fitted(fit), xend = time, yend = weight), 
+               alpha = 0.75, col = "red2", linetype = "solid") +
+  theme_light() +
+  xlab("Time (weeks)") +
+  ylab("Weight (grams)") +
+  ggtitle("Crystal weight data")
+```
 
 
 ---
@@ -897,9 +984,9 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 .font150[
 
-1. Simulate $Y_i \stackrel{indep.}{\sim} N\left(\mu = 1 + 2X_i, \sigma^2 = 1.2^2\right)$ for $i = 1, 2, \dots, 30$, where $X_i \stackrel{iid}{\sim} U\left(0, 5\right)$
+1. Simulate $Y_i \stackrel{indep.}{\sim} N\left(\mu = 1 + 2X_i, \sigma = 1.2\right)$ for $i = 1, 2, \dots, 30$, where $X_i \stackrel{iid}{\sim} U\left(0, 5\right)$
 
-2. Fit an SLR model to the data and estimate the slope and intercept. Do the estimated slope and intercept match closely with the true values? What happens to the estimates if we generate the response from a $N\left(\mu = 1 + 2X_i, \sigma^2 = 0.2^2\right)$ distribution instead?
+2. Fit an SLR model to the data and estimate the slope and intercept. Do the estimated slope and intercept match closely with the true values? What happens to the estimates if we generate the response from a $N\left(\mu = 1 + 2X_i, \sigma = 0.2\right)$ distribution instead?
 
 ]
 
@@ -928,11 +1015,11 @@ lm(y ~ x)
 
 ---
 
-# Properties of the fitted SLR model
+# Properties of the residuals
 
-.font125[
+.font160[
 
-* $\sum_{i=1}^n e_i = 0$
+* $\sum_{i=1}^n e_i = 0$ (.purple[**Why?**] `r emo::ji("thinking")`)
 
 * $\sum_{i=1}^n e_i^2$ minimizes is a minimum
 
@@ -944,22 +1031,25 @@ lm(y ~ x)
 
 ]
 
---
-
-.font150[How can we prove the above properties?]
-
 
 ---
+class: clear, middle
 
-# Estimating the error variance $\sigma^2$
+.font300.red.center[
 
-* What are the unknown parameters of the SLR model $Y_i = \beta_0 + \beta_1X_i + \epsilon_i$?
+What are the unknown parameters of the SLR model?
+
+]
 
 --
+
+.font150[
 
 * Assuming $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$, we have an additional (unknown) parameter: $\sigma^2$
 
-* How do we estimate $\sigma^2$ (LS estimation only provides estimates for the slope and intercept)
+* How do we estimate $\sigma^2$ (LS estimation only provides estimates for the slope and intercept)?
+
+]
 
 
 ---
@@ -1003,20 +1093,20 @@ $$l = -\frac{n}{2}\log\left(2\pi\right) - \frac{n}{2}\log\left(\sigma^2\right) -
 * As it turns out, the ML estimates of $\beta_0$ and $\beta_1$ (under our current assumptions) are the same as the corresponding LS estimates
 
 * ML estimation, however, provides us with an estimate of the error variance $\sigma^2$ 
-$$\widehat{\sigma}_{MLE}^2 = \frac{1}{n}\sum{i=1}^n e_i^2$$
+$$\widehat{\sigma}_{MLE}^2 = \frac{1}{n}\sum_{i=1}^n e_i^2$$
 
 * However, since $\widehat{\sigma}_{MLE}^2$ is a biased estimate for the error variance, we use an adjusted estimate
 
-$$\widehat{\sigma}^2 = \frac{1}{n-2}\sum{i=1}^n e_i^2 = MSE$$
+$$\widehat{\sigma}^2 = \frac{1}{n-2}\sum_{i=1}^n e_i^2 = MSE$$
 
 ]
 
 
 ---
 
-# Your turn `r emo::ji("scream")`
+# Your turn
 
-.font150[
+.font200[
 
 Use the `fitted()`, `residuals()`, and `sigma()` functions to obtain the fitted values, residuals, and RMSE, respectively, for the crystal weight example. Confirm the formula for the residuals.
 
@@ -1025,22 +1115,24 @@ Use the `fitted()`, `residuals()`, and `sigma()` functions to obtain the fitted 
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .font150[
 
-A rocket motor is manufactured by bonding an igniter propellant and a sustainer propellant together inside a metal housing. The shear strength of the bond ($Y$)
-between the two types of propellant is an important quality characteristic. It is suspected that the shear strength is related to the age ($X$) of the batch of
+A rocket motor is manufactured by bonding an igniter propellant and a sustainer propellant together inside a metal housing. The shear strength of the bond ( $Y$ )
+between the two types of propellant is an important quality characteristic. It is suspected that the shear strength is related to the age ( $X$ ) of the batch of
 sustainer propellant. $n = 20$ observations on shear strength (measured in psi) and age (measured in weeks) are available in the file `rocket.csv`. We'll use these data to fit the SLR model $$Y = \beta_0 + \beta_1 X + \epsilon$$
 
 ]
 
 
 ---
-class: center, middle
+class: clear, middle, center
 
-.font250[
+.font300[
 
 [Rocket propellant example](https://github.com/bgreenwell/uc-bana7052/blob/master/code/rocket.R)
+
+`r icon::fa_rocket(animate = "spin")`
 
 ]

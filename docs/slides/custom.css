@@ -77,16 +77,20 @@ Title slide
 .title-slide {
   background-color: #FAFAFA;
   border-top: 80px solid #FAFAFA;
+  border-bottom: 80px solid #FAFAFA;
+  background-image: url(images/uc-logo.png);
+	background-position: center top;
+	background-size: 80%;
 }
 
 .title-slide > h1  {
   color: #1A292C;
-  font-size: 40px;
+  font-size: 50px;
   text-shadow: none;
   font-weight: 400;
   text-align: left;
   margin-left: 15px;
-  padding-top: 80px;
+  padding-top: 200px;
 }
 
 .title-slide > h2  {
@@ -95,7 +99,7 @@ Title slide
   color: #1A292C;
   text-shadow: none;
   font-weight: 300;
-  font-size: 35px;
+  font-size: 40px;
   text-align: left;
   margin-left: 15px;
 }
@@ -104,7 +108,7 @@ Title slide
   color: #1A292C;
   text-shadow: none;
   font-weight: 300;
-  font-size: 25px;
+  font-size: 30px;
   text-align: left;
   margin-left: 15px;
   margin-bottom: -30px;
@@ -219,6 +223,26 @@ Font size
 
 .code100 .remark-code {
   font-size: 100%;
+}
+
+.code105 .remark-code {
+  font-size: 105%;
+}
+
+.code110 .remark-code {
+  font-size: 110%;
+}
+
+.code115 .remark-code {
+  font-size: 115%;
+}
+
+.code120 .remark-code {
+  font-size: 120%;
+}
+
+.code125 .remark-code {
+  font-size: 125%;
 }
 
 .font10 {
@@ -375,6 +399,86 @@ Font size
 
 .font200 {
   font-size: 200%;
+}
+
+.font205 {
+  font-size: 205%;
+}
+
+.font210 {
+  font-size: 210%;
+}
+
+.font215 {
+  font-size: 215%;
+}
+
+.font220 {
+  font-size: 220%;
+}
+
+.font225 {
+  font-size: 225%;
+}
+
+.font230 {
+  font-size: 230%;
+}
+
+.font235 {
+  font-size: 235%;
+}
+
+.font240 {
+  font-size: 240%;
+}
+
+.font245 {
+  font-size: 245%;
+}
+
+.font250 {
+  font-size: 250%;
+}
+
+.font255 {
+  font-size: 255%;
+}
+
+.font260 {
+  font-size: 260%;
+}
+
+.font265 {
+  font-size: 265%;
+}
+
+.font270 {
+  font-size: 270%;
+}
+
+.font275 {
+  font-size: 275%;
+}
+
+.font280 {
+  font-size: 280%;
+}
+
+.font285 {
+  font-size: 285%;
+}
+
+.font290 {
+  font-size: 290%;
+}
+
+.font295 {
+  font-size: 295%;
+}
+
+.font300 {
+  font-size: 300%;
 }
 
 
