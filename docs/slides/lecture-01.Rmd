@@ -1117,22 +1117,10 @@ Use the `fitted()`, `residuals()`, and `sigma()` functions to obtain the fitted 
 
 # Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
-.font150[
+.font140[
 
 A rocket motor is manufactured by bonding an igniter propellant and a sustainer propellant together inside a metal housing. The shear strength of the bond ( $Y$ )
 between the two types of propellant is an important quality characteristic. It is suspected that the shear strength is related to the age ( $X$ ) of the batch of
-sustainer propellant. $n = 20$ observations on shear strength (measured in psi) and age (measured in weeks) are available in the file `rocket.csv`. We'll use these data to fit the SLR model $$Y = \beta_0 + \beta_1 X + \epsilon$$
-
-]
-
-
----
-class: clear, middle, center
-
-.font300[
-
-[Rocket propellant example](https://github.com/bgreenwell/uc-bana7052/blob/master/code/rocket.R)
-
-`r icon::fa_rocket(animate = "spin")`
+sustainer propellant. $n = 20$ observations on shear strength (measured in psi) and age (measured in weeks) are available in the file `rocket.csv`. We'll use [this script](https://github.com/bgreenwell/uc-bana7052/blob/master/code/rocket.R) to analyze the data with simple linear regression.
 
 ]
