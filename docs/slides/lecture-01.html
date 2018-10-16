@@ -88,7 +88,7 @@ class: clear, middle, center
 
 # Statistical relationships
 
-.code90[
+.code110[
 
 
 ```r
@@ -154,12 +154,9 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 
 ---
+class: clear, middle, center
 
-# Pearson correlation
-
-&lt;img src="lecture-01_files/figure-html/pearson-correlation-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
-
-.center[What's the correlation here?]
+&lt;img src="lecture-01_files/figure-html/pearson-correlation-02-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -222,7 +219,7 @@ class: clear, middle, center
 
 # Correlation and causation?
 
-&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/ntnalq-2nNU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;iframe width="800" height="450" src="https://www.youtube.com/embed/ntnalq-2nNU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;
 
 
 
@@ -249,14 +246,11 @@ class: clear, center, middle
 
 # Crystal weight example
 
-The data frame `investr::crystal` gives the growing time and final weight of 14 crystals:
-
 .scrollable[
 
 
 ```r
-# Load the crystal weight data
-data(crystal, package = "investr")
+data(crystal, package = "investr")  # ?investr::crystal
 tibble::as_tibble(crystal)  # print a summary of the data
 ```
 
@@ -489,7 +483,7 @@ ggplot(HistData::Galton, aes(x = parent, y = child)) +
 ---
 class: clear, middle, center
 
-&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/1tSqSMOyNFE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;iframe width="800" height="450" src="https://www.youtube.com/embed/1tSqSMOyNFE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;
 
 
 ---
@@ -529,27 +523,33 @@ ggplot(data.frame(x = 1:10, y = 15*1:10), aes(x, y)) +
 
 # Examples of statistical relationships
 
-.scrollable[
+.font175[
 
-.font125[
-
-* Simple linear regression (SLR)
-
-    `$$Y = \beta_0 + \beta_1 X + \epsilon$$`
-    
-* Multiple linear regression (MLR)
-
-    `$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_p X_p + \epsilon \\ = \beta_0 + \sum_{i=1}^p \beta_p X_p + \epsilon$$`
-    
- * Polynomial regression (of degree `\(p\)`)
-
-    `$$Y = \beta_0 + \sum_{i=1}^p \beta_p X^p + \epsilon$$` 
-
- * Nonlinear regression
-
-    `$$Y = \frac{\beta_1 X}{\beta_2 + X} + \epsilon$$`   
+* Simple linear regression: `\(Y = \beta_0 + \beta_1 X + \epsilon\)`
 
 ]
+
+--
+
+.font175[
+
+* Multiple linear regression: `\(Y = \beta_0 + \sum_{i=1}^p \beta_p X_p + \epsilon\)`
+
+]
+
+--
+
+.font175[
+
+* Polynomial regression: `\(Y = \beta_0 + \sum_{i=1}^p \beta_p X^p + \epsilon\)` 
+
+]
+
+--
+
+.font175[
+
+* Nonlinear regression: `\(Y = \beta_1 X / \left(\beta_2 + X\right) + \epsilon\)` 
 
 ]
 
@@ -596,7 +596,7 @@ roundhouse::kick("Chuck Norris caught all the Pok\uE9mon from a landline",
 
 .font170[
 
-* For `\(i/j = 1, 2, \dots, n\)`
+* For `\(i/j = 1, 2, \dots, n\)` and `\(i \ne j\)`
 
     1) `\(\quad E\left(\epsilon_i\right) = 0\)`
 
@@ -667,7 +667,7 @@ where `\(\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)\)`
 
 * `\(\beta_0\)` is the *y*-intercept (or *bias term*)
 
-    - It represent the mean response when `\(X = 0\)`; that is `\(\beta_0 = E\left(Y|X = 0\right)\)`
+    - It represents the mean response when `\(X = 0\)`; that is `\(\beta_0 = E\left(Y|X = 0\right)\)`
 
     - In general, the intercept is of little practical interest (this is especially true in MLR or when zero is not a valid value of `\(X\)`)
 
@@ -882,6 +882,8 @@ print(fit)  # print a basic summary
 
 # Solution
 
+.scrollable[
+
 
 ```r
 # More verbose summary
@@ -909,6 +911,8 @@ summary(fit)
 ## F-statistic: 204.6 on 1 and 12 DF,  p-value: 6.688e-09
 ```
 
+]
+
 
 ---
 
@@ -916,7 +920,7 @@ summary(fit)
 
 .font200[
 
-* The average final weight of crystals increases by an estimated 0.503 grams for every one-hour increase in growth time ⏳
+* The average final weight of crystals increases by an estimated 0.503 grams for every one-hour increase in growth time
 
 * Does interpreting the intercept make sense in this problem?
 
@@ -929,7 +933,7 @@ summary(fit)
 
 .font200[
 
-* The fitted model is given by `\(\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1\)`
+* The fitted model is given by `\(\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X\)`
 
 * We refer to `\(\widehat{Y}\)` as the predicted value
 
@@ -1013,23 +1017,45 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 # Solution
 
-.scrollable[
+.code125[
 
 
 ```r
 # Simulate data
 set.seed(1105)  # for reproducibility
-x &lt;- runif(30, min = 0, max = 5)  # see ?runif for details
+x &lt;- runif(30, min = 0, max = 5)
 y &lt;- rnorm(30, mean = 1 + 2*x, sd = 1.2)
+```
 
+]
+
+
+---
+
+# Solution
+
+.code125[
+
+
+```r
 # Simple scatterplot
 plot(x, y)
 ```
 
-&lt;img src="lecture-01_files/figure-html/your-turn-03-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/your-turn-03-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+# Solution
+
+.code125[
+
 
 ```r
-# Fit a SLR model
+# Fit an SLR model
 lm(y ~ x)
 ```
 
@@ -1054,7 +1080,7 @@ lm(y ~ x)
 
 * `\(\sum_{i=1}^n e_i = 0\)` (.purple[**Why?**] 🤔)
 
-* `\(\sum_{i=1}^n e_i^2\)` minimizes is a minimum
+* `\(\sum_{i=1}^n e_i^2\)` is a minimum
 
 * `\(\sum_{i=1}^n X_ie_i = 0\)`
 
@@ -1102,19 +1128,32 @@ Since `\(Y_i \stackrel{indep.}{\sim} N\left(\beta_0 + \beta_1X_i, \sigma^2\right
 
 # Maximum likelihood estimation
 
+.font175[
+
 * Maximizing the likelihood is the same as maximizing the *log-likelihood* `\(l = \log\left(L\right)\)` (**Why?** 🤔)
 
 * The full log-likelihood is given by 
 
 `$$l = -\frac{n}{2}\log\left(2\pi\right) - \frac{n}{2}\log\left(\sigma^2\right) - \frac{1}{2\sigma^2}\sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1X_i\right)^2$$`
 
-* Maximum likelihood (ML) estimates of `\(\beta_0\)`, `\(\beta_1\)`, and `\(\sigma^2\)` can be found by equating the (partial) derivatives of `\(l\)` to zero:
+]
 
-    - `\(\frac{\partial l}{\partial \beta_0} = \frac{1}{\sigma^2}\sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1X_i\right)\)`
+
+---
+
+# Maximum likelihood estimation
+
+.font175[
+
+Maximum likelihood (ML) estimates of `\(\beta_0\)`, `\(\beta_1\)`, and `\(\sigma^2\)` can be found by equating the (partial) derivatives of `\(l\)` to zero:
+
+* `\(\frac{\partial l}{\partial \beta_0} = \frac{1}{\sigma^2}\sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1X_i\right)\)`
     
-    - `\(\frac{\partial l}{\partial \beta_1} = \frac{1}{\sigma^2}\sum_{i=1}^nX_i\left(Y_i - \beta_0 - \beta_1X_i\right)\)`
+* `\(\frac{\partial l}{\partial \beta_1} = \frac{1}{\sigma^2}\sum_{i=1}^nX_i\left(Y_i - \beta_0 - \beta_1X_i\right)\)`
     
-    - `\(\frac{\partial l}{\partial \sigma^2} = -\frac{n}{2\sigma^2} + \frac{1}{\sigma^4}\sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1X_i\right)^2\)`
+* `\(\frac{\partial l}{\partial \sigma^2} = -\frac{n}{2\sigma^2} + \frac{1}{\sigma^4}\sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1X_i\right)^2\)`
+
+]
 
 
 ---
