@@ -37,7 +37,7 @@ d)	Interpret your results.
 
 **Question 2. (10 points)** A Simulation Study (Simple Linear Regression). Assuming the mean response is $E\left(Y|X\right)= 10 + 5X$:
 
-a) Generate data with $X \sim N\left(\mu = 2, \sigma^2 = 0.12\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)$. **Hint:** You can use `rnorm(n = 50, mean = 5, sd = 3)` to simulate $n = 50$ observations from a $N\left(\mu = 5, \sigma = 3\right)$ distribution, but note that `rnorm()` specifies the standard deviation ($\sigma$), rather than the variance ($\sigma^2$), of the normal distribution. It is also good practice to specify the random seed via `set.seed()` whenever generating random data (otherwise, your results will differ from run to run! `r emo::ji("scream")`). **For this exercise, use** `set.seed(7052)` **to ensure reproducibility.**
+a) Generate data with $X \sim N\left(\mu = 2, \sigma = 0.1\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma = 0.5\right)$. **Hint:** You can use `rnorm(n = 50, mean = 5, sd = 3)` to simulate $n = 50$ observations from a $N\left(\mu = 5, \sigma = 3\right)$ distribution, but note that `rnorm()` specifies the standard deviation ($\sigma$), rather than the variance ($\sigma^2$), of the normal distribution. It is also good practice to specify the random seed via `set.seed()` whenever generating random data (otherwise, your results will differ from run to run! `r emo::ji("scream")`). **For this exercise, use** `set.seed(7052)` **to ensure reproducibility.**
 
 b) Show summary statistics of the response variable and predictor variable. Are there outliers? What is the correlation coefficient? Draw a scatter plot.
 
