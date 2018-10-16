@@ -43,7 +43,7 @@ b) Show summary statistics of the response variable and predictor variable. Are 
 
 c) Fit a simple linear regression. What is the estimated model? Report the estimated coefficients.  What is the model mean squared error (MSE)?
 
-d) What are the sample mean of $X$ and $Y$? Plot the fitted regression line and point. What do you find?
+d) What is the sample mean of both $X$ and $Y$? Plot the fitted regression line and the point $\left(\bar{X}, \bar{Y}\right)$. What do you find?
 
 * Write a brief report (**no more than two pages**). Please clearly label your figures and tables. No raw outputs please.
 
@@ -53,12 +53,12 @@ d) What are the sample mean of $X$ and $Y$? Plot the fitted regression line and 
 **Question 3. (8 points)** Ordinary least squares (OLS) is typically used to estimate the regression coefficients $\beta_0$ and $\beta_1$ in the simple linear regression model by minimizing the residual sum of squares (RSS)
 
 $$
-RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right)^2 = \sum_{i=1}^n e_i^2
+RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right)^2 = \sum_{i=1}^n \epsilon_i^2
 $$
 
-a) How about minimizing $\sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right) = \sum_{i=1}^n e_i$?
+a) How about minimizing $\sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right) = \sum_{i=1}^n \epsilon_i$?
 
-b) How about minimizing $\sum_{i=1}^n\left|Y_i - \beta_0 - \beta_1 X_i\right| = \sum_{i=1}^n \left|e_i\right|$?
+b) How about minimizing $\sum_{i=1}^n\left|Y_i - \beta_0 - \beta_1 X_i\right| = \sum_{i=1}^n \left|\epsilon_i\right|$?
 
 c) Why is OLS a popular choice for estimating $\beta_0$ and $\beta_1$?
 
