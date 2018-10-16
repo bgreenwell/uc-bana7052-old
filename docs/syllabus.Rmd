@@ -43,6 +43,7 @@ Course materials including syllabus, lecture notes, reading assignments, homewor
 
 **Text:** [Applied Linear Regression Models](https://www.amazon.com/Applied-Linear-Regression-Models-Student/dp/0073014664)
 
+**Slack channel:** uc-bana7052.slack.com
 
 ### Grading:	
 
