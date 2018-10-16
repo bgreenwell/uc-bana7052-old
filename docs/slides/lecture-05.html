@@ -53,6 +53,7 @@ class: clear, middle
 # List of required (CRAN) packages
 pkgs &lt;- c(
   "animation",   # for pre-built statistical animations
+  "broom",       # for tidying the output from statistical models
   "dplyr",       # for data wrangling
   "ggplot2",     # for drawing nicer graphics
   "gridExtra",   # for grid.arrange() function
@@ -242,6 +243,24 @@ model.matrix( ~ dow2)
 ```
 
 ]
+
+
+---
+
+# Your turn
+
+.font150[
+
+The actual cutting tool data are availble in [here](https://bgreenwell.github.io/uc-bana7052/data/cutting_tool.csv). Fit a linear regression model using `Hour` as the response and `rpm` (quantiative) and `ToolType` (qualitative with two categories) as the predictors of interest. Does the model fit seem reasonable? What do you conclude about the relationship between `Hour` and `rpm` for each category of `ToolType`?
+
+]
+
+
+---
+
+# Solution
+
+.font300[[R code](https://bgreenwell.github.io/uc-bana7052/code/cutting_tool.R)]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
