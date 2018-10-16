@@ -17,7 +17,7 @@ Section 002 Thu. 6pm-9:50pm, RECCENTR 3200
 
 **Email:** greenwell.brandon@gmail.com (preferred)
 
-**Office hours:** by appointment
+**Office hours:** TBD
 
 **Phone:** 614-288-9450
 
@@ -30,7 +30,7 @@ Section 002 Thu. 6pm-9:50pm, RECCENTR 3200
 
 **Email:** zuti@mail.uc.edu
 
-**Office Hours:** TBD.
+**Office Hours:** TBD
 
 
 ### Course info:
@@ -71,9 +71,9 @@ Letter grade is assigned with the following scale:
 Absolutely NO extra credit request after the exams. However, please feel free to impress the instructor through active class participation, volunteering and HW presentation etc. DURING the semester. The instructor reserves the right to possibly lift or downgrade your final letter grade based on intragroup evaluations, class participation, etc.
 
 
-### Exam and honor policy
+### Exam and honor policy:
 
-The final Exam is in-class, closed-book, and closed-notes. You can bring one page (standard $8.5' \times 11'$ paper) two-sided cheat sheet (not a copy/paste from others'), which will be turned in along the exam. Exam should be the sole work of each student.  Anyone cheating or assisting another during an exam will be given a 0 for that exam and possibly a grade of F for the class. College procedures will be followed and the graduate dean will be notified.
+The final Exam is in-class, closed-book, and closed-notes. You can bring a two-sided cheat sheet (handwritten on a standard $8.5' \times 11'$ paper), which will be turned in along with the exam. Anyone cheating or assisting another during an exam will be given a 0 for that exam and possibly a grade of F for the class. College procedures will be followed and the graduate dean will be notified.
 
 Quizzes may be computational, involving some in-class exercising. They are open-book, open-notes, and Google search is allowed. However, any form of peer-to-peer communication is strictly prohibited. 
 	
@@ -86,7 +86,7 @@ Use of Electronic Devices: Cell phones should be switched off during classes. La
 
 ### Class communication:
 
-We will use Blackboard to communicate. The student is responsible for all communications sent by the instructor using email via Blackboard. Therefore, students must check to see if their accounts have reached maximum capacity or are otherwise not functioning, and to correct this situation. I receive a large quantity of email messages, many of which appear, based on the subject line, to be junk mail or spam. I delete these messages without reading them. To make sure that your message is not accidentally deleted as junk, please include ‘BANA7041-001’, your course number and section number in the email subject line. Also, be sure to identify yourself in the message. Otherwise, you may not receive a response.
+We'll use Blackboard to communicate. The student is responsible for all communications sent by the instructor using email via Blackboard. Therefore, students must check to see if their accounts have reached maximum capacity or are otherwise not functioning, and to correct this situation. I receive a large quantity of email messages, many of which appear, based on the subject line, to be junk mail or spam. I delete these messages without reading them. To make sure that your message is not accidentally deleted as junk, please include ‘BANA7041-001’, your course number and section number in the email subject line. Also, be sure to identify yourself in the message. Otherwise, you may not receive a response.
 
 
 ### Submission information:
@@ -101,7 +101,7 @@ See INTRAGROUP_EVALUATION_BANA7041.pdf for details on HW intragroup evaluation.
 
 ### Computing resources:  
 
-We will use R for all the data analyses in this course. You can download R for free through at http://www.r-project.org/. It is also recommended that you download and use RStudio: https://www.rstudio.com/. If you're new to R, try out this free [DatCamp course](https://www.datacamp.com/courses/free-introduction-to-r?utm_source=adwords_ppc&utm_campaignid=805200711&utm_adgroupid=42045039256&utm_device=c&utm_keyword=%2Bdata%20%2Bcamp%20%2Br&utm_matchtype=b&utm_network=g&utm_adpostion=1t1&utm_creative=191102095622&utm_targetid=kwd-424954486289&utm_loc_interest_ms=&utm_loc_physical_ms=9015705&gclid=CjwKCAjwrNjcBRA3EiwAIIOvq-DJIlhOIc3C6hbXvU5JQ6YV71frIOKyka9E_TA6fZGUO2g1qzMy4BoCEKIQAvD_BwE).
+We'll be using R for all analyses in this course. You can download R for free at http://www.r-project.org/. It is also recommended that you download and use RStudio (you'll still need to download and install R): https://www.rstudio.com/. If you're new to R, try out this free [DataCamp course](https://www.datacamp.com/courses/free-introduction-to-r?utm_source=adwords_ppc&utm_campaignid=805200711&utm_adgroupid=42045039256&utm_device=c&utm_keyword=%2Bdata%20%2Bcamp%20%2Br&utm_matchtype=b&utm_network=g&utm_adpostion=1t1&utm_creative=191102095622&utm_targetid=kwd-424954486289&utm_loc_interest_ms=&utm_loc_physical_ms=9015705&gclid=CjwKCAjwrNjcBRA3EiwAIIOvq-DJIlhOIc3C6hbXvU5JQ6YV71frIOKyka9E_TA6fZGUO2g1qzMy4BoCEKIQAvD_BwE).
 
 
 ### Homework group work structure of the course:  
