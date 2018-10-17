@@ -35,6 +35,9 @@ knitr::opts_chunk$set(
 # Load required packages
 library(dplyr)
 library(patchwork)
+
+# RBitmoji id
+my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 ```
 
 ```{r curve-fitting, echo=FALSE, out.width="40%"}
@@ -1163,3 +1166,11 @@ between the two types of propellant is an important quality characteristic. It i
 sustainer propellant. $n = 20$ observations on shear strength (measured in psi) and age (measured in weeks) are available in the file `rocket.csv`. We'll use [this script](https://github.com/bgreenwell/uc-bana7052/blob/master/code/rocket.R) to analyze the data with simple linear regression.
 
 ]
+
+
+---
+class: clear, middle, center
+
+```{r quittin-time, echo=FALSE, out.width="100%"}
+RBitmoji::plot_comic(my_id, tag = "quittin")
+```
