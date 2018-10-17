@@ -5,6 +5,14 @@ Course materials for BANA 7052 (Applied Linear Regression) at UC
 
 **Warning:** The following material is still being developed! ⚠️
 
+``` r
+# Some useful R code
+my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
+RBitmoji::plot_comic(my_id, tag = "stay in school")
+```
+
+<img src="README_files/figure-markdown_github/stay-in-school-1.png" width="50%" />
+
 Useful links
 ------------
 
@@ -47,7 +55,7 @@ Lectures
     Quiz
 
 ``` r
-# Some useful R code
+# Some more useful R code
 roundhouse::kick(
   paste("The square-root of -1 is not imaginary.",
         "It is just hiding from Chuck Norris."),

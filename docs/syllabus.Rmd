@@ -1,7 +1,9 @@
 ---
-title: "BANA 7052	Applied Linear Regression (2 cr.)"
-subtitle: "Fall Semester, 2018"
-output: html_document
+title: "BANA 7052\tApplied Linear Regression (2 cr.)"
+subtitle: Fall Semester, 2018
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 Section 001 Wed. 6pm-9:50pm, RECCENTR 3220
