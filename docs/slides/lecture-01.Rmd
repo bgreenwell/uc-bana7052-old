@@ -730,7 +730,7 @@ ggplot(investr::arsenic, aes(x = actual, y = measured)) +
 
 * The LS estimates of $\beta_0$ and $\beta_1$ minimize the residual sum of squares (RSS):
 
-$$RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left[Y_i = \left(\beta_0 + \beta_1 X_i\right)\right]^2 = \sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right)^2$$
+$$RSS\left(\beta_0, \beta_1\right) = \sum_{i=1}^n\left[Y_i - \left(\beta_0 + \beta_1 X_i\right)\right]^2 = \sum_{i=1}^n\left(Y_i - \beta_0 - \beta_1 X_i\right)^2$$
 
 * $Y_i - \left(\beta_0 + \beta_1 X_i\right) = \epsilon_i$ are called the *residual errors*
 
