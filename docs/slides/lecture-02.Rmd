@@ -476,15 +476,19 @@ Can you interpret the confidence interval for $\beta_1$ in the previous example?
 
 ]
 
---
+.code125[
 
-```{r rocket-02}
+```{r rocket-slr-confint-02}
 confint(rocket_fit, level = 0.95)
 ```
 
+]
+
+--
+
 .font150[
 
-With 95% confidence, we estimate that the mean strength of rockets decreases between 31.08 psi and 43.22 psi for every one-week increase in age.
+With 95% confidence, we estimate that the mean strength of rockets .bold.red[decreases] between 31.08 psi and 43.22 psi for every one-week increase in age.
 
 ]
 
@@ -502,11 +506,11 @@ Fit an SLR model to the crystal weight data using `weight` as the response and `
 
 ---
 
-# Solution `r set.seed(205); emo::ji("raised")`
+# Solution
 
-.scrollable[
+.code130[
 
-```{r 01-crystal-solution-01}
+```{r crystal-slr, eval=FALSE}
 # Load the crystal weight data
 data(crystal, package = "investr")
 
@@ -514,14 +518,55 @@ data(crystal, package = "investr")
 crystal_fit <- lm(weight ~ time, data = crystal)
 
 # Plot the data with the fitted mean response
-investr::plotFit(crystal_fit)
+investr::plotFit(crystal_fit, lwd.fit = 2, 
+                 col.fit = "red2", pch = 19)
+```
 
+]
+
+
+---
+
+# Solution
+
+```{r crystal-slr-plot, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Fit an SLR model
+crystal_fit <- lm(weight ~ time, data = crystal)
+
+# Plot the data with the fitted mean response
+investr::plotFit(crystal_fit, lwd.fit = 2, 
+                 col.fit = "red2", pch = 19)
+```
+
+
+---
+
+# Solution
+
+.scrollable[
+
+```{r crystal-slr-summary}
 # Print a summary of the model
 summary(crystal_fit)
+```
 
-# Compute a 95% CI for the regression coefficients
+]
+
+
+---
+
+# Solution
+
+.code150[
+
+```{r crystal-slr-confint}
+# Compute 95% CIs
 confint(crystal_fit, level = 0.95)  #<<
 ```
+
+]
+
+.font150[
 
 With 95% confidence, we estimate that the average weight of crystals increases between 0.43 grams and 0.58 grams for every one-hour increase in growth time.
 
@@ -529,27 +574,45 @@ With 95% confidence, we estimate that the average weight of crystals increases b
 
 
 ---
+class: clear, middle
 
-# Rocket propellant example
-
-.scrollable[
+.font250[
 
 Using the rocket propellant example, test whether the slope significantly differs from $-40$ psi/week at the $\alpha = 0.05$ level.
 
-```{r rocket-03}
+]
+
+
+---
+class: clear
+
+.code125[
+
+```{r rocket-slope-test-01}
 # Extract summary of estimated slope
-(slope <- summary(rocket_fit)$coef["age", ])  #<<
+(slope <- summary(rocket_fit)$coef["age", 1:2])  #<<
 
 # Compute test statistic
-(t_obs <- (slope["Estimate"] + 40) / slope["Std. Error"])  # <<
+(t_obs <- (slope["Estimate"] + 40) / 
+    slope["Std. Error"])
+```
 
+]
+
+
+---
+class: clear
+
+.code125[
+
+```{r rocket-slope-test-02}
 # Compute cutoff from reference distribution
 alpha <- 0.05
 n <- nrow(rocket)
 (t_ref <- qt(1 - alpha/2, df = n - 2))  #<<
 
 # Decision rule
-if (abs(t_obs) > t_ref) "reject H0" else "fail to reject H0"
+abs(t_obs) > t_ref
 ```
 
 ]
@@ -559,7 +622,7 @@ if (abs(t_obs) > t_ref) "reject H0" else "fail to reject H0"
 
 # Your turn
 
-.font150[
+.font250[
 
 Using the crystal weight example, test whether the slope significantly differs from $3/4$ grams/hour at the $\alpha = 0.1$ level.
 
@@ -568,11 +631,11 @@ Using the crystal weight example, test whether the slope significantly differs f
 
 ---
 
-# Solution `r set.seed(205); emo::ji("raised")`
+# Solution
 
 .font150[
 
-$$H_0: \beta_1 = 3/4 \quad vs \quad H_1: \beta_1 \ne 3/4$$
+$H_0: \beta_1 = 3/4 \quad vs \quad H_1: \beta_1 \ne 3/4$
 
 ```{r 01-crystal-solution-02}
 # Compute a 90% CI for the slope
@@ -588,16 +651,39 @@ Since 3/4 lies outside of the 90% confidence interval for $\beta_1$, we reject t
 
 # Computing the *p*-value
 
-.scrollable[
+.font150[
 
-* One-sided test: $$p = Pr\left(T_{n-2} > \left|t_{obs}\right|\right)$$
+One-sided test: $p = Pr\left(T_{n-2} > \left|t_{obs}\right|\right)$
 
-* Two-sided test: $$p = 2 \times Pr\left(T_{n-2} > \left|t_{obs}\right|\right)$$
+]
 
-```{r p-value}
-# From the rocket propellant example. What test does this correspond to?  #<<
-(t_obs <- slope["Estimate"] / slope["Std. Error"])  #<<
-(p_val <- 2 * pt(abs(t_obs), df = nrow(rocket) - 2, lower.tail = FALSE))  #<<
+.code125[
+
+```{r p-value-01}
+# Rocket propellant example
+(t_obs <- slope["Estimate"] / slope["Std. Error"])
+pt(abs(t_obs), df = nrow(rocket) - 2, lower.tail = FALSE)
+```
+
+]
+
+
+---
+
+# Computing the *p*-value
+
+.font150[
+
+Two-sided test: $p = 2 \times Pr\left(T_{n-2} > \left|t_{obs}\right|\right)$
+
+]
+
+.code125[
+
+```{r p-value-02}
+# Rocket propellant example
+(t_obs <- slope["Estimate"] / slope["Std. Error"])
+2 * pt(abs(t_obs), df = nrow(rocket) - 2, lower.tail = FALSE)
 ```
 
 ]
@@ -607,7 +693,7 @@ Since 3/4 lies outside of the 90% confidence interval for $\beta_1$, we reject t
 
 # Your turn
 
-.font150[
+.font300[
 
 Compute the *p*-value for the previous test in the crystal weight example. What is your decision?
 
@@ -616,11 +702,11 @@ Compute the *p*-value for the previous test in the crystal weight example. What 
 
 ---
 
-# Solution `r set.seed(205); emo::ji("raised")`
+# Solution
 
 .font125[
 
-$$H_0: \beta_1 = 3/4 \quad vs \quad H_1: \beta_1 \ne 3/4$$
+$H_0: \beta_1 = 3/4 \quad vs \quad H_1: \beta_1 \ne 3/4$
 
 ```{r 01-crystal-solution-03}
 slope <- summary(crystal_fit)$coef["time", ]
@@ -634,10 +720,13 @@ Since $p < 0.1$, we reject the null hypothesis and conclude that the slope signi
 
 
 ---
+class: clear, middle
 
-# Inferences concerning $\beta_0$
+.font200[
 
-* Similar results exist for the intercept, just replace $\widehat{SE}\left(\widehat{\beta}_1\right)$ with $$\widehat{SE}\left(\widehat{\beta}_0\right) = MSE\left(\frac{1}{n} + \frac{\bar{X}^2}{S_{xx}}\right)$$
+Similar results exist for the intercept, just replace $\widehat{SE}\left(\widehat{\beta}_1\right)$ with $$\widehat{SE}\left(\widehat{\beta}_0\right) = MSE\left(\frac{1}{n} + \frac{\bar{X}^2}{S_{xx}}\right)$$
+
+]
 
 
 ---
@@ -651,17 +740,9 @@ Consider the following hypotheses for the SLR model: $$H_0: \beta_1 = 0 \quad vs
 
 --
 
-.font200[
-
-.center[
-
-.red[
+.font200.center.red[
 
 What does failing to reject $H_0$ imply about the relationship between $X$ and $Y$?
-
-]
-
-]
 
 ]
 
@@ -707,7 +788,7 @@ What does failing to reject $H_0$ imply about the relationship between $X$ and $
 
 * It is easy to show that the sums of these squared deviations have the same relationship: $$\sum_{i=1}^n\left(Y_i - \bar{Y}\right) = \sum_{i=1}^n\left(\widehat{Y}_i - \bar{Y}\right) + \sum_{i=1}^n\left(Y_i - \widehat{Y}_i\right)$$
 
-    - In other words, $SST = SSS + SSE$ (.purple[much like in a one-way ANOVA])
+    - In other words, $SST = SSS + SSE$ (**much like in a one-way ANOVA**)
 
 ]
 
@@ -734,7 +815,7 @@ What does failing to reject $H_0$ imply about the relationship between $X$ and $
 
 
 ---
-class: clear, inverse, middle, center
+class: clear, middle, center
 
 .font250[
 
@@ -749,7 +830,7 @@ Is there a (linear) relationship between $X$ and $Y$? $$H_0: \beta_1 = 0 \quad v
 
 .font150[
 
-* Test statistic: $$F_{obs} = \frac{MSR}{MSE}$$ with 1 .darkorange[numerator degrees of freedom] and $n-2$ .darkorange[denominator degrees of freedom]
+* Test statistic: $$F_{obs} = \frac{MSR}{MSE}$$ with 1 numerator DF and $n-2$ denominator DF
 
 ]
 
@@ -772,7 +853,7 @@ Is there a (linear) relationship between $X$ and $Y$? $$H_0: \beta_1 = 0 \quad v
 
 .scrollable[
 
-```{r rocket-04}
+```{r rocket-anova}
 # Compute ANOVA table for the fitted model
 anova(rocket_fit)  #<<
 
@@ -781,6 +862,7 @@ summary(rocket_fit)
 ```
 
 ]
+
 
 ---
 
@@ -795,7 +877,7 @@ Using the crystal weight example, use an *F*-test to test whether or not there i
 
 ---
 
-# Solution `r set.seed(205); emo::ji("raised")`
+# Solution
 
 .scrollable[
 
@@ -946,7 +1028,7 @@ units in the population with a specific $X$ value
 
 --
 
-.center[.font75[.content-box-yellow[
+.center.font75.content-box-yellow[
 
 In other words, the point estimate is the same for prediction and estimation, the difference lies in the estimated standard error of each!
 
@@ -967,18 +1049,11 @@ In other words, the point estimate is the same for prediction and estimation, th
 
 --
 
-.center[.font75[.content-box-yellow[
+.center.font75.content-box-yellow[
 
 **My opinion:** confidence intervals for the mean response are far more common and useful in practice
 
-]]]
-
-
----
-
-# Anscombe's quartet
-
-TBD
+]
 
 
 ---
@@ -1077,7 +1152,7 @@ Using the crystal weight example, compute a 90% confidence interval for the mean
 
 ---
 
-# Solution `r set.seed(205); emo::ji("raised")`
+# Solution
 
 .scrollable[
 
@@ -1148,7 +1223,7 @@ SST <- sum((rocket$strength - mean(rocket$strength)) ^ 2)
 
 ---
 
-# Your turn `r emo::ji("cry")`
+# Your turn
 
 .font250[
 
@@ -1159,7 +1234,7 @@ Compute the coefficient of determination (i.e., $R^2$) for the crystal weight ex
 
 ---
 
-# Solution `r set.seed(205); emo::ji("raised")`
+# Solution
 
 .scrollable[
 
@@ -1244,9 +1319,8 @@ In SLR, there is a connection between $R^2$ and the Pearson correlation coeffici
 
 ]
 
--- 
+.font200.center[*r* will have the same sign as the estimated slope!]
 
-.font150[.center[.blue[*r* will have the same sign as the estimated slope!]]]
 
 ---
 
