@@ -245,6 +245,26 @@ Font size
   font-size: 125%;
 }
 
+.code130 .remark-code {
+  font-size: 130%;
+}
+
+.code135 .remark-code {
+  font-size: 135%;
+}
+
+.code140 .remark-code {
+  font-size: 140%;
+}
+
+.code145 .remark-code {
+  font-size: 145%;
+}
+
+.code150 .remark-code {
+  font-size: 150%;
+}
+
 .font10 {
   font-size: 10%;
 }

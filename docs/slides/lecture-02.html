@@ -5,8 +5,6 @@
     <meta charset="utf-8">
     <meta name="author" content="Brandon M. Greenwell" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
-    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
-    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
     <link href="libs/remark-css/hygge.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -17,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Inferences in Simple Linear Regression
 ## Lecture 02
 ### Brandon M. Greenwell
-### 23 September, 2018
+### 22 October, 2018
 
 ---
 
@@ -32,13 +30,15 @@ background-image: url(images/research-walberg-normal-distribution.jpg)
 
 # Reading assignment
 
-.larger[
+.font200[
 
 * Chapter: 2
 
-    - Sections: TBD
+    - Sections: 2.1-2.11
 
-* Main topics: TBD
+* Main topics: 
+
+    - Statistical inferences for simple linear regression
   
 ]
 
@@ -53,41 +53,19 @@ background-image: url(images/research-walberg-normal-distribution.jpg)
 ```r
 # List of required (CRAN) packages
 pkgs &lt;- c(
-  "animation",  # for pre-built statistical animations
-  "dplyr",      # for data wrangling
   "ggplot2",    # for awesome graphics
-  "HistData",   # for historical data sets
-  "tibble"      # for nicer data frames
+  "investr",    # for data sets and plotFit() functions
 )
 
 # Install required (CRAN) packages
 for (pkg in pkgs) {
-  if (!requireNamespace(pkg)) {  # check if already installed first
-    install.packages(pkg)  # install it
+  if (!(pkg %in% installed.packages()[, "Package"])) {
+    install.packages(pkg)
   }
 }
-
-# Install additional (optional) awesomeness
-install.packages(c("devtools", "magick"))
-devtools::install_github("bgreenwell/roundhouse")
 ```
 
 ]
-
-
----
-
-# Ready to begin?
-
---
-
-
-```r
-roundhouse::kick("Chuck Norris counted to infinity, twice", 
-                 width = 50)
-```
-
-&lt;img src="lecture-02_files/figure-html/roundhouse-01-1.gif" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -100,26 +78,26 @@ background-size: 40%
 ---
 class: clear, middle
 
-&lt;img src="lecture-02_files/figure-html/relationship-01-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/relationship-01-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle
 
-&lt;img src="lecture-02_files/figure-html/relationship-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/relationship-02-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle
 
-&lt;img src="lecture-02_files/figure-html/relationship-03-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/relationship-03-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Inferences concerning `\(\beta_1\)`
 
-.large[
+.font150[
 
 * **Bad:** Is there a relationship between `\(X\)` and `\(Y\)`? (.red[not testable])
 
@@ -127,7 +105,7 @@ class: clear, middle
 
 --
 
-.large[
+.font150[
 
 * **Good:** Is there a statistically significant linear relationship between `\(X\)` and `\(Y\)` at the `\(\alpha = 0.05\)` level? (.green[testable])
 
@@ -135,7 +113,7 @@ class: clear, middle
 
 --
 
-.large[
+.font150[
 
 * How can we reformulate this as a statistical test?
 
@@ -143,7 +121,7 @@ class: clear, middle
 
 --
 
-.large[
+.font150[
 
 $$
 H_0: \beta_1 = 0 \quad vs \quad H_1: \beta_1 \ne 0
@@ -153,9 +131,9 @@ $$
 
 --
 
-.large[
+.center.font125.content-box-yellow[
 
-* Need a point estimate, test statistic, reference distribution, etc.
+Need a point estimate, test statistic, and reference distribution!
 
 ]
 
@@ -164,7 +142,9 @@ $$
 
 # Properties of `\(\widehat{\beta}_1\)`
 
-.huge[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+.font250.center[
 
 What does the *bias* of a parameter estimate refer to? 🤔
 
@@ -172,24 +152,115 @@ What does the *bias* of a parameter estimate refer to? 🤔
 
 
 ---
+class: clear
+
+.code150[
+
+
+```r
+# Simulate data
+n &lt;- 100
+set.seed(8451)
+x &lt;- runif(n, min = 0, max = 10)
+*y &lt;- rnorm(n, mean = 1 + 10*x, sd = 10)
+
+# Fit an SLR model
+fit &lt;- lm(y ~ x)
+coef(fit)
+```
+
+```
+## (Intercept)           x 
+##    2.619470    9.647163
+```
+
+]
+
+
+---
+class: clear
+
+.code150[
+
+
+```r
+# Plot the results
+plot(x, y)
+abline(fit, lwd = 2, col = "red2")
+```
+
+&lt;img src="lecture-02_files/figure-html/simulation-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+class: clear
+
+
+```r
+# Run simulation
+set.seed(8451)
+sim &lt;- t(replicate(10000, expr = {
+  x &lt;- runif(n = 100, min = 0, max = 10)
+  y &lt;- rnorm(n = 100, mean = 1 + 10*x, sd = 10)
+  coef(lm(y ~ x))
+}))
+
+# Sample means
+apply(sim, MARGIN = 2, FUN = mean)
+```
+
+```
+## (Intercept)           x 
+##    1.006615    9.997731
+```
+
+```r
+# Sample standard deviations
+apply(sim, MARGIN = 2, FUN = sd)
+```
+
+```
+## (Intercept)           x 
+##   2.0121943   0.3462704
+```
+
+
+---
+class: clear
+
+
+```r
+# Sampling distribution
+hist(sim[, 2], breaks = 50, freq = FALSE, col = "gray30", border = "white", 
+     las = 1, xlab = expression(hat(beta)[1]),
+     main = expression(paste("Sampling distribution of ", hat(beta)[1])))
+abline(v = 10, lwd = 3, col = "red2")
+```
+
+&lt;img src="lecture-02_files/figure-html/simulation-04-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
 
 # Properties of `\(\widehat{\beta}_1\)`
 
-.large[
+.font150[
 
 * Recall from the previous lecture that LS estimation provides the best linear unbiased estimates .blue[(BLUE)] of `\(\beta_0\)` and `\(\beta_1\)`; namely, `\(\widehat{\beta}_0\)` and `\(\widehat{\beta}_1\)`
 
     - Unbiased since `\(E\left[\widehat{\beta}_0\right] = \beta_0\)` and `\(E\left[\widehat{\beta}_1\right] = \beta_1\)`
 
-    - Best in the sense that `\(\widehat{\beta}_0\)` and `\(\widehat{\beta}_1\)` have the smallest .purple[variance] among all other **linear unbiased** estimators of `\(\beta_0\)` and `\(\beta_1\)`, respectively
+    - Best in the sense that `\(\widehat{\beta}_0\)` and `\(\widehat{\beta}_1\)` have the **smallest variance** among all other **linear unbiased** estimators of `\(\beta_0\)` and `\(\beta_1\)`, respectively
 
 ]
 
 --
 
-.large[
+.font125.center.red[
 
-* So what is `\(Var\left[\widehat{\beta}_0\right]\)` and `\(Var\left[\widehat{\beta}_1\right]\)`?
+So what is `\(Var\left[\widehat{\beta}_0\right]\)` and `\(Var\left[\widehat{\beta}_1\right]\)`?
 
 ]
 
@@ -198,7 +269,7 @@ What does the *bias* of a parameter estimate refer to? 🤔
 
 # Properties of `\(\widehat{\beta}_1\)`
 
-.large[
+.font150[
 
 * Recall that the LS estimate of the slope is a weighted average of the (observed) response values: `\(\widehat{\beta}_1 = \sum_{i=1}^n w_iY_i\)` 
 
@@ -206,11 +277,11 @@ What does the *bias* of a parameter estimate refer to? 🤔
 
 --
 
-.large[
+.font150[
 
 * Since the `\(Y_i\)` are independent, it follows that 
 
-.small[
+.font75[
 
 `$$Var\left(\widehat{\beta}_1\right) = Var\left(\sum_{i=1}^n w_iY_i\right) = \sum_{i=1}^n w_i^2Var\left(Y_i\right) = \dots = \sigma^2 / S_{xx}$$`
 
@@ -223,7 +294,7 @@ What does the *bias* of a parameter estimate refer to? 🤔
 
 # Sampling distribution of `\(\widehat{\beta}_1\)`
 
-.large[
+.font150[
 
 * Assuming `\(\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)\)`, then `\(\widehat{\beta}_1 \sim ???\)` 🤔
 
@@ -231,7 +302,7 @@ What does the *bias* of a parameter estimate refer to? 🤔
 
 --
  
-.large[
+.font150[
 
 * `\(\widehat{\beta}_1 \sim N\left(\beta_1, \sigma^2/S_{xx}\right)\)`
 
@@ -239,7 +310,7 @@ What does the *bias* of a parameter estimate refer to? 🤔
 
 --
 
-.large[
+.font150[
 
 * But we generally don't know `\(\sigma^2\)`, so how do we estimate it?
 
@@ -247,9 +318,9 @@ What does the *bias* of a parameter estimate refer to? 🤔
 
 --
 
-.large[
+.font150[
 
-* Replace `\(\sigma^2\)` with its point estimate ($\widehat{\sigma}^2 = MSE$), and the sampling distribution of `\(\widehat{\beta}_1\)` becomes `\(\widehat{\beta}_1 \stackrel{\cdot}{\sim} N\left(\beta_1, \widehat{\sigma}^2/S_{xx}\right)\)`
+* Replace `\(\sigma^2\)` with its point estimate `\(\widehat{\sigma}^2 = MSE\)`, and the sampling distribution of `\(\widehat{\beta}_1\)` becomes `\(\widehat{\beta}_1 \stackrel{\cdot}{\sim} N\left(\beta_1, \widehat{\sigma}^2/S_{xx}\right)\)`
 
 ]
 
@@ -258,7 +329,7 @@ What does the *bias* of a parameter estimate refer to? 🤔
 
 # Standard errors
 
-.large[
+.font150[
 
 * .purple[The standard deviation of an estimate is referred to as its *standard error*]. For example,
 
@@ -268,7 +339,7 @@ What does the *bias* of a parameter estimate refer to? 🤔
 
 --
 
-.large[
+.font150[
 
 * Since we don't know `\(\sigma^2\)`, we estimate `\(SE\left(\widehat{\beta}_1\right) = \sigma/\sqrt{S_{xx}}\)` with its *plug-in* estimate
 
@@ -304,9 +375,71 @@ n &lt;- 30                 # sample size
 ## [1] 2.048407
 ```
 
---
 
-* A `\(\left(1-\alpha\right)\)` 100% confidence interval for `\(\beta_1\)` is given by `\(\widehat{\beta}_1 \pm t_{n - 2, 1 - \alpha/2}\widehat{\sigma}/S_{xx}\)`
+---
+
+# Inference regarding `\(\beta_1\)`
+
+&lt;br&gt;&lt;br&gt;
+
+.font250.center[ 
+
+A `\(\left(1-\alpha\right)\)` 100% confidence interval for `\(\beta_1\)` is given by `$$\widehat{\beta}_1 \pm t_{n - 2, 1 - \alpha/2}\widehat{\sigma}/S_{xx}$$`
+
+]
+
+
+---
+
+# Rocket propellant example
+
+
+```r
+# Load the rocket propellant data
+url &lt;- "https://bgreenwell.github.io/uc-bana7052/data/rocket.csv"
+rocket &lt;- read.csv(url)
+
+# Print first six rows
+tibble::as_tibble(rocket)[1:6, ]
+```
+
+```
+## # A tibble: 6 x 2
+##   strength   age
+##      &lt;dbl&gt; &lt;dbl&gt;
+## 1    2159.  15.5
+## 2    1678.  23.8
+## 3    2316    8  
+## 4    2061.  17  
+## 5    2208.   5.5
+## 6    1708.  19
+```
+
+
+---
+
+# Rocket propellant example
+
+.code125[
+
+
+```r
+# Fit an SLR model
+rocket_fit &lt;- lm(strength ~ age, data = rocket)
+
+# Plot the data with the fitted mean response
+investr::plotFit(rocket_fit, lwd.fit = 2, 
+                 col.fit = "red2", pch = 19)
+```
+
+]
+
+
+---
+
+# Rocket propellant example
+
+&lt;img src="lecture-02_files/figure-html/rocket-slr-plot-1.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -315,19 +448,6 @@ n &lt;- 30                 # sample size
 
 .scrollable[
 
-
-```r
-# Load the rocket propellant data
-rocket &lt;- read.csv("https://bgreenwell.github.io/uc-bana7052/data/rocket.csv")
-
-# Fit an SLR model
-rocket_fit &lt;- lm(strength ~ age, data = rocket)
-
-# Plot the data with the fitted mean response
-investr::plotFit(rocket_fit)
-```
-
-&lt;img src="lecture-02_files/figure-html/rocket-01-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 ```r
 # Print a summary of the fitted model
@@ -355,6 +475,16 @@ summary(rocket_fit)
 ## F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
 ```
 
+]
+
+
+---
+
+# Rocket propellant example
+
+.code150[
+
+
 ```r
 # Compute a 95% CI for the slope
 *confint(rocket_fit, level = 0.95)
@@ -370,9 +500,10 @@ summary(rocket_fit)
 
 
 ---
-class: clear, middle
 
-.large[
+# Rocket propellant example
+
+.font150[
 
 Can you interpret the confidence interval for `\(\beta_1\)` in the previous example?
 
@@ -391,14 +522,18 @@ confint(rocket_fit, level = 0.95)
 ## age          -43.22338  -31.0838
 ```
 
+.font150[
+
 With 95% confidence, we estimate that the mean strength of rockets decreases between 31.08 psi and 43.22 psi for every one-week increase in age.
+
+]
 
 
 ---
 
-# Your turn 😱
+# Your turn
 
-.huge[
+.font250[
 
 Fit an SLR model to the crystal weight data using `weight` as the response and `time` as the predictor. Find a 95% confidence interval for the slope and interpret the results in **plain english**.
 
@@ -521,9 +656,9 @@ if (abs(t_obs) &gt; t_ref) "reject H0" else "fail to reject H0"
 
 ---
 
-# Your turn 😱
+# Your turn
 
-.large[
+.font150[
 
 Using the crystal weight example, test whether the slope significantly differs from `\(3/4\)` grams/hour at the `\(\alpha = 0.1\)` level.
 
@@ -534,7 +669,7 @@ Using the crystal weight example, test whether the slope significantly differs f
 
 # Solution 🙌
 
-.large[
+.font150[
 
 `$$H_0: \beta_1 = 3/4 \quad vs \quad H_1: \beta_1 \ne 3/4$$`
 
@@ -589,9 +724,9 @@ Since 3/4 lies outside of the 90% confidence interval for `\(\beta_1\)`, we reje
 
 ---
 
-# Your turn 😱
+# Your turn
 
-.large[
+.font150[
 
 Compute the *p*-value for the previous test in the crystal weight example. What is your decision?
 
@@ -602,7 +737,7 @@ Compute the *p*-value for the previous test in the crystal weight example. What 
 
 # Solution 🙌
 
-.medium[
+.font125[
 
 `$$H_0: \beta_1 = 3/4 \quad vs \quad H_1: \beta_1 \ne 3/4$$`
 
@@ -641,7 +776,7 @@ Since `\(p &lt; 0.1\)`, we reject the null hypothesis and conclude that the slop
 ---
 class: clear
 
-.larger[
+.font200[
 
 Consider the following hypotheses for the SLR model: `$$H_0: \beta_1 = 0 \quad vs \quad H_1: \beta_1 \ne 0$$`
 
@@ -649,7 +784,7 @@ Consider the following hypotheses for the SLR model: `$$H_0: \beta_1 = 0 \quad v
 
 --
 
-.larger[
+.font200[
 
 .center[
 
@@ -668,7 +803,7 @@ What does failing to reject `\(H_0\)` imply about the relationship between `\(X\
 
 # ANOVA approach
 
-.large[
+.font150[
 
 * What does ANOVA refer to? 🤔
 
@@ -676,7 +811,7 @@ What does failing to reject `\(H_0\)` imply about the relationship between `\(X\
 
 --
 
-.large[
+.font150[
 
 * Partitioning sums of squares (SS)
 
@@ -693,7 +828,7 @@ What does failing to reject `\(H_0\)` imply about the relationship between `\(X\
 
 # ANOVA approach
 
-.large[
+.font150[
 
 * `\(\left(Y_i - \bar{Y}\right) = \left(\widehat{Y}_i - \bar{Y}\right) + \left(Y_i - \widehat{Y}_i\right)\)`
 
@@ -701,7 +836,7 @@ What does failing to reject `\(H_0\)` imply about the relationship between `\(X\
 
 -- 
 
-.large[
+.font150[
 
 * It is easy to show that the sums of these squared deviations have the same relationship: `$$\sum_{i=1}^n\left(Y_i - \bar{Y}\right) = \sum_{i=1}^n\left(\widehat{Y}_i - \bar{Y}\right) + \sum_{i=1}^n\left(Y_i - \widehat{Y}_i\right)$$`
 
@@ -714,7 +849,7 @@ What does failing to reject `\(H_0\)` imply about the relationship between `\(X\
 
 # ANOVA approach
 
-.larger[
+.font200[
 
 * Diving an SS by its associated *degrees of freedom* (df) produces mean squares (.purple[kind of like a standard deviation])
 
@@ -722,7 +857,7 @@ What does failing to reject `\(H_0\)` imply about the relationship between `\(X\
 
 --
 
-.larger[
+.font200[
 
 * `\(MSR = \frac{SSR}{1}\)`
 
@@ -734,7 +869,7 @@ What does failing to reject `\(H_0\)` imply about the relationship between `\(X\
 ---
 class: clear, inverse, middle, center
 
-.huge[
+.font250[
 
 Is there a (linear) relationship between `\(X\)` and `\(Y\)`? `$$H_0: \beta_1 = 0 \quad vs \quad H_1: \beta_1 \ne 0$$`
 
@@ -745,7 +880,7 @@ Is there a (linear) relationship between `\(X\)` and `\(Y\)`? `$$H_0: \beta_1 = 
 
 # ANOVA approach
 
-.large[
+.font150[
 
 * Test statistic: `$$F_{obs} = \frac{MSR}{MSE}$$` with 1 .darkorange[numerator degrees of freedom] and `\(n-2\)` .darkorange[denominator degrees of freedom]
 
@@ -753,7 +888,7 @@ Is there a (linear) relationship between `\(X\)` and `\(Y\)`? `$$H_0: \beta_1 = 
 
 --
 
-.large[
+.font150[
 
 * Reject `\(H_0\)` at the `\(\alpha\)` level whenever `\(F_{obs} &gt; F_{1-\alpha, 1, n-2}\)`
 
@@ -817,9 +952,9 @@ summary(rocket_fit)
 
 ---
 
-# Your turn 😱
+# Your turn
 
-.larger[
+.font200[
 
 Using the crystal weight example, use an *F*-test to test whether or not there is a relationship between `time` and `weight` at the `\(\alpha = 0.05\)` level. Manually compute the *p*-value for this test and 🙏 that it matches the output from `summary()`.
 
@@ -900,7 +1035,7 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 
 # F or t?
 
-.large[
+.font150[
 
 * For every two-sided *t*-test, there is a corresponding *F*-test
 
@@ -910,7 +1045,7 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 
 --
 
-.large[
+.font150[
 
 * In the SLR model, these the approaches are equivalent 
 
@@ -923,7 +1058,7 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 
 # The general linear test
 
-.large[
+.font150[
 
 * Full model: `\(Y_i = \beta_0 + \beta_1 X_i + \epsilon_i\)`
 
@@ -931,7 +1066,7 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 
 --
 
-.large[
+.font150[
 
 * .magenta[Reduced] model: `\(Y_i = \beta_0 + \epsilon_i\)`
 
@@ -939,7 +1074,7 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 
 --
 
-.large[
+.font150[
 
 * Implied test: `\(H_0: \beta_1 = 0 \quad vs \quad H_1: \beta_1 \ne 0\)`
 
@@ -992,7 +1127,7 @@ rocket_fit_reduced &lt;- lm(strength ~ 1, data = rocket)
 
 # Rule of thumb 👍
 
-.large[
+.font150[
 
 Using 
 
@@ -1048,7 +1183,7 @@ units in the population with a specific `\(X\)` value
 
 --
 
-.center[.small[.content-box-yellow[
+.center[.font75[.content-box-yellow[
 
 In other words, the point estimate is the same for prediction and estimation, the difference lies in the estimated standard error of each!
 
@@ -1069,7 +1204,7 @@ In other words, the point estimate is the same for prediction and estimation, th
 
 --
 
-.center[.small[.content-box-yellow[
+.center[.font75[.content-box-yellow[
 
 **My opinion:** confidence intervals for the mean response are far more common and useful in practice
 
@@ -1087,7 +1222,7 @@ TBD
 
 # CI for the mean response
 
-.large[
+.font150[
 
 * We can estimate the mean response given `\(X = X_0\)` as `\(\widehat{Y}_0 = \widehat{\beta}_0 + \widehat{\beta}_1 X_0\)` 
 
@@ -1095,7 +1230,7 @@ TBD
 
 --
 
-.large[
+.font150[
 
 * How can we construct a CI for `\(\widehat{Y}\)`? 🤔
 
@@ -1103,7 +1238,7 @@ TBD
 
 --
 
-.large[
+.font150[
 
 * What is the sampling distribution of `\(\widehat{Y}_0\)`? 🤔
 
@@ -1111,7 +1246,7 @@ TBD
 
 --
 
-.large[
+.font150[
 
 For the normal error regression model `$$\frac{\widehat{Y}_0 - E\left(\widehat{Y}_0\right)}{\widehat{SE}\left(\widehat{Y}_0\right)} \sim t_{n-2}$$`
 
@@ -1122,7 +1257,7 @@ For the normal error regression model `$$\frac{\widehat{Y}_0 - E\left(\widehat{Y
 
 # CI for the mean response
 
-.large[
+.font150[
 
 * `\(E\left(\widehat{Y}_0\right) = \beta_0 + \beta_1 x_0\)`
 
@@ -1132,7 +1267,7 @@ For the normal error regression model `$$\frac{\widehat{Y}_0 - E\left(\widehat{Y
 
 --
 
-.large[
+.font150[
 
 A `\(1 - \alpha\)` CI for the mean response at `\(X = X_0\)` is given by `$$\widehat{Y}_0 \pm t_{1 - \alpha/2, n-2} MSE\left[\frac{1}{n} + \frac{\left(X_0 - \bar{X}\right)^2}{S_{xx}}\right]$$`
 
@@ -1140,7 +1275,7 @@ A `\(1 - \alpha\)` CI for the mean response at `\(X = X_0\)` is given by `$$\wid
 
 --
 
-.medium[.center[.red[At what point is this interval smallest?]]]
+.font125[.center[.red[At what point is this interval smallest?]]]
 
 
 ---
@@ -1183,9 +1318,9 @@ plotFit(rocket_fit, interval = "confidence", shade = TRUE, xlim = c(-20, 100))
 
 ---
 
-# Your turn 😱
+# Your turn
 
-.larger[
+.font200[
 
 Using the crystal weight example, compute a 90% confidence interval for the mean response at `\(X = 20\)` hours. Plot a (pointwise) 90% confidence band using the `investr::plotFit()` function. See `?predict.lm` and `?investr::plotFit` for help.
 
@@ -1226,14 +1361,14 @@ plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, shade = TRUE,
 class: clear, middle, center
 
 
-.larger[[Confidence intervals vs prediction intervals](https://stats.stackexchange.com/questions/16493/difference-between-confidence-intervals-and-prediction-intervals)]
+.font200[[Confidence intervals vs prediction intervals](https://stats.stackexchange.com/questions/16493/difference-between-confidence-intervals-and-prediction-intervals)]
 
 
 ---
 
 # Coefficient of determination
 
-.large[
+.font150[
 
 * A useful performance metric in linear regression, called the *coefficient of determination*, is defined as `$$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$`
 
@@ -1241,7 +1376,7 @@ class: clear, middle, center
 
 --
 
-.large[
+.font150[
 
 * In linear regression, `\(R^2\)` can be interpreted as the fraction of variance explained (FVE) (i.e., the proportion of the variation in `\(Y\)` that can be explained by `\(X\)`)
 
@@ -1325,7 +1460,7 @@ SST &lt;- sum((rocket$strength - mean(rocket$strength)) ^ 2)
 
 # Your turn 😢
 
-.huge[
+.font250[
 
 Compute the coefficient of determination (i.e., `\(R^2\)`) for the crystal weight example by hand .purple[and interpret its value].
 
@@ -1374,7 +1509,7 @@ Roughly 94.5% of the variability in the final weight of crystals is explained by
 
 # Common misunderstandings about `\(R^2\)`
 
-.large[
+.font150[
 
 * A high `\(R^2\)` (i.e., near 1) indicates that a useful (i.e., accurate) prediction can be made
 
@@ -1382,7 +1517,7 @@ Roughly 94.5% of the variability in the final weight of crystals is explained by
 
 --
 
-.large[
+.font150[
 
 * A high `\(R^2\)` (i.e., near 1) indicates that the estimated regression line provides a good fit to the data
 
@@ -1390,7 +1525,7 @@ Roughly 94.5% of the variability in the final weight of crystals is explained by
 
 --
 
-.large[
+.font150[
 
 * A small `\(R^2\)` (i.e., near zero) indicates that `\(X\)` and `\(Y\)` are not related
 
@@ -1401,7 +1536,7 @@ Roughly 94.5% of the variability in the final weight of crystals is explained by
 
 # Other things to look out for 👀
 
-.large[
+.font150[
 
 * `\(R^2\)` will .red[always] increase when more terms are added to the model (.orange[more on this in multiple linear regression])
 
@@ -1409,7 +1544,7 @@ Roughly 94.5% of the variability in the final weight of crystals is explained by
 
 --
 
-.large[
+.font150[
 
 * As the range of `\(X\)` increases/decreases, `\(R^2\)` also generally increases/decreases
 
@@ -1417,7 +1552,7 @@ Roughly 94.5% of the variability in the final weight of crystals is explained by
 
 --
 
-.large[
+.font150[
 
 * `\(R^2\)` does not indicate the **appropriateness** of a linear model
 
@@ -1425,14 +1560,14 @@ Roughly 94.5% of the variability in the final weight of crystals is explained by
 
 --
 
-.larger[.center[.blue[So why even use the coefficient of determination?]]]
+.font200[.center[.blue[So why even use the coefficient of determination?]]]
 
 
 ---
 
 # Coefficient of correlation
 
-.larger[
+.font200[
 
 In SLR, there is a connection between `\(R^2\)` and the Pearson correlation coefficient between `\(X\)` and `\(Y\)`: `$$r = \pm \sqrt{R^2}$$`
 
@@ -1440,13 +1575,13 @@ In SLR, there is a connection between `\(R^2\)` and the Pearson correlation coef
 
 -- 
 
-.large[.center[.blue[*r* will have the same sign as the estimated slope!]]]
+.font150[.center[.blue[*r* will have the same sign as the estimated slope!]]]
 
 ---
 
 # Rocket propellant example
 
-.medium[
+.font125[
 
 
 ```r
@@ -1481,9 +1616,9 @@ cor(rocket)  # compare with correlation coefficient
 
 ---
 
-# Crystal weight example 🔮
+# Crystal weight example 
 
-.larger[
+.font200[
 
 For the crystal weight data, rather than estimating the mean weight for crystals grown for 10 weeks, suppose we wanted to estimate how long we should grow the crystals such the average weight will be 10 grams. Use your intuition to derive a point estimate for this value. 
 
