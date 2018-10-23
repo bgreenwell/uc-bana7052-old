@@ -329,8 +329,8 @@ $(document).ready(function () {
 <ol style="list-style-type: lower-alpha">
 <li><p>Generate data with <span class="math inline">\(X \sim N\left(\mu = 2, \sigma^2 = 0.1^2\right)\)</span>, sample size <span class="math inline">\(n = 100\)</span>, and error term <span class="math inline">\(\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)\)</span>.</p></li>
 <li><p>Fit a simple linear regression to the simulated data from part a. What is the estimated prediction equation? Report the estimated coefficients and their standard errors. Are they significant? Clearly write out the null and alternative hypotheses, observed <em>t</em>-statistic(s), <em>p</em>-value(s), and interpret the estimates and test results. What is fitted model’s MSE?</p></li>
-<li><p>Repeat part b., but re-simulate the data and change the error term to <span class="math inline">\(\epsilon \sim N\left(0, \sigma = 1\right)\)</span></p></li>
-<li><p>Repeat parts a.-c. using <span class="math inline">\(n = 400\)</span>. What do you conclude? What is the effect to the model parameter estimates when error variance gets smaller? What is the effect when sample size gets bigger?</p></li>
+<li><p>Repeat part b), but re-simulate the data and change the error term to <span class="math inline">\(\epsilon \sim N\left(0, \sigma = 1\right)\)</span></p></li>
+<li><p>Repeat parts a)–c) using <span class="math inline">\(n = 400\)</span>. What do you conclude? What is the effect on the model parameter estimates when error variance gets smaller? What is the effect when sample size gets bigger?</p></li>
 <li><p>What about the MSE from each model?</p></li>
 </ol>
 <ul>
@@ -343,7 +343,7 @@ $(document).ready(function () {
 <p><strong>Question 3. (6 points)</strong> Bias and Variance of Parameter Estimates.</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>What are the bias and variance of the OLS estimates <span class="math inline">\(\widehat{\beta}_0\)</span> and <span class="math inline">\(\widehat{\beta}_1\)</span>?</p></li>
-<li><p>What do you expect when the sample size <span class="math inline">\(n\)</span> increases? What do you expect when the error variance <span class="math inline">\(\sigma^2\)</span> increases?</p></li>
+<li><p>What do you expect to happen to the variances of the OLS estimates of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> when the sample size <span class="math inline">\(n\)</span> increases? What do you expect when the error variance <span class="math inline">\(\sigma^2\)</span> increases?</p></li>
 <li><p>What is the bias of the model’s MSE? What about the ML estimate of <span class="math inline">\(\sigma^2\)</span>? What is the difference between these two estimates of <span class="math inline">\(\sigma^2\)</span>? Why do we use MSE instead of the ML estimate?</p></li>
 </ol>
 </div>

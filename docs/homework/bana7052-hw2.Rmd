@@ -33,9 +33,9 @@ a. Generate data with $X \sim N\left(\mu = 2, \sigma^2 = 0.1^2\right)$, sample s
 
 b. Fit a simple linear regression to the simulated data from part a. What is the estimated prediction equation? Report the estimated coefficients and their standard errors. Are they significant? Clearly write out the null and alternative hypotheses, observed *t*-statistic(s), *p*-value(s), and interpret the estimates and test results. What is fitted model's MSE?
 
-c. Repeat part b., but re-simulate the data and change the error term to $\epsilon \sim N\left(0, \sigma = 1\right)$
+c. Repeat part b), but re-simulate the data and change the error term to $\epsilon \sim N\left(0, \sigma = 1\right)$
 
-d. Repeat parts a.-c. using $n = 400$. What do you conclude? What is the effect to the model parameter estimates when error variance gets smaller? What is the effect when sample size gets bigger?
+d. Repeat parts a)--c) using $n = 400$. What do you conclude? What is the effect on the model parameter estimates when error variance gets smaller? What is the effect when sample size gets bigger?
 
 e. What about the MSE from each model?
 
@@ -50,6 +50,6 @@ e. What about the MSE from each model?
 
 a. What are the bias and variance of the OLS estimates $\widehat{\beta}_0$ and $\widehat{\beta}_1$?
 
-b. What do you expect when the sample size $n$ increases? What do you expect when the error variance $\sigma^2$ increases?
+b. What do you expect to happen to the variances of the OLS estimates of $\beta_0$ and $\beta_1$ when the sample size $n$ increases? What do you expect when the error variance $\sigma^2$ increases?
 
 c. What is the bias of the model's MSE? What about the ML estimate of $\sigma^2$? What is the difference between these two estimates of $\sigma^2$? Why do we use MSE instead of the ML estimate?
