@@ -807,11 +807,11 @@ What does failing to reject $H_0$ imply about the relationship between $X$ and $
 
 ]
 
--- 
+--
 
 .font150[
 
-* It is easy to show that the sums of these squared deviations have the same relationship: $$\sum_{i=1}^n\left(Y_i - \bar{Y}\right) = \sum_{i=1}^n\left(\widehat{Y}_i - \bar{Y}\right) + \sum_{i=1}^n\left(Y_i - \widehat{Y}_i\right)$$
+* It is easy to show that the sums of these squared deviations have the same relationship: $$\sum_{i=1}^n\left(Y_i - \bar{Y}\right)^2 = \sum_{i=1}^n\left(\widehat{Y}_i - \bar{Y}\right)^2 + \sum_{i=1}^n\left(Y_i - \widehat{Y}_i\right)^2$$
 
     - In other words, $SST = SSS + SSE$ (**much like in a one-way ANOVA**)
 
