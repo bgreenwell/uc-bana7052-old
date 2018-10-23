@@ -1212,13 +1212,13 @@ rocket_fit_reduced &lt;- lm(strength ~ 1, data = rocket)
 
 # Rule of thumb 👍
 
-.font150[
+.font250[
 
-Using 
+Using `\(Esimtate \pm 2 \times SE\)` for an approximate 95% CI is incredibly robust!
 
-`$$Esimtate \pm 2 \times SE$$`
+]
 
-for an approximate 95% CI is incredibly robust!
+.code125[
 
 
 ```r
@@ -1260,9 +1260,9 @@ units in the population with a specific `\(X\)` value
 
 * Suppose we want to estimate the mean strength of .bold[all rockets] with an age of 15 weeks
 
-    - For the prediction problem, we want to predict the strength of a **single rocket** at 15 weeks
+    - For the **prediction problem**, we want to predict the strength of a **single rocket** at 15 weeks
     
-    - For the estimation problem, we want to estimate the mean of the population of all rockets that are 15 weeks old 
+    - For the **estimation problem**, we want to estimate the mean of the population of all rockets that are 15 weeks old 
     
     - In both cases, we use `\(\widehat{Y} = 2070.512\)` as the predicted strength and as the estimate of the mean strength of of rockets that are 15 weeks old
 
@@ -1289,7 +1289,7 @@ In other words, the point estimate is the same for prediction and estimation, th
 
 --
 
-.center.font75.content-box-yellow[
+.center.font125.content-box-yellow[
 
 **My opinion:** confidence intervals for the mean response are far more common and useful in practice
 
@@ -1326,7 +1326,7 @@ In other words, the point estimate is the same for prediction and estimation, th
 
 .font150[
 
-For the normal error regression model `$$\frac{\widehat{Y}_0 - E\left(\widehat{Y}_0\right)}{\widehat{SE}\left(\widehat{Y}_0\right)} \sim t_{n-2}$$`
+`$$\frac{\widehat{Y}_0 - E\left(\widehat{Y}_0\right)}{\widehat{SE}\left(\widehat{Y}_0\right)} \sim t_{n-2}$$`
 
 ]
 
@@ -1360,10 +1360,6 @@ A `\(1 - \alpha\)` CI for the mean response at `\(X = X_0\)` is given by `$$\wid
 
 # Rocket propellant example
 
-Compute a 95% confidence interval for the mean response at 15 weeks
-
-.scrollable[
-
 
 ```r
 # Confidence interval for the mean response at age = 15
@@ -1376,22 +1372,31 @@ predict(rocket_fit, newdata = new_data, interval = "confidence")
 ## 1 2070.518 2024.289 2116.748
 ```
 
+
+---
+class: clear
+
+
 ```r
-# Plot the (pointwise) confidence band around the fitted regression line
-library(investr)  # for plotFit() function
+# Plot a 95% (pointwise) confidence band
 plotFit(rocket_fit, interval = "confidence")
 abline(v = 15, col = "red2")
 ```
 
-&lt;img src="lecture-02_files/figure-html/rocket-06-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/rocket-conf-band-02-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear
+
 
 ```r
-plotFit(rocket_fit, interval = "confidence", shade = TRUE, xlim = c(-20, 100))
+# Extrapolation
+plotFit(rocket_fit, interval = "confidence", 
+        shade = TRUE, xlim = c(-20, 100))
 ```
 
-&lt;img src="lecture-02_files/figure-html/rocket-06-2.png" width="70%" style="display: block; margin: auto;" /&gt;
-
-]
+&lt;img src="lecture-02_files/figure-html/rocket-conf-band-03-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1409,37 +1414,41 @@ Using the crystal weight example, compute a 90% confidence interval for the mean
 
 # Solution
 
-.scrollable[
-
 
 ```r
 # Confidence interval for the mean response at age = 15
 new_data &lt;- data.frame(time = 20)
 predict(crystal_fit, newdata = new_data, interval = "confidence",
 *       level = 0.9)
+
+# Plot the (pointwise) confidence band around the fitted regression line
+plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, 
+        shade = TRUE, col.conf = adjustcolor("red2", alpha.f = 0.5))
 ```
+
+
+---
+
+# Solution
+
 
 ```
 ##     fit      lwr      upr
 ## 1 10.07 9.474876 10.66512
 ```
 
-```r
-# Plot the (pointwise) confidence band around the fitted regression line
-plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, shade = TRUE,
-        col.conf = adjustcolor("red2", alpha.f = 0.5))
-```
-
-&lt;img src="lecture-02_files/figure-html/01-crystal-solution-05-1.png" width="70%" style="display: block; margin: auto;" /&gt;
-
-]
+&lt;img src="lecture-02_files/figure-html/crystal-conf-band-02-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle, center
 
 
-.font200[[Confidence intervals vs prediction intervals](https://stats.stackexchange.com/questions/16493/difference-between-confidence-intervals-and-prediction-intervals)]
+.font300[
+
+[Confidence intervals vs prediction intervals](https://stats.stackexchange.com/questions/16493/difference-between-confidence-intervals-and-prediction-intervals)
+
+]
 
 
 ---
@@ -1467,34 +1476,8 @@ class: clear, middle, center
 
 # Rocket propellant example
 
-.scrollable[
+.code150[
 
-
-```r
-# Print model summary
-summary(rocket_fit)
-```
-
-```
-## 
-## Call:
-## lm(formula = strength ~ age, data = rocket)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -215.98  -50.68   28.74   66.61  106.76 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 2627.822     44.184   59.48  &lt; 2e-16 ***
-## age          -37.154      2.889  -12.86 1.64e-10 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 96.11 on 18 degrees of freedom
-## Multiple R-squared:  0.9018,	Adjusted R-squared:  0.8964 
-## F-statistic: 165.4 on 1 and 18 DF,  p-value: 1.643e-10
-```
 
 ```r
 # Extract R-squared from the model summary
@@ -1505,8 +1488,18 @@ summary(rocket_fit)$r.squared
 ## [1] 0.9018414
 ```
 
+]
+
+
+---
+
+# Rocket propellant example
+
+.code130[
+
+
 ```r
-# Compute R-squared by hand
+# ANOVA decomposition
 anova(rocket_fit)
 ```
 
@@ -1521,14 +1514,26 @@ anova(rocket_fit)
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
+]
+
+
+---
+
+# Rocket propellant example
+
+.code130[
+
+
 ```r
+# Compute R-squared by hand
 SSE &lt;- anova(rocket_fit)["Residuals", "Sum Sq"]
-SST &lt;- sum((rocket$strength - mean(rocket$strength)) ^ 2)
-1 - SSE/SST
+SST &lt;- sum((rocket$strength - 
+              mean(rocket$strength)) ^ 2)
+round(c(SSE, SST, 1 - SSE/SST), digits = 3)
 ```
 
 ```
-## [1] 0.9018414
+## [1]  166254.858 1693737.601       0.902
 ```
 
 ]
@@ -1549,34 +1554,24 @@ Compute the coefficient of determination (i.e., `\(R^2\)`) for the crystal weigh
 
 # Solution
 
-.scrollable[
+.code130[
 
 
 ```r
 # Compute R-squared by hand
-anova(crystal_fit)
-```
-
-```
-## Analysis of Variance Table
-## 
-## Response: weight
-##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## time       1 230.631 230.631  204.58 6.688e-09 ***
-## Residuals 12  13.528   1.127                      
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-```r
 SSE &lt;- anova(crystal_fit)["Residuals", "Sum Sq"]
-SST &lt;- sum((crystal$weight - mean(crystal$weight)) ^ 2)
+SST &lt;- sum((crystal$weight - 
+              mean(crystal$weight)) ^ 2)
 1 - SSE/SST
 ```
 
 ```
 ## [1] 0.9445927
 ```
+
+]
+
+.font175[
 
 Roughly 94.5% of the variability in the final weight of crystals is explained by the growth time. (At least in this sample.)
 
@@ -1616,7 +1611,7 @@ Roughly 94.5% of the variability in the final weight of crystals is explained by
 
 .font150[
 
-* `\(R^2\)` will .red[always] increase when more terms are added to the model (.orange[more on this in multiple linear regression])
+* `\(R^2\)` will .red[always] increase when more terms are added to the model (**more on this in multiple linear regression**)
 
 ]
 
@@ -1638,7 +1633,7 @@ Roughly 94.5% of the variability in the final weight of crystals is explained by
 
 --
 
-.font200[.center[.blue[So why even use the coefficient of determination?]]]
+.font250.center.blue[So why even use the coefficient of determination?]
 
 
 ---

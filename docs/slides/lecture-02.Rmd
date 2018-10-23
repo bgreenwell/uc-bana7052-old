@@ -977,13 +977,13 @@ anova(rocket_fit_reduced, rocket_fit)  # compare models  #<<
 
 # Rule of thumb `r set.seed(101); emo::ji("thumb")`
 
-.font150[
+.font250[
 
-Using 
+Using $Esimtate \pm 2 \times SE$ for an approximate 95% CI is incredibly robust!
 
-$$Esimtate \pm 2 \times SE$$
+]
 
-for an approximate 95% CI is incredibly robust!
+.code125[
 
 ```{r robust}
 sapply(c(10, 20, 30, 50, Inf), function(x)  #<<
@@ -1020,9 +1020,9 @@ units in the population with a specific $X$ value
 
 * Suppose we want to estimate the mean strength of .bold[all rockets] with an age of 15 weeks
 
-    - For the prediction problem, we want to predict the strength of a **single rocket** at 15 weeks
+    - For the **prediction problem**, we want to predict the strength of a **single rocket** at 15 weeks
     
-    - For the estimation problem, we want to estimate the mean of the population of all rockets that are 15 weeks old 
+    - For the **estimation problem**, we want to estimate the mean of the population of all rockets that are 15 weeks old 
     
     - In both cases, we use $\widehat{Y} = 2070.512$ as the predicted strength and as the estimate of the mean strength of of rockets that are 15 weeks old
 
@@ -1049,7 +1049,7 @@ In other words, the point estimate is the same for prediction and estimation, th
 
 --
 
-.center.font75.content-box-yellow[
+.center.font125.content-box-yellow[
 
 **My opinion:** confidence intervals for the mean response are far more common and useful in practice
 
@@ -1086,7 +1086,7 @@ In other words, the point estimate is the same for prediction and estimation, th
 
 .font150[
 
-For the normal error regression model $$\frac{\widehat{Y}_0 - E\left(\widehat{Y}_0\right)}{\widehat{SE}\left(\widehat{Y}_0\right)} \sim t_{n-2}$$
+$$\frac{\widehat{Y}_0 - E\left(\widehat{Y}_0\right)}{\widehat{SE}\left(\widehat{Y}_0\right)} \sim t_{n-2}$$
 
 ]
 
@@ -1120,23 +1120,31 @@ A $1 - \alpha$ CI for the mean response at $X = X_0$ is given by $$\widehat{Y}_0
 
 # Rocket propellant example
 
-Compute a 95% confidence interval for the mean response at 15 weeks
-
-.scrollable[
-
-```{r rocket-06}
+```{r rocket-conf-band-01}
 # Confidence interval for the mean response at age = 15
 new_data <- data.frame(age = 15)
 predict(rocket_fit, newdata = new_data, interval = "confidence")
-
-# Plot the (pointwise) confidence band around the fitted regression line
-library(investr)  # for plotFit() function
-plotFit(rocket_fit, interval = "confidence")
-abline(v = 15, col = "red2")
-plotFit(rocket_fit, interval = "confidence", shade = TRUE, xlim = c(-20, 100))
 ```
 
-]
+
+---
+class: clear
+
+```{r rocket-conf-band-02, fig.width=6, fig.asp=0.618, out.width="80%"}
+# Plot a 95% (pointwise) confidence band
+plotFit(rocket_fit, interval = "confidence")
+abline(v = 15, col = "red2")
+```
+
+
+---
+class: clear
+
+```{r rocket-conf-band-03, fig.width=6, fig.asp=0.618, out.width="80%"}
+# Extrapolation
+plotFit(rocket_fit, interval = "confidence", 
+        shade = TRUE, xlim = c(-20, 100))
+```
 
 
 ---
@@ -1154,9 +1162,23 @@ Using the crystal weight example, compute a 90% confidence interval for the mean
 
 # Solution
 
-.scrollable[
+```{r crystal-conf-band-01, eval=FALSE}
+# Confidence interval for the mean response at age = 15
+new_data <- data.frame(time = 20)
+predict(crystal_fit, newdata = new_data, interval = "confidence",
+        level = 0.9)  #<<
 
-```{r 01-crystal-solution-05}
+# Plot the (pointwise) confidence band around the fitted regression line
+plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, 
+        shade = TRUE, col.conf = adjustcolor("red2", alpha.f = 0.5))
+```
+
+
+---
+
+# Solution
+
+```{r crystal-conf-band-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
 # Confidence interval for the mean response at age = 15
 new_data <- data.frame(time = 20)
 predict(crystal_fit, newdata = new_data, interval = "confidence",
@@ -1167,14 +1189,16 @@ plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, shade = TRUE,
         col.conf = adjustcolor("red2", alpha.f = 0.5))
 ```
 
-]
-
 
 ---
 class: clear, middle, center
 
 
-.font200[[Confidence intervals vs prediction intervals](https://stats.stackexchange.com/questions/16493/difference-between-confidence-intervals-and-prediction-intervals)]
+.font300[
+
+[Confidence intervals vs prediction intervals](https://stats.stackexchange.com/questions/16493/difference-between-confidence-intervals-and-prediction-intervals)
+
+]
 
 
 ---
@@ -1202,20 +1226,42 @@ class: clear, middle, center
 
 # Rocket propellant example
 
-.scrollable[
+.code150[
 
-```{r rocket-07}
-# Print model summary
-summary(rocket_fit)
-
+```{r rocket-rsquared-01}
 # Extract R-squared from the model summary
 summary(rocket_fit)$r.squared
+```
 
-# Compute R-squared by hand
+]
+
+
+---
+
+# Rocket propellant example
+
+.code130[
+
+```{r rocket-rsquared-02}
+# ANOVA decomposition
 anova(rocket_fit)
+```
+
+]
+
+
+---
+
+# Rocket propellant example
+
+.code130[
+
+```{r rocket-rsquared-03}
+# Compute R-squared by hand
 SSE <- anova(rocket_fit)["Residuals", "Sum Sq"]
-SST <- sum((rocket$strength - mean(rocket$strength)) ^ 2)
-1 - SSE/SST
+SST <- sum((rocket$strength - 
+              mean(rocket$strength)) ^ 2)
+round(c(SSE, SST, 1 - SSE/SST), digits = 3)
 ```
 
 ]
@@ -1236,15 +1282,19 @@ Compute the coefficient of determination (i.e., $R^2$) for the crystal weight ex
 
 # Solution
 
-.scrollable[
+.code130[
 
-```{r 01-crystal-solution-06}
+```{r crystal-rsquared}
 # Compute R-squared by hand
-anova(crystal_fit)
 SSE <- anova(crystal_fit)["Residuals", "Sum Sq"]
-SST <- sum((crystal$weight - mean(crystal$weight)) ^ 2)
+SST <- sum((crystal$weight - 
+              mean(crystal$weight)) ^ 2)
 1 - SSE/SST
 ```
+
+]
+
+.font175[
 
 Roughly `r scales::percent(summary(crystal_fit)$r.squared)` of the variability in the final weight of crystals is explained by the growth time. (At least in this sample.)
 
@@ -1284,7 +1334,7 @@ Roughly `r scales::percent(summary(crystal_fit)$r.squared)` of the variability i
 
 .font150[
 
-* $R^2$ will .red[always] increase when more terms are added to the model (.orange[more on this in multiple linear regression])
+* $R^2$ will .red[always] increase when more terms are added to the model (**more on this in multiple linear regression**)
 
 ]
 
@@ -1306,7 +1356,7 @@ Roughly `r scales::percent(summary(crystal_fit)$r.squared)` of the variability i
 
 --
 
-.font200[.center[.blue[So why even use the coefficient of determination?]]]
+.font250.center.blue[So why even use the coefficient of determination?]
 
 
 ---
