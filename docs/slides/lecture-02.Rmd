@@ -35,6 +35,16 @@ knitr::opts_chunk$set(
 library(ggplot2)
 ```
 
+.font300[
+
+[R code for these slides](https://github.com/bgreenwell/uc-bana7052/blob/master/code/lecture-02.R)
+
+]
+
+
+---
+class: clear, middle, center
+
 background-image: url(images/research-walberg-normal-distribution.jpg)
 
 
