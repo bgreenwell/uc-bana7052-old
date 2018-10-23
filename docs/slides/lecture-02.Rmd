@@ -13,7 +13,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
-class: clear 
+class: clear, center, middle
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
