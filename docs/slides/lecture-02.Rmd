@@ -325,11 +325,17 @@ $$Var\left(\widehat{\beta}_1\right) = Var\left(\sum_{i=1}^n w_iY_i\right) = \sum
 
 ]
 
---
-
 .font150[
 
-* Replace $\sigma^2$ with its point estimate $\widehat{\sigma}^2 = MSE$, and the sampling distribution of $\widehat{\beta}_1$ becomes $\widehat{\beta}_1 \stackrel{\cdot}{\sim} N\left(\beta_1, \widehat{\sigma}^2/S_{xx}\right)$
+* Replace $\sigma^2$ with its point estimate $\widehat{\sigma}^2 = MSE$, and the sampling distribution of $\widehat{\beta}_1$ becomes $\widehat{\beta}_1 \sim t_{n-2}$
+
+]
+
+--
+
+.font150.center[
+
+$\widehat{\beta}_1 \sim N\left(\beta_1, \widehat{\sigma}^2/S_{xx}\right)$ as $n \rightarrow \infty$
 
 ]
 
@@ -414,12 +420,15 @@ tibble::as_tibble(rocket)[1:6, ]
 .code125[
 
 ```{r rocket-slr, eval=FALSE}
+# Load required packages
+library(investr)
+
 # Fit an SLR model
 rocket_fit <- lm(strength ~ age, data = rocket)
 
 # Plot the data with the fitted mean response
-investr::plotFit(rocket_fit, lwd.fit = 2, 
-                 col.fit = "red2", pch = 19)
+plotFit(rocket_fit, lwd.fit = 2, 
+        col.fit = "red2", pch = 19)
 ```
 
 ]
@@ -430,11 +439,14 @@ investr::plotFit(rocket_fit, lwd.fit = 2,
 # Rocket propellant example
 
 ```{r rocket-slr-plot, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Load required packages
+library(investr)
+
 # Fit an SLR model
 rocket_fit <- lm(strength ~ age, data = rocket)
 
 # Plot the data with the fitted mean response
-investr::plotFit(rocket_fit, lwd.fit = 2, col.fit = "red2", pch = 19)
+plotFit(rocket_fit, lwd.fit = 2, col.fit = "red2", pch = 19)
 ```
 
 
@@ -518,8 +530,8 @@ data(crystal, package = "investr")
 crystal_fit <- lm(weight ~ time, data = crystal)
 
 # Plot the data with the fitted mean response
-investr::plotFit(crystal_fit, lwd.fit = 2, 
-                 col.fit = "red2", pch = 19)
+plotFit(crystal_fit, lwd.fit = 2, 
+        col.fit = "red2", pch = 19)
 ```
 
 ]
@@ -530,12 +542,15 @@ investr::plotFit(crystal_fit, lwd.fit = 2,
 # Solution
 
 ```{r crystal-slr-plot, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Load the crystal weight data
+data(crystal, package = "investr")
+
 # Fit an SLR model
 crystal_fit <- lm(weight ~ time, data = crystal)
 
 # Plot the data with the fitted mean response
-investr::plotFit(crystal_fit, lwd.fit = 2, 
-                 col.fit = "red2", pch = 19)
+plotFit(crystal_fit, lwd.fit = 2, 
+        col.fit = "red2", pch = 19)
 ```
 
 
@@ -938,7 +953,7 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 
 .font150[
 
-* .magenta[Reduced] model: $Y_i = \beta_0 + \epsilon_i$
+* Reduced model: $Y_i = \beta_0 + \epsilon_i$
 
 ]
 
@@ -993,44 +1008,16 @@ sapply(c(10, 20, 30, 50, Inf), function(x)  #<<
 ]
 
 
+
 ---
 
 # Estimation versus prediction
 
-* Regression models are often used to predict a new response or estimate a mean
-response for a given value of the predictor $X$
-
-* We have seen how to compute a predicted value $\widehat{Y} = \widehat{\beta}_0 + \widehat{\beta}_1 X$
-
-     - However, as with any estimate, we need a measure of reliability associated with $\widehat{Y}_0$.
-
-* The fitted regression line for the `r emo::ji("rocket")` example is given by $$\widehat{Y} = 2627.822 - 37.154 X$$ where $X$ is the age in weeks of the rocket and $Y$ is its psi strength
-
-* Suppose we want to predict the strength of a new rocket at an age of 15 weeks. Then we would simply plug $X = 15$ into the estimated regression equation to get a predicted value of $\widehat{Y} = 2627.822 − 37.154(15) = 2070.512$ (psi).
-
-
----
-
-# Estimation versus prediction `r emo::ji("confused")`
+.font175[
 
 * Regression analysis is really a problem of estimating a conditional mean or expectation, for example, in SLR we have $$E\left(Y|X\right) = \beta_0 + \beta_1 X$$
 
-* Here, $E\left(Y|X\right)$ corresponds to the average value of the response $Y$ for all
-units in the population with a specific $X$ value
-
-* Suppose we want to estimate the mean strength of .bold[all rockets] with an age of 15 weeks
-
-    - For the **prediction problem**, we want to predict the strength of a **single rocket** at 15 weeks
-    
-    - For the **estimation problem**, we want to estimate the mean of the population of all rockets that are 15 weeks old 
-    
-    - In both cases, we use $\widehat{Y} = 2070.512$ as the predicted strength and as the estimate of the mean strength of of rockets that are 15 weeks old
-
---
-
-.center.font75.content-box-yellow[
-
-In other words, the point estimate is the same for prediction and estimation, the difference lies in the estimated standard error of each!
+* Here, $E\left(Y|X\right)$ corresponds to the average value of the response $Y$ for all units in the population with a specific $X$ value
 
 ]
 
@@ -1039,19 +1026,25 @@ In other words, the point estimate is the same for prediction and estimation, th
 
 # Estimation versus prediction
 
-* There is more uncertainty associated with prediction a single new observation (**Why?** `r emo::ji("thinking")`)
+.font200[
 
-* For a given value of $X$, it is customary to compute **confidence intervals for an estimated mean response** and a **prediction interval for a single new response value**
+Suppose we want to estimate the mean strength of .bold[all rockets] with an age of 15 weeks
 
-* The idea of a prediction interval is to determine an interval that will contain a certain percentage of the population
-
-    - Because a prediction interval is attempting to capture a single, random future response, as opposed to the mean of the conditional population, it will be wider than the associated confidence interval
+]
 
 --
 
 .center.font125.content-box-yellow[
 
-**My opinion:** confidence intervals for the mean response are far more common and useful in practice
+How do we estimate $E\left(strength | age = 15\right)$?
+
+]
+
+--
+
+.font200.center[
+
+$\widehat{Y} = 2627.822 − 37.154(15) = 2070.512$ (psi)
 
 ]
 
@@ -1120,11 +1113,17 @@ A $1 - \alpha$ CI for the mean response at $X = X_0$ is given by $$\widehat{Y}_0
 
 # Rocket propellant example
 
+.code150[
+
 ```{r rocket-conf-band-01}
-# Confidence interval for the mean response at age = 15
+# Confidence interval for the mean response 
+# at age = 15
 new_data <- data.frame(age = 15)
-predict(rocket_fit, newdata = new_data, interval = "confidence")
+predict(rocket_fit, newdata = new_data, 
+        interval = "confidence")
 ```
+
+]
 
 
 ---
@@ -1151,9 +1150,9 @@ plotFit(rocket_fit, interval = "confidence",
 
 # Your turn
 
-.font200[
+.font150[
 
-Using the crystal weight example, compute a 90% confidence interval for the mean response at $X = 20$ hours. Plot a (pointwise) 90% confidence band using the `investr::plotFit()` function. See `?predict.lm` and `?investr::plotFit` for help.
+Using the crystal weight example, compute a 90% confidence interval for the mean response at $X = 20$ hours. Plot a (pointwise) 90% confidence band using the `plotFit()` function. See `?predict.lm` and `?plotFit` for help.
 
 ]
 
@@ -1162,16 +1161,23 @@ Using the crystal weight example, compute a 90% confidence interval for the mean
 
 # Solution
 
-```{r crystal-conf-band-01, eval=FALSE}
-# Confidence interval for the mean response at age = 15
-new_data <- data.frame(time = 20)
-predict(crystal_fit, newdata = new_data, interval = "confidence",
-        level = 0.9)  #<<
+.code125[
 
-# Plot the (pointwise) confidence band around the fitted regression line
-plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, 
-        shade = TRUE, col.conf = adjustcolor("red2", alpha.f = 0.5))
+```{r crystal-conf-band-01, eval=FALSE}
+# Confidence interval for the mean response 
+# at age = 15
+new_data <- data.frame(time = 20)
+predict(crystal_fit, newdata = new_data, 
+        interval = "confidence", level = 0.9)  #<<
+
+# Plot the (pointwise) confidence band around the 
+# fitted regression line
+plotFit(crystal_fit, interval = "confidence", 
+        cex = 1.4, pch = 19, shade = TRUE, 
+        col.conf = adjustcolor("red2", alpha.f = 0.5))
 ```
+
+]
 
 
 ---
@@ -1188,6 +1194,40 @@ predict(crystal_fit, newdata = new_data, interval = "confidence",
 plotFit(crystal_fit, interval = "confidence", cex = 1.4, pch = 19, shade = TRUE,
         col.conf = adjustcolor("red2", alpha.f = 0.5))
 ```
+
+
+---
+
+# Estimation versus prediction
+
+Suppose we want to predict the strength of a new rocket at an age of 15 weeks. Then we would simply plug $X = 15$ into the estimated regression equation to get a predicted value of $\widehat{Y} = 2627.822 − 37.154(15) = 2070.512$ (psi).
+
+* For the **estimation problem**, we wanted to estimate the mean of the population of all rockets that are 15 weeks old 
+    
+* For the **prediction problem**, we want to predict the strength of a **single rocket** at 15 weeks
+
+.font125.content-box-yellow[
+
+In both cases, we use $\widehat{Y} = 2070.512$ as the predicted strength and as the estimate of the mean strength of of rockets that are 15 weeks old
+
+]
+
+
+---
+
+# Estimation versus prediction
+
+.font125[
+
+* There is more uncertainty associated with predicting a single new observation (**Why?** `r emo::ji("thinking")`)
+
+* For a given value of $X$, it is customary to compute **confidence intervals for an estimated mean response** and a **prediction interval for a single new response value**
+
+* The idea of a prediction interval is to determine an interval that will contain a certain percentage of the population
+
+    - Because a prediction interval is attempting to capture a single, random future response, as opposed to the mean of the conditional population, it will be wider than the associated confidence interval
+
+]
 
 
 ---
