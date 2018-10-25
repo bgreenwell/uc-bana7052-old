@@ -337,15 +337,15 @@ $$Var\left(\widehat{\beta}_1\right) = Var\left(\sum_{i=1}^n w_iY_i\right) = \sum
 
 .font150[
 
-* Replace $\sigma^2$ with its point estimate $\widehat{\sigma}^2 = MSE$, and the sampling distribution of $\widehat{\beta}_1$ becomes $\widehat{\beta}_1 \sim t_{n-2}$
+* Replace $\sigma^2$ with its point estimate $\widehat{\sigma}^2 = MSE$
 
 ]
 
 --
 
-.font150.center[
+.center.font150.content-box-red[
 
-$\widehat{\beta}_1 \sim N\left(\beta_1, \widehat{\sigma}^2/S_{xx}\right)$ as $n \rightarrow \infty$
+What is the distribution of $\frac{\widehat{\beta}_1 - \beta_1}{\widehat{\sigma} / S_{xx}}$?
 
 ]
 
@@ -1004,7 +1004,7 @@ anova(rocket_fit_reduced, rocket_fit)  # compare models  #<<
 
 .font250[
 
-Using $Esimtate \pm 2 \times SE$ for an approximate 95% CI is incredibly robust!
+Using $Estimate \pm 2 \times SE$ for an approximate 95% CI is incredibly robust!
 
 ]
 
