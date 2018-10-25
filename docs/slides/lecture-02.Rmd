@@ -411,7 +411,18 @@ A $\left(1-\alpha\right)$ 100% confidence interval for $\beta_1$ is given by $$\
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
+
+.font170[
+
+A rocket motor is manufactured by bonding an igniter propellant and a sustainer propellant together inside a metal housing. The shear strength of the bond ( $Y$ ) between the two types of propellant is an important quality characteristic. It is suspected that the shear strength is related to the age ( $X$ ) of the batch of sustainer propellant. $n = 20$ observations on shear strength (measured in psi) and age (measured in weeks) are available in the file [rocket.csv](https://bgreenwell.github.io/uc-bana7052/data/rocket.csv).
+
+]
+
+
+---
+
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 ```{r rocket-load}
 # Load the rocket propellant data
@@ -425,7 +436,7 @@ tibble::as_tibble(rocket)[1:6, ]
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .code125[
 
@@ -446,7 +457,7 @@ plotFit(rocket_fit, lwd.fit = 2,
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 ```{r rocket-slr-plot, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 # Load required packages
@@ -462,7 +473,7 @@ plotFit(rocket_fit, lwd.fit = 2, col.fit = "red2", pch = 19)
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .scrollable[
 
@@ -476,7 +487,7 @@ summary(rocket_fit)
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .code150[
 
@@ -490,7 +501,7 @@ confint(rocket_fit, level = 0.95)  #<<
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .font150[
 
@@ -705,7 +716,7 @@ One-sided test: $p = Pr\left(T_{n-2} > \left|t_{obs}\right|\right)$
 .code125[
 
 ```{r p-value-01}
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 (t_obs <- slope["Estimate"] / slope["Std. Error"])
 pt(abs(t_obs), df = nrow(rocket) - 2, lower.tail = FALSE)
 ```
@@ -726,7 +737,7 @@ Two-sided test: $p = 2 \times Pr\left(T_{n-2} > \left|t_{obs}\right|\right)$
 .code125[
 
 ```{r p-value-02}
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 (t_obs <- slope["Estimate"] / slope["Std. Error"])
 2 * pt(abs(t_obs), df = nrow(rocket) - 2, lower.tail = FALSE)
 ```
@@ -898,7 +909,7 @@ Is there a (linear) relationship between $X$ and $Y$? $$H_0: \beta_1 = 0 \quad v
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .scrollable[
 
@@ -1008,7 +1019,7 @@ pf(f_obs, df1 = 1, df2 = nrow(crystal) - 2, lower.tail = FALSE)
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .scrollable[
 
@@ -1116,7 +1127,7 @@ A $1 - \alpha$ CI for the mean response at $X = X_0$ is given by $$\widehat{Y}_0
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .code150[
 
@@ -1269,7 +1280,7 @@ class: clear, middle, center
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .code150[
 
@@ -1283,7 +1294,7 @@ summary(rocket_fit)$r.squared
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .code130[
 
@@ -1297,7 +1308,7 @@ anova(rocket_fit)
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .code130[
 
@@ -1419,7 +1430,7 @@ In SLR, there is a connection between $R^2$ and the Pearson correlation coeffici
 
 ---
 
-# Rocket propellant example
+# Rocket propellant example `r icon::fa_rocket(animate = "spin")`
 
 .font125[
 
