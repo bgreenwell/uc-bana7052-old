@@ -55,16 +55,16 @@ background-image: url(images/research-walberg-normal-distribution.jpg)
 
 ---
 
-# Prerquisites
+# Prerequisites
 
-.scrollable[
+.code125[
 
 
 ```r
 # List of required (CRAN) packages
 pkgs &lt;- c(
-  "ggplot2",    # for awesome graphics
-  "investr",    # for data sets and plotFit() functions
+  "ggplot2",  # for awesome graphics
+  "investr",  # for data sets and plotFit() functions
 )
 
 # Install required (CRAN) packages
@@ -243,7 +243,7 @@ class: clear
 
 ```r
 # Sampling distribution
-hist(sim[, 2], breaks = 50, freq = FALSE, col = "gray30", border = "white", 
+hist(sim[, 2], br = 50, fr = FALSE, col = "gray30", border = "white", 
      las = 1, xlab = expression(hat(beta)[1]),
      main = expression(paste("Sampling distribution of ", hat(beta)[1])))
 abline(v = 10, lwd = 3, col = "red2")
@@ -656,6 +656,31 @@ With 95% confidence, we estimate that the average weight of crystals increases b
 
 
 ---
+
+# Rule of thumb 👍
+
+.font250[
+
+Using `\(Estimate \pm 2 \times SE\)` for an approximate 95% CI is incredibly robust!
+
+]
+
+.code125[
+
+
+```r
+*sapply(c(10, 20, 30, 50, Inf), function(x)
+* qt(0.975, df = x))
+```
+
+```
+## [1] 2.228139 2.085963 2.042272 2.008559 1.959964
+```
+
+]
+
+
+---
 class: clear, middle
 
 .font250[
@@ -918,13 +943,17 @@ What does failing to reject `\(H_0\)` imply about the relationship between `\(X\
 
 * Partitioning sums of squares (SS)
 
-    - Total SS: `\(SST = SS_{tot} = \sum_{i=1}^n\left(Y_i - \bar{Y}\right)^2\)`
+    - Total sum of squares: `\(SST = \sum_{i=1}^n\left(Y_i - \bar{Y}\right)^2\)`
     
-    - Error SS: `\(SSE = SS_{err} = \sum_{i=1}^n\left(Y_i - \widehat{Y}_i\right)^2\)`
+    - Error sum of squares: `\(SSE = \sum_{i=1}^n\left(Y_i - \widehat{Y}_i\right)^2\)`
     
-    - Regression SS: `\(SSR = SS_{reg} = \sum_{i=1}^n\left(\widehat{Y}_i - \bar{Y}\right)^2\)`
+    - Regression sum of squares: `\(SSR = \sum_{i=1}^n\left(\widehat{Y}_i - \bar{Y}\right)^2\)`
     
 ]
+
+--
+
+.font150.center.bolf.purple[The total response variance can be partitioned into two components!]
 
 
 ---
@@ -943,7 +972,7 @@ What does failing to reject `\(H_0\)` imply about the relationship between `\(X\
 
 * It is easy to show that the sums of these squared deviations have the same relationship: `$$\sum_{i=1}^n\left(Y_i - \bar{Y}\right)^2 = \sum_{i=1}^n\left(\widehat{Y}_i - \bar{Y}\right)^2 + \sum_{i=1}^n\left(Y_i - \widehat{Y}_i\right)^2$$`
 
-    - In other words, `\(SST = SSS + SSE\)` (**much like in a one-way ANOVA**)
+    - In other words, `\(SST = SSR + SSE\)` (**much like in a one-way ANOVA**)
 
 ]
 
@@ -1229,33 +1258,7 @@ rocket_fit_reduced &lt;- lm(strength ~ 1, data = rocket)
 
 ---
 
-# Rule of thumb 👍
-
-.font250[
-
-Using `\(Estimate \pm 2 \times SE\)` for an approximate 95% CI is incredibly robust!
-
-]
-
-.code125[
-
-
-```r
-*sapply(c(10, 20, 30, 50, Inf), function(x)
-* qt(0.975, df = x))
-```
-
-```
-## [1] 2.228139 2.085963 2.042272 2.008559 1.959964
-```
-
-]
-
-
-
----
-
-# Estimation versus prediction
+# Estimating the mean response
 
 .font175[
 
@@ -1268,7 +1271,7 @@ Using `\(Estimate \pm 2 \times SE\)` for an approximate 95% CI is incredibly rob
 
 ---
 
-# Estimation versus prediction
+# Estimating the mean response
 
 .font200[
 
@@ -1299,7 +1302,7 @@ How do we estimate `\(E\left(strength | age = 15\right)\)`?
 
 .font150[
 
-* We can estimate the mean response given `\(X = X_0\)` as `\(\widehat{Y}_0 = \widehat{\beta}_0 + \widehat{\beta}_1 X_0\)` 
+* We can estimate the mean response given `\(X = X_0\)` as `\(\widehat{E}\left(Y|X = X_0\right) = \widehat{\beta}_0 + \widehat{\beta}_1 X_0 = \widehat{Y}_0\)` 
 
 ]
 
@@ -1307,7 +1310,7 @@ How do we estimate `\(E\left(strength | age = 15\right)\)`?
 
 .font150[
 
-* How can we construct a CI for `\(\widehat{Y}\)`? 🤔
+* How can we construct a CI for `\(E\left(Y|X = X_0\right) = \beta_0 + \beta_1 X_0\)`? 🤔
 
 ]
 
@@ -1315,15 +1318,7 @@ How do we estimate `\(E\left(strength | age = 15\right)\)`?
 
 .font150[
 
-* What is the sampling distribution of `\(\widehat{Y}_0\)`? 🤔
-
-]
-
---
-
-.font150[
-
-`$$\frac{\widehat{Y}_0 - E\left(\widehat{Y}_0\right)}{\widehat{SE}\left(\widehat{Y}_0\right)} \sim t_{n-2}$$`
+`$$\frac{\widehat{Y}_0 - E\left(\widehat{Y}_0\right)}{\widehat{SE}\left(\widehat{Y}_0\right)} = \frac{\left(\widehat{\beta}_0 + \widehat{\beta}_1 X_0\right) - \left(\beta_0 + \beta_1 X_0\right)}{\sqrt{\widehat{Var}\left(\widehat{\beta}_0 + \widehat{\beta}_1 X_0\right)}} \sim t_{n-2}$$`
 
 ]
 
@@ -1334,7 +1329,7 @@ How do we estimate `\(E\left(strength | age = 15\right)\)`?
 
 .font150[
 
-* `\(E\left(\widehat{Y}_0\right) = \beta_0 + \beta_1 x_0\)`
+* `\(E\left(\widehat{Y}_0\right) = \beta_0 + \beta_1 X_0\)`
 
 * `\(\widehat{SE}\left(\widehat{Y}_0\right) = MSE\left[\frac{1}{n} + \frac{\left(X_0 - \bar{X}\right)^2}{S_{xx}}\right]\)`
 
@@ -1739,6 +1734,12 @@ cor(rocket)  # compare with correlation coefficient
 For the crystal weight data, rather than estimating the mean weight for crystals grown for 10 weeks, suppose we wanted to estimate how long we should grow the crystals such the average weight will be 10 grams. Use your intuition to derive a point estimate for this value. 
 
 ]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-02_files/figure-html/quittin-time-1.png" width="100%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
