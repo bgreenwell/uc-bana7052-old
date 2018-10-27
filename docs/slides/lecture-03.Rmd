@@ -13,20 +13,17 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
-class: clear 
+class: clear, middle, center
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
 
 # Global chunk options
 knitr::opts_chunk$set(
-  cache = FALSE,
+  cache = TRUE,
   echo = TRUE,
   dev = "svglite",
   fig.align = "center",
-  # fig.width = 6,
-  # fig.asp = 0.618,
-  # out.width = "70%",
   message = FALSE,
   warning = FALSE,
   error = FALSE
@@ -37,16 +34,17 @@ my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 
 # Load required packages
 library(dplyr)
-library(patchwork)
 ```
 
-background-image: url(images/linear-algebra.jpg)
+```{r linear-algebra, echo=FALSE, out.width="60%"}
+knitr::include_graphics("images/linear-algebra.jpg")
+```
 
 
 ---
 # Reading assignment
 
-.larger[
+.font200[
 
 * Chapters: 5; 6
 
@@ -64,92 +62,65 @@ background-image: url(images/linear-algebra.jpg)
 
 ---
 
-# Prerquisites
+# Prerequisites
 
-.scrollable[
-
-.medium[
+.scrollable.code120[
 
 ```{r prerequisites, eval=FALSE}
 # List of required (CRAN) packages
 pkgs <- c(
-  "GGally",     # for gggplot2 extensions
-  "pdp",        # for (corrected) Boston housing data
-  "plotly",     # for interactive plots
-  "tibble",     # for nicer data frames
-  "vip"         # for variable importance plots
+  "GGally",  # for gggplot2 extensions
+  "pdp",     # for (corrected) Boston housing data
+  "plotly",  # for interactive plots
+  "tibble",  # for nicer data frames
+  "vip"      # for variable importance plots
 )
 
 # Install required (CRAN) packages
 for (pkg in pkgs) {
-  if (!requireNamespace(pkg)) {  # check if already installed
-    install.packages(pkg)  # install it
+  if (!(pkg %in% installed.packages()[, "Package"])) {
+    install.packages(pkg)
   }
 }
-
-# Install additional (optional) awesomeness
-install.packages(c("devtools", "magick"))
-devtools::install_github("bgreenwell/roundhouse")
 ```
 
 ]
-
-]
-
-
----
-
-# Ready to begin?
-
---
-
-```{r roundhouse-01}
-roundhouse::kick("When someone tells you to memorize the formulas in SLR", 
-                 type = 2, fps = 10, width = 50)
-```
 
 
 ---
 
 # Multiple linear regression models
 
-Suppose that the yield in pounds of conversion in a chemical process depends on temperature and the catalyst concentration. A .darkorange[multiple linear regression] (MLR) model that might describe this relationship is $$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \epsilon_i, \quad i = 1, 2, \dots, n$$
-where $$\epsilon_i \stackrel{iid}{\sim} \left(0, \sigma^2\right)$$
+.font110[
 
---
+Suppose that the yield in pounds of conversion in a chemical process depends on temperature and the catalyst concentration. A .darkorange[multiple linear regression] (MLR) model that might describe this relationship is $$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \epsilon_i, \quad i = 1, 2, \dots, n, \\ \epsilon_i \stackrel{iid}{\sim} \left(0, \sigma^2\right)$$
 
 Hence, the mean response is $$E\left(Y_i\right) = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i}$$
 
---
+.center.content-box-yellow[
 
-.center[.content-box-yellow[
+This is an MLR model in two features: $X_1$ and $X_2$
 
-This is an MLR model in two features $X_1$ and $X_2$
+]
 
-]]
+]
 
 
 ---
 class: clear
 
-.scrollable[
+.code110[
 
-```{r mlr-3d-sim-01, fig.width=6, fig.asp=0.618, out.width="100%"}
-# Load required packages
-library(plotly)
-library(tibble)
-
+```{r mlr-3d-df-01, fig.width=6, fig.asp=0.618, out.width="100%"}
 # Simulate data from an MLR model
 set.seed(101)  # for reproducibility
 n <- 50
-sim <- tibble(
+df <- tibble::tibble(
   x1 = runif(n),
   x2 = runif(n),
   y = 1 + 2*x1 - 3*x2 + rnorm(n, sd = 1)  #<<
 )
-
-# Print first few observations
-print(sim)
+head(df, n = 3)  # print first few rows
 ```
 
 ]
@@ -158,28 +129,23 @@ print(sim)
 ---
 class: clear
 
-.scrollable[
-
-```{r mlr-3d-sim-02, fig.width=6, fig.asp=0.618, out.width="90%"}
+```{r mlr-3d-df-02, fig.width=6, fig.asp=0.618, out.width="90%"}
 # Construct a scatterplot matrix
-pairs(sim, cex = 1.2, pch = 19, col = adjustcolor("purple", alpha.f = 0.5))
+pairs(df, cex = 1.2, pch = 19, col = adjustcolor("purple", alpha.f = 0.5))
 ```
-
-]
 
 
 ---
 class: clear
 
-.medium[
+.code120[
 
-```{r mlr-3d-sim-03, eval=FALSE}
-# Load required packages
+```{r mlr-3d-df-03, eval=FALSE}
 library(plotly)  # for interactive plotting  #<<
 
 # Draw (interactive) 3-D scatterplot
-plot_ly(data = sim, x = ~x1, y = ~x2, z = ~y, mode = "markers", 
-        type = "scatter3d",
+plot_ly(data = df, x = ~x1, y = ~x2, z = ~y, 
+        mode = "markers", type = "scatter3d",
         marker = list(opacity = 0.7, symbol = 1, 
                       size = 5, color = "black")) %>%
   layout(
@@ -201,12 +167,12 @@ class: clear, middle, center
 
 .scrollable[
 
-```{r mlr-3d-sim-04, echo=FALSE, out.width="100%"}
+```{r mlr-3d-df-04, echo=FALSE, out.width="100%"}
 # Load required packages
 library(plotly)  # for interactive plotting
 
 # Draw (interactive) 3-D scatterplot
-plot_ly(data = sim, x = ~x1, y = ~x2, z = ~y, mode = "markers", 
+plot_ly(data = df, x = ~x1, y = ~x2, z = ~y, mode = "markers", 
         type = "scatter3d",
         marker = list(opacity = 0.7, symbol = 1, size = 5, color = "black")) %>%
   layout(
@@ -227,9 +193,9 @@ class: clear
 
 .scrollable[
 
-```{r mlr-3d-sim-05, eval=FALSE}
+```{r mlr-3d-df-05, eval=FALSE}
 # Fit an MLR model to the simulated data
-fit <- lm(y ~ x1 + x2, data = sim)  #<<
+fit <- lm(y ~ x1 + x2, data = df)  #<<
 (betas <- coef(fit))  #<<
 ## (Intercept)          x1          x2  #<<
 ##   0.8834363   2.3265433  -2.9942737  #<<
@@ -243,7 +209,7 @@ yhat <- t(outer(.x1, .x2, function(x1, x2) {
 # Draw (interactive) 3-D scatterplot with fitted mean response
 plot_ly(x = ~.x1, y = ~.x2, z = ~yhat, 
         type = "surface", opacity = 0.7) %>%
-  add_trace(data = sim, x = ~x1, y = ~x2, z = ~y, 
+  add_trace(data = df, x = ~x1, y = ~x2, z = ~y, 
             mode = "markers", 
             type = "scatter3d",
             marker = list(opacity = 0.7, symbol = 1, 
@@ -267,9 +233,9 @@ class: clear, middle, center
 
 .scrollable[
 
-```{r mlr-3d-sim-06, echo=FALSE, out.width="100%"}
+```{r mlr-3d-df-06, echo=FALSE, out.width="100%"}
 # Fit an MLR model to the simulated data
-fit <- lm(y ~ x1 + x2, data = sim)
+fit <- lm(y ~ x1 + x2, data = df)
 betas <- coef(fit)                
 
 # Generate predictions over a fine grid  #<<
@@ -281,7 +247,7 @@ yhat <- t(outer(.x1, .x2, function(x1, x2) {
 # Draw (interactive) 3-D scatterplot with fitted mean response
 plot_ly(x = ~.x1, y = ~.x2, z = ~yhat, 
         type = "surface", opacity = 0.7) %>%
-  add_trace(data = sim, x = ~x1, y = ~x2, z = ~y, 
+  add_trace(data = df, x = ~x1, y = ~x2, z = ~y, 
             mode = "markers", 
             type = "scatter3d",
             marker = list(opacity = 0.7, symbol = 1, 
@@ -304,7 +270,7 @@ plot_ly(x = ~.x1, y = ~.x2, z = ~yhat,
 
 # The general MLR model
 
-.large[
+.font150[
 
 * Suppose we have a total of $k = p - 1$ predictors $X_1, X_2, \dots, X_{p-1}$. The MLR model is $$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \dots \beta_{p-1} X_{p-1} + \epsilon_i, \quad i = 1, 2, \dots, n$$ where we assume $\epsilon_i \stackrel{iid}{\sim} \left(0, \sigma^2\right)$
 
@@ -312,7 +278,7 @@ plot_ly(x = ~.x1, y = ~.x2, z = ~yhat,
 
 --
 
-.large[
+.font150[
 
 * In short, we have a mean response of the form $$E\left(Y_i\right) = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{ij} = \underbrace{\sum_{j = 0}^{p-1}\beta_j X_{ij}}_{\text{dot product}}, \quad \text{where } X_{i0} \equiv 1$$
 
@@ -323,7 +289,7 @@ plot_ly(x = ~.x1, y = ~.x2, z = ~yhat,
 
 # The general MLR model
 
-.medium[
+.font125[
 
 The MLR model with normal errors $$Y_i = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{ij} + \epsilon_i, \quad i = 1, 2, \dots, n$$ where
 
@@ -331,7 +297,7 @@ The MLR model with normal errors $$Y_i = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{
 
 --
 
-.medium[
+.font125[
 
 * $\beta_0, \beta_1, \dots, \beta_{p-1}$ are (unknown) regression coefficients (AKA weights or parameters)
 
@@ -356,7 +322,7 @@ knitr::include_graphics("images/mlr-data.png")
 
 # Categorical predictors
 
-.medium[
+.font125[
 
 * Also called .magenta[*qualitative*] predictors or .magenta[*factors*]
 
@@ -366,7 +332,7 @@ knitr::include_graphics("images/mlr-data.png")
 
 --
 
-.medium[
+.font125[
 
 * [Wikipedia states that](https://en.wikipedia.org/wiki/Categorical_variable) "In statistics, a categorical variable is a variable that can take on one of a limited, and usually fixed number of possible values, assigning each individual or other unit of observation to a particular group or nominal category on the basis of some qualitative property."
 
@@ -408,13 +374,13 @@ class(dow2)
 
 # Estimating the coefficients
 
-.center[.bold[.purple[.larger[
+.center[.bold[.purple[.font200[
  How can we estimate $\beta_0, \beta_1, \dots, \beta_{p-1}$?
 ]]]]
 
 --
 
-.large[
+.font150[
 
 The regression coefficients can be estimated by minimizing $$Q = \sum_{i = 1}^n\left(Y_i - \beta_0 - \beta_1 X_{i1} - \dots - \beta_{p-1} X_{i, p-1}\right)^2$$
 
@@ -422,7 +388,7 @@ The regression coefficients can be estimated by minimizing $$Q = \sum_{i = 1}^n\
 
 --
 
-.center[.medium[.content-box-yellow[
+.center[.font125[.content-box-yellow[
 
 Equating the partial derivatives to zero amounts to solving a system of $n$ equations in $p$ unknowns
 
@@ -445,7 +411,7 @@ background-image: url(images/matrix-approach.png)
  
  * $\boldsymbol{\beta} = \left(\beta_0, \beta_1, \dots, \beta_{p-1}\right)^\top$ is an $p \times 1$ vector of coefficients
  
- * $\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)$ .medium[.red[`r emo::ji("left")` What does this mean? `r emo::ji("thinking")`]]
+ * $\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)$ .font125[.red[`r emo::ji("left")` What does this mean? `r emo::ji("thinking")`]]
  
  * $\boldsymbol{X} = \begin{bmatrix} X_{11} & X_{12} & \cdots & X_{1,p-1} \\ X_{21} & X_{22} & \cdots & X_{2,p-1} \\ \vdots & \vdots & & \vdots \\ X_{n1} & X_{n2} & \cdots & X_{n,p-1} \\ \end{bmatrix}$ is an $n \times p$ .purple[*model matrix* (or *design matrix*)]
 
@@ -474,7 +440,7 @@ $$\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{X}^\top\boldsymbol{X}\right)^
 ---
 class: clear, middle, center
 
-.larger[
+.font200[
 
 $\boldsymbol{X}$ has to be .content-box-red[full rank] in order for $\left(\boldsymbol{X}^\top\boldsymbol{X}\right)$ to be invertible!
 
@@ -482,7 +448,7 @@ $\boldsymbol{X}$ has to be .content-box-red[full rank] in order for $\left(\bold
 
 --
 
-.center[.medium[.content-box-yellow[
+.center[.font125[.content-box-yellow[
 
 This is one reason why we dummy encode categorical variables
 
@@ -492,7 +458,7 @@ This is one reason why we dummy encode categorical variables
 
 # The fitted model
 
-.large[
+.font150[
 
 * Fitted values: $\widehat{\boldsymbol{Y}} = \boldsymbol{X}\widehat{\boldsymbol{\beta}} = \boldsymbol{X}\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}^\top\boldsymbol{Y} = \boldsymbol{H}\boldsymbol{Y}$
 
@@ -500,7 +466,7 @@ This is one reason why we dummy encode categorical variables
 
 --
 
-.large[
+.font150[
 
 * Residuals: $\boldsymbol{\epsilon} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}} = \boldsymbol{Y} - \boldsymbol{X}\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{I} - \boldsymbol{H}\right)\boldsymbol{X}$
 
@@ -508,7 +474,7 @@ This is one reason why we dummy encode categorical variables
 
 --
 
-.large[.center[.content-box-yellow[
+.font150[.center[.content-box-yellow[
 
 $\boldsymbol{H}$ is both *symmetric* (i.e., $\boldsymbol{H}^\top = \boldsymbol{H}$) and *idempotent* (i.e., $\boldsymbol{H} = \boldsymbol{H}\boldsymbol{H}$) and is referred to as the *hat matrix* (the diagonal entries of $H$ are important in .red[detecting "influential" observations])
 
@@ -519,7 +485,7 @@ $\boldsymbol{H}$ is both *symmetric* (i.e., $\boldsymbol{H}^\top = \boldsymbol{H
 
 # Properties of $\widehat{\boldsymbol{\beta}}$
 
-.large[
+.font150[
 
 Assuming $\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsymbol{I}_n\right)$, what are some properties of the LS estimate of $\boldsymbol{\beta}$?
 
@@ -527,7 +493,7 @@ Assuming $\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsymbo
 
 --
 
-.large[
+.font150[
 
 * Unbiased: $E\left(\widehat{\boldsymbol{\beta}}\right) = \boldsymbol{\beta}$
 
@@ -542,7 +508,7 @@ Assuming $\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsymbo
 
 # Delivery data example `r emo::ji("truck")`
 
-.medium[
+.font125[
 
 A soft drink bottler is analyzing vending machine service routes in his distribution system. He is interested in predicting the amount of time required by the route driver to service the vending machines in an outlet. This service activity includes stocking the machine with beverage products and minor maintenance or housekeeping. The industrial engineer responsible for the study has suggested that the two most important variables affecting delivery time in minutes ($Y$) are the number of cases of product stocked ($X_1$) and the distance walked by the route driver in feet ($X_2$). The engineer has collected $n = 25$ observations on delivery time which are stored in the file `delivery.csv`. We'll use these data to fit the MLR model $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon$$.
 
@@ -553,7 +519,7 @@ A soft drink bottler is analyzing vending machine service routes in his distribu
 
 # Delivery data example `r emo::ji("truck")`
 
-.medium[
+.font125[
 
 ```{r delivery-01}
 # Load the delivery data
@@ -590,7 +556,7 @@ lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19,
 
 # Delivery data example `r emo::ji("truck")`
 
-.medium[
+.font125[
 
 ```{r delivery-lm-01}
 # Fit a linear model
@@ -605,7 +571,7 @@ lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19,
 
 # Delivery data example `r emo::ji("truck")`
 
-.medium[
+.font125[
 
 ```{r delivery-lm-02}
 # Fit a linear model
@@ -614,7 +580,7 @@ lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19,
 
 ]
 
-.medium[.center[.content-box-red[
+.font125[.center[.content-box-red[
 
 `y ~ ., data = df` is shorthand for regress `y` on every other column in `df`
 
@@ -625,7 +591,7 @@ lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19,
 
 # Delivery data example `r emo::ji("truck")`
 
-.medium[
+.font125[
 
 ```{r delivery-lm-03}
 # Fit a linear model
@@ -640,7 +606,7 @@ delivery <- subset(delivery, select = -Index)  #<<
 
 # How do we interpret $\widehat{\beta}_i$?
 
-.medium[
+.font125[
 
 ```{r delivery-lm-04}
 round(coef(delivery_fit), digits = 3)  #<<
@@ -650,7 +616,7 @@ round(coef(delivery_fit), digits = 3)  #<<
 
 --
 
-.medium[
+.font125[
 
 * .bold[.red[All else held constant]], for every one additional case, the mean delivery time increases by 1.616 minutes
 
@@ -658,7 +624,7 @@ round(coef(delivery_fit), digits = 3)  #<<
 
 --
 
-.medium[
+.font125[
 
 * .bold[.red[All else held constant]], for every one-unit increase in distance, the mean delivery time increases by 0.014 minutes
 
@@ -666,7 +632,7 @@ round(coef(delivery_fit), digits = 3)  #<<
 
 --
 
-.medium[.center[.content-box-green[
+.font125[.center[.content-box-green[
 
 In general, $\widehat{\beta}_j$ is the estimated increase in the mean response per one-unit increase in $X_j$ (all else held constant)
 
@@ -679,7 +645,7 @@ In general, $\widehat{\beta}_j$ is the estimated increase in the mean response p
 
 .scrollable[
 
-.large[
+.font150[
 
 ```{r delivery-matrix-wrong}
 xnames <- c("NumberofCases", "Distance")
@@ -700,7 +666,7 @@ solve(t(X) %*% X) %*% t(X) %*% Y  #<<
 
 .scrollable[
 
-.large[
+.font150[
 
 ```{r delivery-matrix-right}
 X <- model.matrix(~ NumberofCases + Distance, 
@@ -719,7 +685,7 @@ solve(t(X) %*% X) %*% t(X) %*% Y  #<<
 
 # Delivery data example `r emo::ji("truck")`
 
-.medium[
+.font125[
 
 ```{r delivery-output}
 # Extract fitted values and residuals
@@ -732,7 +698,7 @@ head(cbind(delivery, .fitted, .resids))
 
 --
 
-.medium[.center[.content-box-green[
+.font125[.center[.content-box-green[
 
 What would `.fitted + .resids` produce?
 
@@ -741,9 +707,9 @@ What would `.fitted + .resids` produce?
 
 ---
 
-# Your turn `r emo::ji("poop")`
+# Your turn
 
-.medium[
+.font125[
 
 Harrison and Rubinfeld (1978) were among the first to analyze the well-known Boston housing data. One of their goals was to find a housing value equation using data on median home values from $n =506$ census tracts in the suburbs of Boston from the 1970 census; see `?pdp::boston` for a description of each variable. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors and interpret the coefficients. Be sure to construct a scatterplot matrix as well. What do you predict the median value to be for a census tract with `lstat` = 20 and `rm` = 6? **Hint:** to load the data, use the following code chunk:
 
@@ -756,7 +722,7 @@ data(boston, package = "pdp")
 
 ---
 
-# Solution `r emo::ji("sunglasses")`
+# Solution
 
 ```{r boston-spm-01, fig.width=6, fig.asp=0.618, out.width="80%"}
 pairs(pdp::boston[, c("cmedv", "lstat", "rm")], pch = 19,
@@ -766,7 +732,7 @@ pairs(pdp::boston[, c("cmedv", "lstat", "rm")], pch = 19,
 ---
 
 
-# Solution `r emo::ji("sunglasses")`
+# Solution
 
 ```{r boston-spm-02, fig.width=6, fig.asp=0.618, out.width="80%"}
 pairs(pdp::boston[, c("cmedv", "lstat", "rm")], pch = 19, 
@@ -776,9 +742,9 @@ pairs(pdp::boston[, c("cmedv", "lstat", "rm")], pch = 19,
 
 ---
 
-# Solution `r emo::ji("sunglasses")`
+# Solution
 
-.large[
+.font150[
 
 ```{r boston-mlr}
 coef(boston_fit <- lm(cmedv ~ lstat + rm, 
@@ -789,7 +755,7 @@ coef(boston_fit <- lm(cmedv ~ lstat + rm,
 
 --
 
-.larger[
+.font200[
 
 * All else held constant, within a census tract, we expect median home value to .red.bold[decrease] by `r scales::dollar(abs(coef(lm(cmedv ~ lstat + rm, data = pdp::boston))[2]*1000))` for every 1% increase in `lstat`
 
@@ -797,11 +763,11 @@ coef(boston_fit <- lm(cmedv ~ lstat + rm,
 
 ---
 
-# Solution `r emo::ji("sunglasses")`
+# Solution
 
 .scrollable[
 
-.medium[
+.font125[
 
 ```{r boston-predict}
 predict(
@@ -821,7 +787,7 @@ predict(
 
 # Inferences in the MLR model
 
-.large[
+.font150[
 
 * Once we fit an MLR model, we might ask ourselves:
 
@@ -833,7 +799,7 @@ predict(
 
 --
 
-.medium[.center[.content-box-green[
+.font125[.center[.content-box-green[
 
 Statistical inference in the MLR model is not that different from inference in SLR (only a slight change in the formulas)
 
@@ -844,7 +810,7 @@ Statistical inference in the MLR model is not that different from inference in S
 
 # Significance of the regression
 
-.large[.center[.content-box-purple[
+.font150[.center[.content-box-purple[
 
 Is there a (statistically significant) linear relationship between the response and **ANY** of the features?
 
@@ -854,7 +820,7 @@ Is there a (statistically significant) linear relationship between the response 
 
 </br>
 
-.large[
+.font150[
 
 Hypotheses:
 
@@ -869,7 +835,7 @@ $\quad H_1: \beta_j \ne 0$ for at least one $j$
 
 # The general linear test
 
-.large[
+.font150[
 
 * Full model: $Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_k X_{i, p-1} + \epsilon_i$
 
@@ -877,7 +843,7 @@ $\quad H_1: \beta_j \ne 0$ for at least one $j$
 
 --
 
-.large[
+.font150[
 
 * .magenta[Reduced] model: $$Y_i = \beta_0 + \epsilon_i$$
 
@@ -903,7 +869,7 @@ summary(delivery_fit)
 
 # Delivery data example `r emo::ji("truck")`
 
-.medium[
+.font125[
 
 ```{r delivery-ftest-02}
 # Manually construct F-test
@@ -918,7 +884,7 @@ anova(delivery_fit_reduced, delivery_fit)
 
 # Coefficient of determination
 
-.large[
+.font150[
 
 * R-squared
 
@@ -930,7 +896,7 @@ anova(delivery_fit_reduced, delivery_fit)
 
 --
 
-.large[
+.font150[
 
 * Adjusted R-squared
 
@@ -955,7 +921,7 @@ summary(delivery_fit)
 
 .scrollable[
 
-.medium[
+.font125[
 
 ```{r delivery-rsquared-02}
 # Simulate new columns at random
@@ -979,9 +945,9 @@ summary(delivery2_fit)
 
 ---
 
-# Your turn `r emo::ji("cry")`
+# Your turn
 
-.large[
+.font150[
 
 Fit an MLR to the Boston housing data using all of the available predictors. Is the regression significant? Use the general *F*-test to determine whether the model with only the predictors `lstat` and `rm` is adequate.
 
@@ -990,7 +956,7 @@ Fit an MLR to the Boston housing data using all of the available predictors. Is 
 
 ---
 
-# Solution `r emo::ji("sunglasses")`
+# Solution
 
 ```{r boston-ftest}
 # General F-test
@@ -1005,7 +971,7 @@ anova(fit2, fit1)  # reduced model goes first  #<<
 
 # Inference for $\beta_j$
 
-.large[
+.font150[
 
 * Hypothesis test for a **single coefficient** (this is called a *marginal test*)
 
@@ -1028,7 +994,7 @@ anova(fit2, fit1)  # reduced model goes first  #<<
 
 .scrollable[
 
-.medium[
+.font125[
 
 ```{r delivery-inference}
 # Print summary of the model
@@ -1046,7 +1012,7 @@ confint(delivery_fit, level = 0.95)
 ---
 class: clear, center, middle
 
-.larger[
+.font200[
 
 The absolute value of the $t$-statistics is a reasonable indicator for the relative importance of each predictor in a linear model
 
@@ -1078,7 +1044,7 @@ vip::vip(fit1)
 ---
 class: clear, center, middle
 
-.larger[
+.font200[
 
 [Polynomial regression](https://github.com/bgreenwell/uc-bana7052/blob/master/code/hardwood.R)
 
@@ -1089,7 +1055,7 @@ class: clear, center, middle
 
 # Polynomial regression
 
-.large[
+.font150[
 
 * Just a special case of the MLR model
 
@@ -1138,7 +1104,7 @@ class: clear, center, middle
 ---
 class: clear, center, middle
 
-.large[
+.font150[
 
 If time permits, we'll cover [*multivariate adaptive regression splines*](https://koalaverse.github.io/AnalyticsSummit18/04-MARS.html#1) (MARS), an automatic multiple linear regression procedure
 

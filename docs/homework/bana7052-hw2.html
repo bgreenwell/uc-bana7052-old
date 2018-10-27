@@ -325,9 +325,9 @@ $(document).ready(function () {
 <ul>
 <li>Write a brief report (<strong>no more than two pages</strong>). Please clearly label your figures and tables. No raw outputs please.</li>
 </ul>
-<p><strong>Question 2. (12 points)</strong> Simulation Study (Simple Linear Regression). Assume mean function <span class="math inline">\(E\left(Y|X\right) = 10 + 5 * X\)</span></p>
+<p><strong>Question 2. (12 points)</strong> Simulation Study (Simple Linear Regression). Assume mean function <span class="math inline">\(E\left(Y|X\right) = 10 + 5 * X\)</span>. <strong>For this exercise, use</strong> <code>set.seed(7052)</code> <strong>to ensure reproducibility.</strong></p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Generate data with <span class="math inline">\(X \sim N\left(\mu = 2, \sigma^2 = 0.1^2\right)\)</span>, sample size <span class="math inline">\(n = 100\)</span>, and error term <span class="math inline">\(\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)\)</span>.</p></li>
+<li><p>Generate data with <span class="math inline">\(X \sim N\left(\mu = 2, \sigma = 0.1\right)\)</span>, sample size <span class="math inline">\(n = 100\)</span>, and error term <span class="math inline">\(\epsilon \sim N\left(\mu = 0, \sigma = 0.5\right)\)</span>.</p></li>
 <li><p>Fit a simple linear regression to the simulated data from part a. What is the estimated prediction equation? Report the estimated coefficients and their standard errors. Are they significant? Clearly write out the null and alternative hypotheses, observed <em>t</em>-statistic(s), <em>p</em>-value(s), and interpret the estimates and test results. What is fitted model’s MSE?</p></li>
 <li><p>Repeat part b), but re-simulate the data and change the error term to <span class="math inline">\(\epsilon \sim N\left(0, \sigma = 1\right)\)</span></p></li>
 <li><p>Repeat parts a)–c) using <span class="math inline">\(n = 400\)</span>. What do you conclude? What is the effect on the model parameter estimates when error variance gets smaller? What is the effect when sample size gets bigger?</p></li>

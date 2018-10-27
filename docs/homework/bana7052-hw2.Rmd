@@ -27,9 +27,9 @@ e. Plot the training data (i.e., the data used to fit the model) with the fitted
 * Write a brief report (**no more than two pages**). Please clearly label your figures and tables. No raw outputs please.
 
 
-**Question 2. (12 points)** Simulation Study (Simple Linear Regression). Assume mean function $E\left(Y|X\right) = 10 + 5 * X$
+**Question 2. (12 points)** Simulation Study (Simple Linear Regression). Assume mean function $E\left(Y|X\right) = 10 + 5 * X$. **For this exercise, use** `set.seed(7052)` **to ensure reproducibility.**
 
-a. Generate data with $X \sim N\left(\mu = 2, \sigma^2 = 0.1^2\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)$. 
+a. Generate data with $X \sim N\left(\mu = 2, \sigma = 0.1\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma = 0.5\right)$. 
 
 b. Fit a simple linear regression to the simulated data from part a. What is the estimated prediction equation? Report the estimated coefficients and their standard errors. Are they significant? Clearly write out the null and alternative hypotheses, observed *t*-statistic(s), *p*-value(s), and interpret the estimates and test results. What is fitted model's MSE?
 
