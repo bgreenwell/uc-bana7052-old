@@ -36,8 +36,8 @@ my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 library(dplyr)
 ```
 
-```{r linear-algebra, echo=FALSE, out.width="60%"}
-knitr::include_graphics("images/linear-algebra.jpg")
+```{r linear-algebra-tweet, echo=FALSE, out.width="60%"}
+knitr::include_graphics("images/linear-algebra-tweet.png")
 ```
 
 
@@ -127,12 +127,53 @@ head(df, n = 3)  # print first few rows
 
 
 ---
-class: clear
 
-```{r mlr-3d-df-02, fig.width=6, fig.asp=0.618, out.width="90%"}
-# Construct a scatterplot matrix
-pairs(df, cex = 1.2, pch = 19, col = adjustcolor("purple", alpha.f = 0.5))
+# Scatterplot matrices
+
+.font125[
+
+Can be useful to plot pairwise scatterplots:
+
+* Base R: `pairs()`
+
+* **ggplot2**: `GGally::ggpairs()`
+
+* **lattice**: `lattice::splom()`
+
+* **car**: `car::scatterplotMatrix()` or `car::spm()`
+
+]
+
+.code125[
+
+```{r mlr-3d-df-02, eval=FALSE}
+# CExample
+pairs(df, cex = 1.2, pch = 19, 
+      col = adjustcolor("darkred", alpha.f = 0.5))  #<<
 ```
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r mlr-3d-df-02-01, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Construct a scatterplot matrix
+pairs(df, cex = 1.2, pch = 19, col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+
+---
+class: clear, middle, center
+
+.font300[
+
+Interactive plots can be useful (for exploratory analysis) too!
+
+https://plot.ly/r/
+
+]
 
 
 ---
@@ -270,7 +311,7 @@ plot_ly(x = ~.x1, y = ~.x2, z = ~yhat,
 
 # The general MLR model
 
-.font150[
+.font125[
 
 * Suppose we have a total of $k = p - 1$ predictors $X_1, X_2, \dots, X_{p-1}$. The MLR model is $$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \dots \beta_{p-1} X_{p-1} + \epsilon_i, \quad i = 1, 2, \dots, n$$ where we assume $\epsilon_i \stackrel{iid}{\sim} \left(0, \sigma^2\right)$
 
@@ -278,7 +319,7 @@ plot_ly(x = ~.x1, y = ~.x2, z = ~yhat,
 
 --
 
-.font150[
+.font125[
 
 * In short, we have a mean response of the form $$E\left(Y_i\right) = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{ij} = \underbrace{\sum_{j = 0}^{p-1}\beta_j X_{ij}}_{\text{dot product}}, \quad \text{where } X_{i0} \equiv 1$$
 
@@ -291,21 +332,17 @@ plot_ly(x = ~.x1, y = ~.x2, z = ~yhat,
 
 .font125[
 
-The MLR model with normal errors $$Y_i = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{ij} + \epsilon_i, \quad i = 1, 2, \dots, n$$ where
+The MLR model with normal errors $$Y_i = \beta_0 + \sum_{j = 1}^{p-1}\beta_j X_{ij} + \epsilon_i, \quad i = 1, 2, \dots, n$$
 
 ]
-
---
 
 .font125[
 
 * $\beta_0, \beta_1, \dots, \beta_{p-1}$ are (unknown) regression coefficients (AKA weights or parameters)
 
-* $X_{i1}, X_{i2}, \dots, X_{i,p-1}$ are known constants
+* $X_{i1}, X_{i2}, \dots, X_{i,p-1}$ are known **constants** (i.e., assumed fixed by design)
 
 * $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$
-
-* $i = 1, 2, \dots, n$
 
 ]
 
@@ -322,50 +359,13 @@ knitr::include_graphics("images/mlr-data.png")
 
 # Categorical predictors
 
-.font125[
-
-* Also called .magenta[*qualitative*] predictors or .magenta[*factors*]
-
-    - [Free DataCamp exercise](https://campus.datacamp.com/courses/free-introduction-to-r/chapter-4-factors-4?ex=4)
-
-]
-
---
-
-.font125[
-
-* [Wikipedia states that](https://en.wikipedia.org/wiki/Categorical_variable) "In statistics, a categorical variable is a variable that can take on one of a limited, and usually fixed number of possible values, assigning each individual or other unit of observation to a particular group or nominal category on the basis of some qualitative property."
-
-    - Examples include gender (i.e., male/female), **zip code**, political affiliation, etc.
-
-* In regression, we typically use *indicator variables* that take on the values 0 and 1 to identify the classes of a categorical variable
-
-]
-
-
----
-class: clear, center, middle
-
 ```{r dummy-encoding, echo=FALSE, out.width="100%"}
 knitr::include_graphics("images/dummy-encoding.png")
 ```
 
+.center.font150[
 
----
-
-# Categorical variables in R
-
-.scrollable[
-
-```{r categorical-variables}
-# Categorical variable
-(dow <- c("Mon", "Tue", "Wed", "Thu", "Fri"))
-class(dow)
-
-# Coerce to a factor (needed for some functions, like lm())
-(dow2 <- as.factor(dow))
-class(dow2)
-```
+More on categorical predictors in [Lecture 05](https://bgreenwell.github.io/uc-bana7052/slides/lecture-05#1)
 
 ]
 
@@ -374,25 +374,17 @@ class(dow2)
 
 # Estimating the coefficients
 
-.center[.bold[.purple[.font200[
- How can we estimate $\beta_0, \beta_1, \dots, \beta_{p-1}$?
-]]]]
-
---
-
 .font150[
 
-The regression coefficients can be estimated by minimizing $$Q = \sum_{i = 1}^n\left(Y_i - \beta_0 - \beta_1 X_{i1} - \dots - \beta_{p-1} X_{i, p-1}\right)^2$$
+The regression coefficients can be estimated using least squares by minimizing $$Q = \sum_{i = 1}^n\left(Y_i - \beta_0 - \beta_1 X_{i1} - \dots - \beta_{p-1} X_{i, p-1}\right)^2$$
 
 ]
 
---
+.center.font150.content-box-yellow[
 
-.center[.font125[.content-box-yellow[
+Equating the partial derivatives to zero amounts to solving a system of $n$ (linear) equations in $p$ unknowns
 
-Equating the partial derivatives to zero amounts to solving a system of $n$ equations in $p$ unknowns
-
-]]]
+]
 
 
 ---
@@ -405,36 +397,50 @@ background-image: url(images/matrix-approach.png)
 
 # Matrix form of the MLR model
 
- In matrix form, the MLR can be expressed as $$\boldsymbol{Y} = \boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$$ where 
+.font115[
+
+ In matrix form, the MLR can be expressed as $\boldsymbol{Y} = \boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$
+ 
  
  * $\boldsymbol{Y} = \left(Y_1, Y_2, \dots, Y_n\right)^\top$ is an $n \times 1$ vector of responses
  
  * $\boldsymbol{\beta} = \left(\beta_0, \beta_1, \dots, \beta_{p-1}\right)^\top$ is an $p \times 1$ vector of coefficients
  
- * $\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)$ .font125[.red[`r emo::ji("left")` What does this mean? `r emo::ji("thinking")`]]
+ * $\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)$ .font125[.red[`r set.seed(2); emo::ji("point")` What does this mean? `r emo::ji("thinking")`]]
  
- * $\boldsymbol{X} = \begin{bmatrix} X_{11} & X_{12} & \cdots & X_{1,p-1} \\ X_{21} & X_{22} & \cdots & X_{2,p-1} \\ \vdots & \vdots & & \vdots \\ X_{n1} & X_{n2} & \cdots & X_{n,p-1} \\ \end{bmatrix}$ is an $n \times p$ .purple[*model matrix* (or *design matrix*)]
+ * $\boldsymbol{X} = \begin{bmatrix} X_{11} & X_{12} & \cdots & X_{1,p-1} \\ X_{21} & X_{22} & \cdots & X_{2,p-1} \\ \vdots & \vdots & & \vdots \\ X_{n1} & X_{n2} & \cdots & X_{n,p-1} \\ \end{bmatrix}$ is an $n \times p$ **model matrix**
+
+]
 
 
 ---
 
 # Least squares estimation
 
-We want to find the value of $\boldsymbol{\beta}$ that minimizes $$\boldsymbol{Q} = \left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right)^\top\left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right)$$ which simplifies to $$\boldsymbol{Q} = \boldsymbol{Y}^\top\boldsymbol{Y} - 2\boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{Y} + \boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{Y}$$
+.font150[
 
---
+We want to find the value of $\boldsymbol{\beta}$ that minimizes $$\begin{align} \boldsymbol{Q} &= \left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right)^\top\left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right) \\ &= \boldsymbol{Y}^\top\boldsymbol{Y} - 2\boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{Y} + \boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{Y} \end{align}$$
 
 Differentiating $\boldsymbol{Q}$ w.r.t. $\boldsymbol{\beta}$ and equating to zero yields $$\frac{\partial \boldsymbol{Q}}{\partial \boldsymbol{\beta}} = -2\boldsymbol{X}^\top\boldsymbol{Y} + 2\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} = \boldsymbol{0}_p$$
 
---
+* The .bold.red[normal equations]: $\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} = \boldsymbol{X}^\top\boldsymbol{Y}$
 
-* The normal equations: $\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} = \boldsymbol{X}^\top\boldsymbol{Y}$
+]
 
-.center[.content-box-yellow[
+
+---
+
+# Least squares estimation
+
+.font200[
+
+<br>
+
+Solving the normal equations for $\boldsymbol{\beta}$ leads to the least squares estimate:
 
 $$\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}^\top\boldsymbol{Y}$$
 
-]]
+]
 
 
 ---
@@ -464,15 +470,11 @@ This is one reason why we dummy encode categorical variables
 
 ]
 
---
-
 .font150[
 
 * Residuals: $\boldsymbol{\epsilon} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}} = \boldsymbol{Y} - \boldsymbol{X}\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{I} - \boldsymbol{H}\right)\boldsymbol{X}$
 
 ]
-
---
 
 .font150[.center[.content-box-yellow[
 
@@ -491,8 +493,6 @@ Assuming $\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsymbo
 
 ]
 
---
-
 .font150[
 
 * Unbiased: $E\left(\widehat{\boldsymbol{\beta}}\right) = \boldsymbol{\beta}$
@@ -508,9 +508,9 @@ Assuming $\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsymbo
 
 # Delivery data example `r emo::ji("truck")`
 
-.font125[
+.font110[
 
-A soft drink bottler is analyzing vending machine service routes in his distribution system. He is interested in predicting the amount of time required by the route driver to service the vending machines in an outlet. This service activity includes stocking the machine with beverage products and minor maintenance or housekeeping. The industrial engineer responsible for the study has suggested that the two most important variables affecting delivery time in minutes ($Y$) are the number of cases of product stocked ($X_1$) and the distance walked by the route driver in feet ($X_2$). The engineer has collected $n = 25$ observations on delivery time which are stored in the file `delivery.csv`. We'll use these data to fit the MLR model $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon$$.
+A soft drink bottler is analyzing vending machine service routes in their distribution system. They are interested in predicting the amount of time required by the route driver to service the vending machines in an outlet. This service activity includes stocking the machine with beverage products and minor maintenance or housekeeping. The industrial engineer responsible for the study has suggested that the two most important variables affecting delivery time in minutes ( $Y$ ) are the number of cases of product stocked ( $X_1$ ) and the distance walked by the route driver in feet ( $X_2$ ). The engineer has collected $n = 25$ observations on delivery time which are stored in the file [delivery.csv](https://bgreenwell.github.io/uc-bana7052/data/delivery.csv). We'll use these data to fit the MLR model $$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon$$.
 
 ]
 
@@ -525,7 +525,73 @@ A soft drink bottler is analyzing vending machine service routes in his distribu
 # Load the delivery data
 url <- "https://bgreenwell.github.io/uc-bana7052/data/delivery.csv"
 delivery <- read.csv(url)
-head(delivery, n = 10)  # print first 10 observations
+head(delivery, n = 5)  # print first 5 observations
+```
+
+]
+
+
+---
+class: clear, middle
+
+.pull-left[
+
+.code125[
+
+```{r delivery-ggpairs-01, eval=FALSE}
+GGally::ggpairs(
+  data = delivery[, -1]  #<<
+)  
+```
+
+]
+
+]
+
+.pull-right[
+
+```{r delivery-ggpairs-02, echo=FALSE, fig.width=5, fig.height=5, out.width="100%"}
+GGally::ggpairs(
+  data = delivery[, -1]  #<<
+)  
+```
+
+]
+
+
+---
+class: clear, middle
+
+.pull-left[
+
+.code125[
+
+```{r delivery-splom-01, eval=FALSE}
+lattice::splom(
+  x = delivery[, -1],  #<<
+  type = c("p", "smooth"), 
+  pch = 19, 
+  col = "dodgerblue2", 
+  lty = "dotted", 
+  alpha = 0.6
+)
+```
+
+]
+
+]
+
+.pull-right[
+
+```{r delivery-splom-02, echo=FALSE, fig.width=5, fig.height=5, out.width="100%"}
+lattice::splom(
+  x = delivery[, -1],  #<<
+  type = c("p", "smooth"), 
+  pch = 19, 
+  col = "dodgerblue2", 
+  lty = "dotted", 
+  alpha = 0.6
+)
 ```
 
 ]
@@ -535,33 +601,15 @@ head(delivery, n = 10)  # print first 10 observations
 
 # Delivery data example `r emo::ji("truck")`
 
-```{r delivery-pairs, fig.width=5, fig.height=5, out.width="50%"}
-# Scatterplot matrix
-GGally::ggpairs(delivery[, -1])  
-```
-
-
----
-
-# Delivery data example `r emo::ji("truck")`
-
-```{r delivery-splom, fig.width=5, fig.height=5, out.width="50%"}
-# Another scatterplot matrix
-lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19, 
-               col = 1, lty = "dotted", alpha = 0.6)
-```
-
-
----
-
-# Delivery data example `r emo::ji("truck")`
-
-.font125[
+.code125[
 
 ```{r delivery-lm-01}
-# Fit a linear model
-(delivery_fit <- lm(DeliveryTime ~ NumberofCases + Distance, 
-                    data = delivery))
+# Fit a multile linear regression model
+delivery_fit <- lm(DeliveryTime ~ NumberofCases + 
+                     Distance, data = delivery)
+
+# Extract estimated coefficients
+coef(delivery_fit)  
 ```
 
 ]
@@ -571,30 +619,34 @@ lattice::splom(delivery[, -1], type = c("p", "smooth"), pch = 19,
 
 # Delivery data example `r emo::ji("truck")`
 
-.font125[
+.code125[
 
 ```{r delivery-lm-02}
-# Fit a linear model
-(delivery_fit <- lm(DeliveryTime ~ ., data = delivery))
+# Fit a multile linear regression model
+delivery_fit <- lm(DeliveryTime ~ ., 
+                   data = delivery)
+
+# Extract estimated coefficients
+coef(delivery_fit)  
 ```
 
 ]
 
-.font125[.center[.content-box-red[
+.font150.center[
 
 `y ~ ., data = df` is shorthand for regress `y` on every other column in `df`
 
-]]]
+]
 
 
 ---
 
 # Delivery data example `r emo::ji("truck")`
 
-.font125[
+.code125[
 
 ```{r delivery-lm-03}
-# Fit a linear model
+# Fit a multile linear regression model
 delivery <- subset(delivery, select = -Index)  #<<
 (delivery_fit <- lm(DeliveryTime ~ ., data = delivery))
 ```
@@ -606,7 +658,7 @@ delivery <- subset(delivery, select = -Index)  #<<
 
 # How do we interpret $\widehat{\beta}_i$?
 
-.font125[
+.code125[
 
 ```{r delivery-lm-04}
 round(coef(delivery_fit), digits = 3)  #<<
@@ -616,27 +668,23 @@ round(coef(delivery_fit), digits = 3)  #<<
 
 --
 
-.font125[
+.font150[
 
 * .bold[.red[All else held constant]], for every one additional case, the mean delivery time increases by 1.616 minutes
-
-]
-
---
-
-.font125[
 
 * .bold[.red[All else held constant]], for every one-unit increase in distance, the mean delivery time increases by 0.014 minutes
 
 ]
 
---
 
-.font125[.center[.content-box-green[
+---
+class: clear, middle, center
 
-In general, $\widehat{\beta}_j$ is the estimated increase in the mean response per one-unit increase in $X_j$ (all else held constant)
+.font150.center.content-box-red[
 
-]]]
+In general, $\widehat{\beta}_j$ is the estimated increase in the mean response per one-unit increase in $X_j$ (**all else held constant**)
+
+]
 
 
 ---
@@ -698,11 +746,11 @@ head(cbind(delivery, .fitted, .resids))
 
 --
 
-.font125[.center[.content-box-green[
+.font125.center[
 
 What would `.fitted + .resids` produce?
 
-]]]
+]
 
 
 ---
@@ -711,7 +759,7 @@ What would `.fitted + .resids` produce?
 
 .font125[
 
-Harrison and Rubinfeld (1978) were among the first to analyze the well-known Boston housing data. One of their goals was to find a housing value equation using data on median home values from $n =506$ census tracts in the suburbs of Boston from the 1970 census; see `?pdp::boston` for a description of each variable. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors and interpret the coefficients. Be sure to construct a scatterplot matrix as well. What do you predict the median value to be for a census tract with `lstat` = 20 and `rm` = 6? **Hint:** to load the data, use the following code chunk:
+Harrison and Rubinfeld (1978) were among the first to analyze the well-known Boston housing data. One of their goals was to find a [housing value equation](https://bgreenwell.github.io/pdp/articles/pdp.html) using data on median home values from $n =506$ census tracts in the suburbs of Boston from the 1970 census; see `?pdp::boston` for a description of each variable. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors and interpret the coefficients. Be sure to construct a scatterplot matrix as well. What do you predict the median value to be for a census tract with `lstat` = 20 and `rm` = 6? **Hint:** to load the data, use the following code chunk:
 
 ```{r boston-load, eval=FALSE}
 data(boston, package = "pdp")
@@ -721,20 +769,17 @@ data(boston, package = "pdp")
 
 
 ---
+class: clear, middle
 
-# Solution
-
-```{r boston-spm-01, fig.width=6, fig.asp=0.618, out.width="80%"}
+```{r boston-spm-01, fig.width=6, fig.asp=0.618, out.width="100%"}
 pairs(pdp::boston[, c("cmedv", "lstat", "rm")], pch = 19,
       col = "black")
 ```
 
 ---
+class: clear, middle
 
-
-# Solution
-
-```{r boston-spm-02, fig.width=6, fig.asp=0.618, out.width="80%"}
+```{r boston-spm-02, fig.width=6, fig.asp=0.618, out.width="100%"}
 pairs(pdp::boston[, c("cmedv", "lstat", "rm")], pch = 19, 
       col = adjustcolor("black", alpha.f = 0.2))  #<<
 ```
@@ -744,7 +789,7 @@ pairs(pdp::boston[, c("cmedv", "lstat", "rm")], pch = 19,
 
 # Solution
 
-.font150[
+.code125[
 
 ```{r boston-mlr}
 coef(boston_fit <- lm(cmedv ~ lstat + rm, 
@@ -755,9 +800,9 @@ coef(boston_fit <- lm(cmedv ~ lstat + rm,
 
 --
 
-.font200[
+.font150[
 
-* All else held constant, within a census tract, we expect median home value to .red.bold[decrease] by `r scales::dollar(abs(coef(lm(cmedv ~ lstat + rm, data = pdp::boston))[2]*1000))` for every 1% increase in `lstat`
+All else held constant, within a census tract, we estimate that the average median home value will .red.bold[decrease] by `r scales::dollar(abs(coef(lm(cmedv ~ lstat + rm, data = pdp::boston))[2]*1000))` for every 1% increase in `lstat`
 
 ]
 
@@ -767,7 +812,7 @@ coef(boston_fit <- lm(cmedv ~ lstat + rm,
 
 .scrollable[
 
-.font125[
+.code125[
 
 ```{r boston-predict}
 predict(
@@ -787,38 +832,36 @@ predict(
 
 # Inferences in the MLR model
 
-.font150[
+.font160[
 
-* Once we fit an MLR model, we might ask ourselves:
+Once we fit an MLR model, we might ask ourselves:
 
-    - What is the overall accuracy of the model?
+* How well does the model fit the data? (Lectures [04](https://bgreenwell.github.io/uc-bana7052/slides/lecture-04#1)/[06](https://bgreenwell.github.io/uc-bana7052/slides/lecture-06#1))
     
-    - Which predictor variables seem "important"?
+* Which predictors seem "important"?
 
 ]
 
 --
 
-.font125[.center[.content-box-green[
+.font125.center.content-box-green[
 
 Statistical inference in the MLR model is not that different from inference in SLR (only a slight change in the formulas)
 
-]]]
+]
 
 
 ---
 
 # Significance of the regression
 
-.font150[.center[.content-box-purple[
+.font150.center.content-box-purple[
 
 Is there a (statistically significant) linear relationship between the response and **ANY** of the features?
 
-]]]
+]
 
 --
-
-</br>
 
 .font150[
 
@@ -837,7 +880,9 @@ $\quad H_1: \beta_j \ne 0$ for at least one $j$
 
 .font150[
 
-* Full model: $Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_k X_{i, p-1} + \epsilon_i$
+.bold[Full model]: $Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_k X_{i, p-1} + \epsilon_i$
+
+.bold[Reduced model]: $Y_i = \beta_0 + \epsilon_i$ (if $H_0$ were true)
 
 ]
 
@@ -845,7 +890,6 @@ $\quad H_1: \beta_j \ne 0$ for at least one $j$
 
 .font150[
 
-* .magenta[Reduced] model: $$Y_i = \beta_0 + \epsilon_i$$
 
 * $F_{obs} = \frac{SSE(R) - SSE(F)}{df_R - df_F} \div \frac{SSE(F)}{df_F} = \frac{MSR}{MSE}$
     
@@ -857,10 +901,9 @@ $\quad H_1: \beta_j \ne 0$ for at least one $j$
 
 
 ---
+class: clear
 
-# Delivery data example `r emo::ji("truck")`
-
-```{r delivery-ftest-01}
+```{r delivery-ftest-01, highlight.output=c(12:13, 19)}
 summary(delivery_fit)
 ```
 
@@ -871,7 +914,7 @@ summary(delivery_fit)
 
 .font125[
 
-```{r delivery-ftest-02}
+```{r delivery-ftest-02, highlight.output=7}
 # Manually construct F-test
 delivery_fit_reduced <- lm(DeliveryTime ~ 1, data = delivery)
 anova(delivery_fit_reduced, delivery_fit)
@@ -884,33 +927,42 @@ anova(delivery_fit_reduced, delivery_fit)
 
 # Coefficient of determination
 
-.font150[
+.pull-left[
 
-* R-squared
+.font200[R-squared]
 
-    - $R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$
+.font125[
 
-    - $R^2$ will always increase as more terms are added to the model
+* $R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$
+
+* $R^2$ will always increase as more terms are added to the model!
+
+.center[`r anicon::cia("https://emojis.slackmojis.com/emojis/images/1471045885/967/wtf.gif?1471045885", animate = FALSE, size = 6)`]
+
+]
 
 ]
 
 --
 
-.font150[
+.pull-right[
 
-* Adjusted R-squared
+.font200[Adjusted R-squared]
 
-    - $R_{adj}^2 = 1 - \frac{SSR / \left(n - p\right)}{SST / \left(n - 1\right)} = 1 - \left(\frac{n - 1}{n - p}\right)\frac{SSR}{SST}$
+.font125[
+
+* $\begin{align} R_{adj}^2 &= 1 - \frac{SSR / \left(n - p\right)}{SST / \left(n - 1\right)} \\ &= 1 - \left(\frac{n - 1}{n - p}\right)\frac{SSR}{SST} \end{align}$
     
-    - Penalizes $R^2$ for "too many" terms in the model
+* Penalizes $R^2$ if there are "too many" terms in the model
+
+]
 
 ]
 
 ---
+class: clear, middle
 
-# Delivery data example `r emo::ji("truck")`
-
-```{r delivery-rsquared-01}
+```{r delivery-rsquared-01, highlight.output=18}
 summary(delivery_fit)
 ```
 
@@ -923,7 +975,7 @@ summary(delivery_fit)
 
 .font125[
 
-```{r delivery-rsquared-02}
+```{r delivery-rsquared-02, highlight.output=c(14:16, 21)}
 # Simulate new columns at random
 set.seed(101)  # for reproducibility
 delivery2 <- delivery
@@ -958,7 +1010,7 @@ Fit an MLR to the Boston housing data using all of the available predictors. Is 
 
 # Solution
 
-```{r boston-ftest}
+```{r boston-ftest, highlight.output=9}
 # General F-test
 data(boston, package = "pdp")  # Load the data
 fit1 <- lm(cmedv ~ ., data = boston)  # full model
@@ -973,11 +1025,9 @@ anova(fit2, fit1)  # reduced model goes first  #<<
 
 .font150[
 
-* Hypothesis test for a **single coefficient** (this is called a *marginal test*)
+Hypothesis test for a **single coefficient** (this is called a *marginal test*):
 
-    - $H_0: \beta_j = 0$
-    
-    - $H_1: \beta_j \ne 0$
+$$H_0: \beta_j = 0 \quad vs. \quad H_1: \beta_j \ne 0$$
 
 * Test statistic: $t_{obs} = \widehat{\beta}_j / \widehat{SE}\left(\widehat{\beta}_j\right)$
 
@@ -1014,7 +1064,7 @@ class: clear, center, middle
 
 .font200[
 
-The absolute value of the $t$-statistics is a reasonable indicator for the relative importance of each predictor in a linear model
+The absolute value of the $t$-statistics is a reasonable indicator of the relative importance of each predictor in a linear model
 
 ]
 
@@ -1033,7 +1083,7 @@ vip::vi(fit1)
 
 .pull-right[
 
-```{r boston-vip-02}
+```{r boston-vip-02, fig.width=6, fig.asp=0.618, out.width="100%"}
 # Variable importance scores
 vip::vip(fit1)
 ```
@@ -1055,7 +1105,7 @@ class: clear, center, middle
 
 # Polynomial regression
 
-.font150[
+.font130[
 
 * Just a special case of the MLR model
 
@@ -1076,9 +1126,7 @@ class: clear, center, middle
 
 * Keep the order of the model as low as possible
 
-    - This is especially true if you are using the model as a predictor (*bias-variance trade off*)
-
-    - *Transformations* are often preferred over higher-order models
+    - This is especially true if you are using the model as a predictor ([*over fitting*](https://bgreenwell.github.io/intro-ml-r/intro-ml-r.html#14))
 
     - Use the simplest model possible to explain the data, but no simpler (*parsimony*)
 
@@ -1104,9 +1152,9 @@ class: clear, center, middle
 ---
 class: clear, center, middle
 
-.font150[
+.font140[
 
-If time permits, we'll cover [*multivariate adaptive regression splines*](https://koalaverse.github.io/AnalyticsSummit18/04-MARS.html#1) (MARS), an automatic multiple linear regression procedure
+Later in the course, if time permits, we'll cover [*multivariate adaptive regression splines*](https://koalaverse.github.io/AnalyticsSummit18/04-MARS.html#1) (MARS), an automatic multiple linear regression procedure
 
 ]
 
