@@ -27,7 +27,7 @@ class: center, middle, inverse, title-slide
 # Multiple Linear Regression
 ## Lecture 03
 ### Brandon M. Greenwell
-### 28 October, 2018
+### 31 October, 2018
 
 ---
 
@@ -370,7 +370,7 @@ background-image: url(images/matrix-approach.png)
  
  * `\(\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)\)` .font125[.red[👈 What does this mean? 🤔]]
  
- * `\(\boldsymbol{X} = \begin{bmatrix} X_{11} &amp; X_{12} &amp; \cdots &amp; X_{1,p-1} \\ X_{21} &amp; X_{22} &amp; \cdots &amp; X_{2,p-1} \\ \vdots &amp; \vdots &amp; &amp; \vdots \\ X_{n1} &amp; X_{n2} &amp; \cdots &amp; X_{n,p-1} \\ \end{bmatrix}\)` is an `\(n \times p\)` **model matrix**
+ * `\(\boldsymbol{X} = \begin{bmatrix} 1 &amp; X_{11} &amp; X_{12} &amp; \cdots &amp; X_{1,p-1} \\ 1 &amp; X_{21} &amp; X_{22} &amp; \cdots &amp; X_{2,p-1} \\ \vdots &amp; \vdots &amp; &amp; \vdots \\ 1 &amp; X_{n1} &amp; X_{n2} &amp; \cdots &amp; X_{n,p-1} \\ \end{bmatrix}\)` is an `\(n \times p\)` **model matrix**
 
 ]
 
@@ -381,7 +381,7 @@ background-image: url(images/matrix-approach.png)
 
 .font150[
 
-We want to find the value of `\(\boldsymbol{\beta}\)` that minimizes `$$\begin{align} \boldsymbol{Q} &amp;= \left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right)^\top\left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right) \\ &amp;= \boldsymbol{Y}^\top\boldsymbol{Y} - 2\boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{Y} + \boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{Y} \end{align}$$`
+We want to find the value of `\(\boldsymbol{\beta}\)` that minimizes `$$\begin{align} \boldsymbol{Q} &amp;= \left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right)^\top\left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right) \\ &amp;= \boldsymbol{Y}^\top\boldsymbol{Y} - 2\boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{Y} + \boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} \end{align}$$`
 
 Differentiating `\(\boldsymbol{Q}\)` w.r.t. `\(\boldsymbol{\beta}\)` and equating to zero yields `$$\frac{\partial \boldsymbol{Q}}{\partial \boldsymbol{\beta}} = -2\boldsymbol{X}^\top\boldsymbol{Y} + 2\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} = \boldsymbol{0}_p$$`
 
@@ -434,15 +434,15 @@ This is one reason why we dummy encode categorical variables
 
 .font150[
 
-* Residuals: `\(\boldsymbol{\epsilon} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}} = \boldsymbol{Y} - \boldsymbol{X}\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{I} - \boldsymbol{H}\right)\boldsymbol{X}\)`
+* Residuals: `\(\boldsymbol{\epsilon} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}} = \boldsymbol{Y} - \boldsymbol{X}\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{I} - \boldsymbol{H}\right)\boldsymbol{Y}\)`
 
 ]
 
-.font150[.center[.content-box-yellow[
+.font150.content-box-yellow[
 
-`\(\boldsymbol{H}\)` is both *symmetric* (i.e., `\(\boldsymbol{H}^\top = \boldsymbol{H}\)`) and *idempotent* (i.e., `\(\boldsymbol{H} = \boldsymbol{H}\boldsymbol{H}\)`) and is referred to as the *hat matrix* (the diagonal entries of `\(H\)` are important in .red[detecting "influential" observations])
+`\(\boldsymbol{H}\)` is both *symmetric* (i.e., `\(\boldsymbol{H}^\top = \boldsymbol{H}\)`) and *idempotent* (i.e., `\(\boldsymbol{H} = \boldsymbol{H}\boldsymbol{H}\)`) and is referred to as the *hat matrix* (the diagonal entries of `\(H\)` are important in .bold.red[detecting "influential" observations])
 
-]]]
+]
 
 
 ---
@@ -468,7 +468,7 @@ Assuming `\(\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsym
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .font110[
 
@@ -479,7 +479,7 @@ A soft drink bottler is analyzing vending machine service routes in their distri
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .font125[
 
@@ -560,7 +560,7 @@ lattice::splom(
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .code125[
 
@@ -584,7 +584,7 @@ coef(delivery_fit)
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .code125[
 
@@ -614,7 +614,7 @@ coef(delivery_fit)
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .code125[
 
@@ -679,7 +679,7 @@ In general, `\(\widehat{\beta}_j\)` is the estimated increase in the mean respon
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .scrollable[
 
@@ -720,7 +720,7 @@ Y &lt;- delivery$DeliveryTime
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .scrollable[
 
@@ -762,26 +762,26 @@ Y &lt;- delivery$DeliveryTime
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .font125[
 
 
 ```r
 # Extract fitted values and residuals
-.fitted &lt;- fitted(fit)
-.resids &lt;- residuals(fit)
+.fitted &lt;- fitted(delivery_fit)
+.resids &lt;- residuals(delivery_fit)
 head(cbind(delivery, .fitted, .resids))
 ```
 
 ```
-##   DeliveryTime NumberofCases Distance    .fitted    .resids
-## 1        16.68             7      560  1.5121888 -1.1556841
-## 2        11.50             3      220 -0.3137871 -0.1747028
-## 3        12.03             3      340  0.4991168  0.4588295
-## 4        14.88             4       80  0.2147180 -1.4993085
-## 5        13.75             6      150  0.1097951  0.7814415
-## 6        18.11             7      330 -0.7653421 -1.0370921
+##   DeliveryTime NumberofCases Distance   .fitted    .resids
+## 1        16.68             7      560 21.708084 -5.0280843
+## 2        11.50             3      220 10.353615  1.1463854
+## 3        12.03             3      340 12.079794 -0.0497937
+## 4        14.88             4       80  9.955646  4.9243539
+## 5        13.75             6      150 14.194398 -0.4443983
+## 6        18.11             7      330 18.399574 -0.2895743
 ```
 
 ]
@@ -1004,7 +1004,7 @@ summary(delivery_fit)
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .font125[
 
@@ -1099,7 +1099,7 @@ summary(delivery_fit)
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .scrollable[
 
@@ -1211,7 +1211,7 @@ Hypothesis test for a **single coefficient** (this is called a *marginal test*):
 
 ---
 
-# Delivery data example 🚚
+# Delivery data example <span>&lt;i class="fas  fa-truck faa-passing animated faa-slow "&gt;&lt;/i&gt;</span>
 
 .scrollable[
 
@@ -1258,63 +1258,6 @@ confint(delivery_fit, level = 0.95)
 ```
 
 ]
-
-]
-
-
----
-class: clear, center, middle
-
-.font200[
-
-The absolute value of the `\(t\)`-statistics is a reasonable indicator of the relative importance of each predictor in a linear model
-
-]
-
-
----
-class: clear
-
-.pull-left[
-
-
-```r
-# Variable importance scores
-vip::vi(fit1)
-```
-
-```
-## # A tibble: 15 x 3
-##    Variable Importance Sign 
-##    &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;
-##  1 lstat        10.7   NEG  
-##  2 rm            9.01  POS  
-##  3 dis           6.70  NEG  
-##  4 ptratio       6.44  NEG  
-##  5 rad           4.61  POS  
-##  6 nox           3.95  NEG  
-##  7 tax           3.46  NEG  
-##  8 b             3.45  POS  
-##  9 zn            3.39  POS  
-## 10 crim          3.21  NEG  
-## 11 chas1         2.98  POS  
-## 12 lat           1.23  POS  
-## 13 lon           1.17  NEG  
-## 14 indus         0.247 POS  
-## 15 age           0.185 POS
-```
-
-]
-
-.pull-right[
-
-
-```r
-# Variable importance scores
-vip::vip(fit1)
-```
-
-&lt;img src="lecture-03_files/figure-html/boston-vip-02-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 ]
 

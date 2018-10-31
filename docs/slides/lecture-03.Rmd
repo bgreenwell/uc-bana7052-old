@@ -408,7 +408,7 @@ background-image: url(images/matrix-approach.png)
  
  * $\boldsymbol{\epsilon} = \left(\epsilon_1, \epsilon_2, \dots, \epsilon_n\right)^\top \sim N\left(\boldsymbol{0}_n, \sigma^2 \boldsymbol{I}_n\right)$ .font125[.red[`r set.seed(2); emo::ji("point")` What does this mean? `r emo::ji("thinking")`]]
  
- * $\boldsymbol{X} = \begin{bmatrix} X_{11} & X_{12} & \cdots & X_{1,p-1} \\ X_{21} & X_{22} & \cdots & X_{2,p-1} \\ \vdots & \vdots & & \vdots \\ X_{n1} & X_{n2} & \cdots & X_{n,p-1} \\ \end{bmatrix}$ is an $n \times p$ **model matrix**
+ * $\boldsymbol{X} = \begin{bmatrix} 1 & X_{11} & X_{12} & \cdots & X_{1,p-1} \\ 1 & X_{21} & X_{22} & \cdots & X_{2,p-1} \\ \vdots & \vdots & & \vdots \\ 1 & X_{n1} & X_{n2} & \cdots & X_{n,p-1} \\ \end{bmatrix}$ is an $n \times p$ **model matrix**
 
 ]
 
@@ -419,7 +419,7 @@ background-image: url(images/matrix-approach.png)
 
 .font150[
 
-We want to find the value of $\boldsymbol{\beta}$ that minimizes $$\begin{align} \boldsymbol{Q} &= \left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right)^\top\left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right) \\ &= \boldsymbol{Y}^\top\boldsymbol{Y} - 2\boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{Y} + \boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{Y} \end{align}$$
+We want to find the value of $\boldsymbol{\beta}$ that minimizes $$\begin{align} \boldsymbol{Q} &= \left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right)^\top\left(\boldsymbol{Y} - \boldsymbol{X}\boldsymbol{\beta}\right) \\ &= \boldsymbol{Y}^\top\boldsymbol{Y} - 2\boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{Y} + \boldsymbol{\beta}^\top\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} \end{align}$$
 
 Differentiating $\boldsymbol{Q}$ w.r.t. $\boldsymbol{\beta}$ and equating to zero yields $$\frac{\partial \boldsymbol{Q}}{\partial \boldsymbol{\beta}} = -2\boldsymbol{X}^\top\boldsymbol{Y} + 2\boldsymbol{X}^\top\boldsymbol{X}\boldsymbol{\beta} = \boldsymbol{0}_p$$
 
@@ -472,15 +472,15 @@ This is one reason why we dummy encode categorical variables
 
 .font150[
 
-* Residuals: $\boldsymbol{\epsilon} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}} = \boldsymbol{Y} - \boldsymbol{X}\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{I} - \boldsymbol{H}\right)\boldsymbol{X}$
+* Residuals: $\boldsymbol{\epsilon} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}} = \boldsymbol{Y} - \boldsymbol{X}\widehat{\boldsymbol{\beta}} = \left(\boldsymbol{I} - \boldsymbol{H}\right)\boldsymbol{Y}$
 
 ]
 
-.font150[.center[.content-box-yellow[
+.font150.content-box-yellow[
 
-$\boldsymbol{H}$ is both *symmetric* (i.e., $\boldsymbol{H}^\top = \boldsymbol{H}$) and *idempotent* (i.e., $\boldsymbol{H} = \boldsymbol{H}\boldsymbol{H}$) and is referred to as the *hat matrix* (the diagonal entries of $H$ are important in .red[detecting "influential" observations])
+$\boldsymbol{H}$ is both *symmetric* (i.e., $\boldsymbol{H}^\top = \boldsymbol{H}$) and *idempotent* (i.e., $\boldsymbol{H} = \boldsymbol{H}\boldsymbol{H}$) and is referred to as the *hat matrix* (the diagonal entries of $H$ are important in .bold.red[detecting "influential" observations])
 
-]]]
+]
 
 
 ---
@@ -506,7 +506,7 @@ Assuming $\boldsymbol{\epsilon} \sim N\left(\boldsymbol{0}_n, \sigma^2\boldsymbo
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .font110[
 
@@ -517,7 +517,7 @@ A soft drink bottler is analyzing vending machine service routes in their distri
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .font125[
 
@@ -599,7 +599,7 @@ lattice::splom(
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .code125[
 
@@ -617,7 +617,7 @@ coef(delivery_fit)
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .code125[
 
@@ -641,7 +641,7 @@ coef(delivery_fit)
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .code125[
 
@@ -689,7 +689,7 @@ In general, $\widehat{\beta}_j$ is the estimated increase in the mean response p
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .scrollable[
 
@@ -710,7 +710,7 @@ solve(t(X) %*% X) %*% t(X) %*% Y  #<<
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .scrollable[
 
@@ -731,14 +731,14 @@ solve(t(X) %*% X) %*% t(X) %*% Y  #<<
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .font125[
 
 ```{r delivery-output}
 # Extract fitted values and residuals
-.fitted <- fitted(fit)
-.resids <- residuals(fit)
+.fitted <- fitted(delivery_fit)
+.resids <- residuals(delivery_fit)
 head(cbind(delivery, .fitted, .resids))
 ```
 
@@ -910,7 +910,7 @@ summary(delivery_fit)
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .font125[
 
@@ -969,7 +969,7 @@ summary(delivery_fit)
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .scrollable[
 
@@ -1040,7 +1040,7 @@ $$H_0: \beta_j = 0 \quad vs. \quad H_1: \beta_j \ne 0$$
 
 ---
 
-# Delivery data example `r emo::ji("truck")`
+# Delivery data example `r anicon::faa("truck", animate = "passing", speed = "slow")`
 
 .scrollable[
 
@@ -1055,38 +1055,6 @@ confint(delivery_fit, level = 0.95)
 ```
 
 ]
-
-]
-
-
----
-class: clear, center, middle
-
-.font200[
-
-The absolute value of the $t$-statistics is a reasonable indicator of the relative importance of each predictor in a linear model
-
-]
-
-
----
-class: clear
-
-.pull-left[
-
-```{r boston-vip-01}
-# Variable importance scores
-vip::vi(fit1)
-```
-
-]
-
-.pull-right[
-
-```{r boston-vip-02, fig.width=6, fig.asp=0.618, out.width="100%"}
-# Variable importance scores
-vip::vip(fit1)
-```
 
 ]
 
