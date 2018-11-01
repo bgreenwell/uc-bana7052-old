@@ -26,8 +26,6 @@ e. What is the value of the coefficient of determination? Please interpret.
 
 f. What is the correlation coefficient $r_1$ between $X_1$ and $Y$ and the correlation coefficient $r_2$ between $X_2$ and $Y$? Do you see any relationship between $r_1$, $r_2$, and $R^2$? 
 
-h. Use a partial *F*-test to compare the reduced model with predictor $X_1$ to the full model with predictors $X_1$ and $X_2$ together. According to your results, what do you conclude? 
-
 * Write a brief report (**no more than two pages**). Please clearly label your figures and tables. No raw outputs please.
 
 

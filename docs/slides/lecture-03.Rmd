@@ -11,7 +11,7 @@ output:
     nature:
       highlightStyle: github
       highlightLines: true
-      countIncrementalSlides: false
+      # countIncrementalSlides: false
 ---
 class: clear, middle, center
 
@@ -1001,7 +1001,7 @@ summary(delivery2_fit)
 
 .font150[
 
-Fit an MLR to the Boston housing data using all of the available predictors. Is the regression significant? Use the general *F*-test to determine whether the model with only the predictors `lstat` and `rm` is adequate.
+Fit an MLR to the Boston housing data using the predictors `lstat`, `rm`, and `lon`. Is the regression significant? Use the general *F*-test to determine whether the model with only the predictors `lstat` and `rm` is adequate.
 
 ]
 
@@ -1013,8 +1013,8 @@ Fit an MLR to the Boston housing data using all of the available predictors. Is 
 ```{r boston-ftest, highlight.output=9}
 # General F-test
 data(boston, package = "pdp")  # Load the data
-fit1 <- lm(cmedv ~ ., data = boston)  # full model
-fit2 <- lm(cmedv ~ . - lstat - rm, data = boston)  # reduced model
+fit1 <- lm(cmedv ~ lstat + rm + lon, data = boston)  # full model
+fit2 <- lm(cmedv ~ lstat + rm, data = boston)  # reduced model
 anova(fit2, fit1)  # reduced model goes first  #<<
 ```
 

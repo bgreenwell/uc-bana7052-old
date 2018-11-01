@@ -8,3 +8,6 @@ gdtools
 bindrcpp
 xaringan
 gbm
+ranger
+vip
+randomForest

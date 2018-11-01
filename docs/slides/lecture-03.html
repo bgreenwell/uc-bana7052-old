@@ -27,7 +27,7 @@ class: center, middle, inverse, title-slide
 # Multiple Linear Regression
 ## Lecture 03
 ### Brandon M. Greenwell
-### 31 October, 2018
+### 01 November, 2018
 
 ---
 
@@ -1157,7 +1157,7 @@ summary(delivery2_fit)
 
 .font150[
 
-Fit an MLR to the Boston housing data using all of the available predictors. Is the regression significant? Use the general *F*-test to determine whether the model with only the predictors `lstat` and `rm` is adequate.
+Fit an MLR to the Boston housing data using the predictors `lstat`, `rm`, and `lon`. Is the regression significant? Use the general *F*-test to determine whether the model with only the predictors `lstat` and `rm` is adequate.
 
 ]
 
@@ -1170,23 +1170,21 @@ Fit an MLR to the Boston housing data using all of the available predictors. Is 
 ```r
 # General F-test
 data(boston, package = "pdp")  # Load the data
-fit1 &lt;- lm(cmedv ~ ., data = boston)  # full model
-fit2 &lt;- lm(cmedv ~ . - lstat - rm, data = boston)  # reduced model
+fit1 &lt;- lm(cmedv ~ lstat + rm + lon, data = boston)  # full model
+fit2 &lt;- lm(cmedv ~ lstat + rm, data = boston)  # reduced model
 *anova(fit2, fit1)  # reduced model goes first
 ```
 
 ```
 ## Analysis of Variance Table
 ## 
-## Model 1: cmedv ~ (lon + lat + crim + zn + indus + chas + nox + rm + age + 
-##     dis + rad + tax + ptratio + b + lstat) - lstat - rm
-## Model 2: cmedv ~ lon + lat + crim + zn + indus + chas + nox + rm + age + 
-##     dis + rad + tax + ptratio + b + lstat
+## Model 1: cmedv ~ lstat + rm
+## Model 2: cmedv ~ lstat + rm + lon
 ##   Res.Df   RSS Df Sum of Sq      F    Pr(&gt;F)    
-## 1    492 20007                                  
-*## 2    490 10825  2    9182.4 207.82 &lt; 2.2e-16 ***
+## 1    503 15223                                  
+## 2    502 14510  1    713.01 24.669 9.349e-07 ***
 ## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+*## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 
@@ -1340,8 +1338,7 @@ class: clear, middle, center
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
+"highlightLines": true
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
