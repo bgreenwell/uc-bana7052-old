@@ -25,7 +25,7 @@ class: center, middle, inverse, title-slide
 # Residual Diagnostics and Remedial Measures
 ## Lecture 04
 ### Brandon M. Greenwell
-### 28 September, 2018
+### 03 November, 2018
 
 ---
 
@@ -33,7 +33,7 @@ class: clear, middle
 
 
 
-.large[
+.font150[
 
 * Required reading
 
@@ -56,7 +56,7 @@ class: clear, middle
 
 .scrollable[
 
-.medium[
+.font125[
 
 
 ```r
@@ -91,7 +91,7 @@ class: clear, center, middle
 ---
 class: clear, center, middle, inverse
 
-.huger[
+.font300[
 
 What are *residual diagnostics* and *remedial measures* and why do we need them?
 
@@ -101,7 +101,7 @@ What are *residual diagnostics* and *remedial measures* and why do we need them?
 ---
 class: clear, center, middle, inverse
 
-.huger[
+.font300[
 
 What's wrong with my model and how do I fix it?
 
@@ -111,9 +111,9 @@ What's wrong with my model and how do I fix it?
 ---
 class: clear 
 
-.large[.bold[.center[.green[What are the typical assumptions of the linear regression model?]]]]
+.font150[.bold[.center[.green[What are the typical assumptions of the linear regression model?]]]]
 
-.large[
+.font150[
 
 `$$Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i\\i = 1, 2, \dots, n$$`
 
@@ -121,7 +121,7 @@ class: clear
 
 --
 
-.large[
+.font150[
 
 * Independent observations: `\(Cov\left(\epsilon_i, \epsilon_j\right) = 0\)` `\(\left(i \ne j\right)\)`
 
@@ -129,7 +129,7 @@ class: clear
 
 --
 
-.large[
+.font150[
 
 * Constant variance: `\(Var\left(\epsilon_i\right) = Cov\left(\epsilon_i, \epsilon_i\right) = \sigma^2\)`
 
@@ -137,7 +137,7 @@ class: clear
 
 --
 
-.large[
+.font150[
 
 * Normally distributed errors: `\(\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)\)` (.red[required for **traditional** statistical inference])
 
@@ -145,7 +145,7 @@ class: clear
 
 --
 
-.large[
+.font150[
 
 * We assume that we have the .bold[.darkorange[correct model]]!
 
@@ -155,7 +155,7 @@ class: clear
 ---
 class: clear, center, middle, inverse
 
-.huger[
+.font300[
 
 How do we know if the model is ~~wrong~~ bad?
 
@@ -165,24 +165,24 @@ How do we know if the model is ~~wrong~~ bad?
 ---
 class: clear, center, middle
 
-.huger[What is a residual?]
+.font300[What is a residual?]
 
 --
 
-.huge[ 
+.font200[ 
 
 `\(e_i = Y_i - \widehat{Y}_i\)` 
 
-.red[observed error = data - fit]
+.font150.red[observed error = data - fit]
 
 ]
 
 
 ---
 
-# What can they tell us?
+# What can residual plots tell us?
 
-.medium[
+.font110[
 
 * Plot of residuals against predictor variable (checking non-linearity).
 
@@ -211,7 +211,7 @@ class: clear, middle, center
 
 # Residual analysis
 
-.large[
+.font130[
 
 * Residuals help in identifying a misspecified mean structure (i.e., `\(\boldsymbol{\beta}\boldsymbol{X}\)`)
 
@@ -231,12 +231,17 @@ class: clear, middle, center
 ---
 class: clear, middle, center
 
-.huge[Normal Q-Q plot can be used to asses the "normalityness" of a set of observations]
+.font200[Normal Q-Q plots* can be used to asses the "normalityness" of a set of observations]
+
+&lt;br&gt;&lt;br&gt;
+
+*Q-Q plots can, in general, be used to compare data with any distirbution!
 
 
 ---
 class: clear 
 
+.code125[
 
 ```r
 set.seed(101)
@@ -246,11 +251,13 @@ qqline(x, lty = "dotted", col = "red2")
 ```
 
 &lt;img src="lecture-04_files/figure-html/qqnorm-normal-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
 
 
 ---
 class: clear 
 
+.code125[
 
 ```r
 set.seed(101)
@@ -260,11 +267,13 @@ qqline(x, lty = "dotted", col = "red2")
 ```
 
 &lt;img src="lecture-04_files/figure-html/qqnorm-skew-right-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
 
 
 ---
 class: clear 
 
+.code125[
 
 ```r
 set.seed(101)
@@ -274,11 +283,13 @@ qqline(x, lty = "dotted", col = "red2")
 ```
 
 &lt;img src="lecture-04_files/figure-html/qqnorm-skew-left-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
 
 
 ---
 class: clear 
 
+.code125[
 
 ```r
 set.seed(101)
@@ -288,12 +299,13 @@ qqline(x, lty = "dotted", col = "red2")
 ```
 
 &lt;img src="lecture-04_files/figure-html/qqnorm-heavy tails-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
 
 
 ---
 class: clear, middle, center
 
-.larger[When should you use normality tests?]
+.font200[When should you use normality tests?]
 
 --
 
@@ -303,7 +315,7 @@ class: clear, middle, center
 ---
 class: clear, middle
 
-.large[
+.font150[
 
 
 ```r
@@ -320,8 +332,8 @@ rowMeans(x &lt; 0.05)
 ```
 
 ```
-##   n=10  n=100 n=1000 n=5000 
-##   0.07   0.06   0.13   0.43
+*##   n=10  n=100 n=1000 n=5000 
+*##   0.07   0.06   0.13   0.43
 ```
 
 ]
@@ -330,35 +342,30 @@ rowMeans(x &lt; 0.05)
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-04_files/figure-html/normal-vs-t-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-04_files/figure-html/normal-vs-t-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
-class: clean, middle, center, inverse
+class: clear, middle, center
 
-.huge[Scaling the residuals]
+.font300[Scaling the residuals]
 
 
 ---
 
 # Standardized residuals
 
-.large[
+.font130[
 
 `$$r_i^{stan} = \frac{r_i}{\sqrt{Var\left(r_i\right)}}$$`
-]
 
---
-
-.large[
-
-* The `\(r_i^{stan}\)`s have mean zero and variance .bold[approximately equal to one]
+* We want the standardized residuals to have .bold[mean zero] and .bold[unit variance]
 
 ]
 
 --
 
-.large[
+.font150[
 
 * Large positive/negative values of `\(r_i^{stan}\)`, say `\(\left|r_i^{stan}\right| &gt; 3\)` may indicate an outlier
 
@@ -366,18 +373,18 @@ class: clean, middle, center, inverse
 
 --
 
-.large[.center[.content-box-blue[
+.font150.center.content-box-blue[
 
 So what is `\(Var\left(r_i\right)\)`? 🤔
 
-]]]
+]
 
 
 ---
 
 # Standardized residuals
 
-.large[
+.font150[
 
 * If `\(\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)\)`, then `\(\epsilon_i/\sigma \stackrel{iid}{\sim} N\left(0, 1\right)\)`, so it seems intuitive to define a standardized residual as `$$r_i^{stan} =\frac{r_i}{\sqrt{MSE}} = \frac{r_i}{RMSE}$$`
 
@@ -385,28 +392,26 @@ So what is `\(Var\left(r_i\right)\)`? 🤔
 
 --
 
-.large[
+.pull-left.font200.center.red[
 
-However, `\(Var\left(r_i\right) \ne MSE\)`!! 
+However, `$$Var\left(r_i\right) \ne MSE$$` 
 
 ]
 
-&lt;img src="lecture-04_files/figure-html/say-what-1.svg" width="20%" style="display: block; margin: auto;" /&gt;
+.pull-right[
+
+&lt;img src="lecture-04_files/figure-html/say-what-1.svg" width="50%" style="display: block; margin: auto;" /&gt;
+
+]
 
 
 ---
 
 # Standardized residuals
 
-.large[
+.font140[
 
 * Recall that `\(r_i = Y_i - \widehat{Y}_i\)`, or, in matrix form `$$\boldsymbol{r} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}}$$`
-
-]
-
---
-
-.large[
 
 * It can be shown that the variance of `\(r_i\)` is given by `\(\sigma^2\left(1 - h_{ii}\right)\)`, which can be estimated with `\(MSE\left(1 - h_{ii}\right)\)`
 
@@ -414,7 +419,7 @@ However, `\(Var\left(r_i\right) \ne MSE\)`!!
 
 --
 
-.large[
+.font140[
 
 * .purple[Studentized residual]: `\(r_i^{stud} = \frac{r_i}{\sqrt{MSE\left(1 - h_{ii}\right)}}\)`
 
@@ -429,17 +434,17 @@ However, `\(Var\left(r_i\right) \ne MSE\)`!!
 
 # PRESS residuals
 
-.medium[
+.font115[
 
 * Another refinement to make the residuals more effective at detecting outlying `\(Y\)` observations is to measure the *i*-th residual `\(r_i = Y_i - \widehat{Y}_i\)` when the fitted regression is based on all of the cases except the *i*-th one
 
-    - Also referred to as the *deleted residuals* or *jackknife residuals*
+    - Also referred to as the __*deleted residuals*__ or __*jackknife residuals*__
 
     - A form of *leave one out cross-validation* (LOOCV)
 
-* It can be shown that these residuals can be obtained without refitting the model `\(n\)` times using `$$d_i = \frac{r_i}{1 - h_{ii}}$$`
+* It can be shown that these residuals can be obtained without refitting the model `\(n\)` times using `$$r_i^{PRESS} = d_i = \frac{r_i}{1 - h_{ii}}$$`
 
-* PRESS statistic: `\(PRESS = \sum_{i=1}^n d_i^2\)` (.red[useful for model selection])
+* PRESS statistic: `\(PRESS = \sum_{i=1}^n d_i^2\)` (.red[useful for model building/selection])
 
 ]
 
@@ -451,41 +456,35 @@ class: clear, middle, center
 
 
 ---
+class: clear, middle
 
-# Delivery data example 🚚
-
-.medium[
+.code125[
 
 
 ```r
 # Load the delivery data
-url &lt;- "https://bgreenwell.github.io/uc-bana7052/data/delivery.csv"
+url &lt;- paste0("https://bgreenwell.github.io/",
+              "uc-bana7052/data/delivery.csv")
 delivery &lt;- read.csv(url)
-head(delivery, n = 10)  # print first 10 observations
+head(delivery, n = 5)  # print first 5 observations
 ```
 
 ```
-##    Index DeliveryTime NumberofCases Distance
-## 1      1        16.68             7      560
-## 2      2        11.50             3      220
-## 3      3        12.03             3      340
-## 4      4        14.88             4       80
-## 5      5        13.75             6      150
-## 6      6        18.11             7      330
-## 7      7         8.00             2      110
-## 8      8        17.83             7      210
-## 9      9        79.24            30     1460
-## 10    10        21.50             5      605
+##   Index DeliveryTime NumberofCases Distance
+## 1     1        16.68             7      560
+## 2     2        11.50             3      220
+## 3     3        12.03             3      340
+## 4     4        14.88             4       80
+## 5     5        13.75             6      150
 ```
 
 ]
 
 
 ---
+class: clear, middle
 
-# Delivery data example 🚚
-
-.medium[
+.code110[
 
 
 ```r
@@ -498,10 +497,10 @@ yhat &lt;- fitted(delivery_fit)
 *# equivalent to `yhat &lt;- predict(delivery_fit)`
 
 # Residuals
-*r &lt;- residuals(delivery_fit)  # ordinary
-*rstan &lt;- rstandard(delivery_fit)  # studentized
-*rstud &lt;- rstudent(delivery_fit)  # studentized deleted
-*press &lt;- rstandard(delivery_fit, type = "predictive")  # PRESS
+rorig &lt;- residuals(delivery_fit)  # ordinary
+rstan &lt;- rstandard(delivery_fit)  # studentized
+rstud &lt;- rstudent(delivery_fit)  # studentized deleted
+press &lt;- rstandard(delivery_fit, type = "predict")  # PRESS
 ```
 
 ]
@@ -509,9 +508,9 @@ yhat &lt;- fitted(delivery_fit)
 
 ---
 
-class: clear, middle
+class: clear
 
-.scrollable[
+.code90[
 
 
 ```r
@@ -535,7 +534,7 @@ getAnywhere("rstandard.lm")
 ##     res[is.infinite(res)] &lt;- NaN
 ##     res
 ## }
-## &lt;bytecode: 0x7f9a60c2fe38&gt;
+## &lt;bytecode: 0x7fedd9894388&gt;
 ## &lt;environment: namespace:stats&gt;
 ```
 
@@ -544,9 +543,9 @@ getAnywhere("rstandard.lm")
 
 ---
 
-class: clear, middle
+class: clear
 
-.medium[
+.code90[
 
 
 ```r
@@ -567,7 +566,7 @@ getAnywhere("rstudent.lm")
 ##     res[is.infinite(res)] &lt;- NaN
 ##     res
 ## }
-## &lt;bytecode: 0x7f9a631fb780&gt;
+## &lt;bytecode: 0x7fedd9a65c68&gt;
 ## &lt;environment: namespace:stats&gt;
 ```
 
@@ -583,14 +582,14 @@ class: clear, middle, center
 ---
 class: clear, middle, center
 
-.huge[Such problems are easy to see when there is only a single predictor!]
+.font200[Such problems are easy to see when there is only a single predictor!]
 
 
 ---
 
 # Remedial measures
 
-.center[
+.center.font200[
 
 What do we do once we've discovered inadequacies in the model?
 
@@ -611,11 +610,11 @@ What do we do once we've discovered inadequacies in the model?
 
 ---
 
-# Your turn 😱
+# Your turn
 
-.large[
+.font175[
 
-Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Check the adequacy of the fitted model using the methods discussed in this lecture. Does the model appear adequate? What assumptions appear to be violated? Are there outlying and/or influential values?
+Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Check the adequacy of the fitted model using the methods discussed in this lecture. Does the model appear adequate? What assumptions, if any, appear to be violated? Are there potential outlying and/or influential values?
 
 ]
 
@@ -623,15 +622,15 @@ Return to the Boston housing example from the previous lecture. Fit an MLR model
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-04_files/figure-html/boston-spm-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-04_files/figure-html/boston-spm-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle
 
+.code100[
 
 
-.scrollable[
 
 
 ```r
@@ -640,25 +639,20 @@ library(dplyr)
 pdp::boston %&gt;%
   lm(cmedv ~ lstat + rm, data = .) %&gt;%
   broom::augment() %&gt;%
-  mutate(row_num = 1:n())
+  mutate(row_num = 1:n()) %&gt;%
+  head(5)
 ```
 
 ```
-## # A tibble: 506 x 11
-##    cmedv lstat    rm .fitted .se.fit .resid    .hat .sigma .cooksd
-##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
-##  1  24    4.98  6.58   29.0    0.367 -4.96  0.00446   5.50 1.22e-3
-##  2  21.6  9.14  6.42   25.5    0.275 -3.89  0.00249   5.50 4.18e-4
-##  3  34.7  4.03  7.18   32.7    0.419  2.03  0.00579   5.51 2.67e-4
-##  4  33.4  2.94  7.00   32.4    0.417  0.976 0.00574   5.51 6.10e-5
-##  5  36.2  5.33  7.15   31.6    0.396  4.57  0.00519   5.50 1.21e-3
-##  6  28.7  5.21  6.43   28.1    0.378  0.622 0.00472   5.51 2.03e-5
-##  7  22.9 12.4   6.01   21.3    0.275  1.61  0.00251   5.51 7.17e-5
-##  8  22.1 19.2   6.17   17.8    0.353  4.34  0.00412   5.50 8.63e-4
-##  9  16.5 29.9   5.63    8.05   0.663  8.45  0.0145    5.49 1.18e-2
-## 10  18.9 17.1   6.00   18.2    0.288  0.668 0.00275   5.51 1.36e-5
-## # ... with 496 more rows, and 2 more variables: .std.resid &lt;dbl&gt;,
-## #   row_num &lt;int&gt;
+## # A tibble: 5 x 11
+##   cmedv lstat    rm .fitted .se.fit .resid    .hat .sigma .cooksd
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+## 1  24    4.98  6.58    29.0   0.367 -4.96  0.00446   5.50 1.22e-3
+## 2  21.6  9.14  6.42    25.5   0.275 -3.89  0.00249   5.50 4.18e-4
+## 3  34.7  4.03  7.18    32.7   0.419  2.03  0.00579   5.51 2.67e-4
+## 4  33.4  2.94  7.00    32.4   0.417  0.976 0.00574   5.51 6.10e-5
+## 5  36.2  5.33  7.15    31.6   0.396  4.57  0.00519   5.50 1.21e-3
+## # ... with 2 more variables: .std.resid &lt;dbl&gt;, row_num &lt;int&gt;
 ```
 
 ]
@@ -667,31 +661,31 @@ pdp::boston %&gt;%
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-04_files/figure-html/boston-residual-plots-01-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-01-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-04_files/figure-html/boston-residual-plots-02-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-02-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-04_files/figure-html/boston-residual-plots-03-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-03-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-04_files/figure-html/boston-residual-plots-04-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-04-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-04_files/figure-html/boston-residual-plots-05-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-04_files/figure-html/boston-residual-plots-05-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -703,7 +697,7 @@ class: clear, middle, center
 ---
 class: clear, middle, center
 
-.huge[Leverage values]
+.font300[Leverage values]
 
 
 ---
@@ -718,7 +712,7 @@ class: clear, middle, center
     
     - The diagonal entries of `\(\boldsymbol{H}\)`, denoted `\(h_{ii}\)`, can be useful for detecting outlying cases
     
-    - `\(X_{new}\)` is considered "outlying" if `\(h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}\)` lies outside of the range of the diagonal entries of `\(\boldsymbol{H}\)`
+    - `\(X_{new}\)` is considered "outlying" if `\(h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}_{new}\)` lies outside of the range of the diagonal entries of `\(\boldsymbol{H}\)`
     
     - See `?influence.measures`
 
@@ -728,7 +722,7 @@ class: clear, middle, center
 
 .middle[
 
-&lt;img src="lecture-04_files/figure-html/chull-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-04_files/figure-html/chull-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -736,23 +730,28 @@ class: clear, middle, center
 
 
 ---
+class: clear, middle
 
-# Delivery data example 🚚
-
-.scrollable[
-
-.medium[
+.code80[
 
 
 ```r
 # Which training observations might be considered as outliers?
 h &lt;- hatvalues(delivery_fit)
-plot(h, type = "h", ylim = extendrange(h, f = 0.1))
+plot(h, type = "h", ylim = extendrange(h, f = 0.15))
 *abline(h = 2 * 3 / nrow(delivery), lty = "dotted")
 text(h, labels = seq_len(nrow(delivery)), pos = 3, col = "red2")
 ```
 
 &lt;img src="lecture-04_files/figure-html/delivery-hatvalue-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+]
+
+
+---
+class: clear, middle
+
+.code80[
+
 
 ```r
 # Determine outlyingness of new observations
@@ -789,13 +788,11 @@ h_new &gt; max(abs(h))
 
 ]
 
-]
-
 
 ---
 class: clear, middle, center
 
-.huge[Multicollinearity]
+.font300[Multicollinearity]
 
 
 ---
@@ -821,24 +818,23 @@ class: clear, middle, center
 
 # Heart catheter example
 
-.large[
+.font150[
 
 A study was conducted and data collected to fit a regression model to predict the length of a catheter needed to pass from a major artery at the femoral region and moved into the heart for children (Weisberg 1980). For 12 children, the proper catheter length was determined by checking with a fluoroscope that the catheter tip had reached the right position. The goal is to determine a model where a child’s height and weight could be used to predict the proper catheter length.
 
 ]
 
-.large[.center[
+.font150.center[
 
 [heart.R](https://github.com/bgreenwell/stt7140-env/blob/master/code/heart.R)
 
-]]
+]
 
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.large[
+.code100[
 
 
 ```r
@@ -849,7 +845,7 @@ library(plotly)  # for interactive plotting
 # Load the data
 url &lt;- "https://bgreenwell.github.io/uc-bana7052/data/heart"
 heart &lt;- read.table(url, header = TRUE)
-head(heart)  
+head(heart, 5)  
 ```
 
 ```
@@ -859,34 +855,26 @@ head(heart)
 ## 3   37.5   35.5     34
 ## 4   39.5   30.0     36
 ## 5   45.5   52.0     43
-## 6   38.5   17.0     28
 ```
 
 ]
 
 
 ---
-
-# Heart catheter example
-
-.scrollable[
+class: clear, middle
 
 
 ```r
-# Scatterplot matrix
-pairs(heart)
+GGally::ggpairs(heart)  # scatterplot matrix
 ```
 
-&lt;img src="lecture-04_files/figure-html/heart-02-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
-
-]
+&lt;img src="lecture-04_files/figure-html/heart-02-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.larger[
+.code150[
 
 
 ```r
@@ -905,33 +893,14 @@ pairs(heart)
 
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.scrollable[
-
-
-```r
-# Interactive 3-D scatterplot
-p &lt;- plot_ly(heart, x = ~Height, y = ~Weight, z = ~Length) %&gt;%
-  add_markers() %&gt;%
-  layout(scene = list(xaxis = list(title = "Weight (pounds)"),
-                      yaxis = list(title = "Height (inches)"),
-                      zaxis = list(title = "Length (cm)")))
-p
-```
-
-<div id="htmlwidget-e1b4bbee7497d2396909" style="width:504px;height:504px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e1b4bbee7497d2396909">{"x":{"visdat":{"2cd62687bbfc":["function () ","plotlyVisDat"]},"cur_data":"2cd62687bbfc","attrs":{"2cd62687bbfc":{"x":{},"y":{},"z":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Weight (pounds)"},"yaxis":{"title":"Height (inches)"},"zaxis":{"title":"Length (cm)"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[42.8,63.5,37.5,39.5,45.5,38.5,43,22.5,37,23.5,33,58],"y":[40,93.5,35.5,30,52,17,38.5,8.5,33,9.5,21,79],"z":[37,50,34,36,43,28,37,20,34,30,38,47],"type":"scatter3d","mode":"markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
-
-]
+<div id="htmlwidget-250a90e3defbe182559d" style="width:100%;height:504px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-250a90e3defbe182559d">{"x":{"visdat":{"6c055237739d":["function () ","plotlyVisDat"]},"cur_data":"6c055237739d","attrs":{"6c055237739d":{"x":{},"y":{},"z":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"Weight (pounds)"},"yaxis":{"title":"Height (inches)"},"zaxis":{"title":"Length (cm)"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"data":[{"x":[42.8,63.5,37.5,39.5,45.5,38.5,43,22.5,37,23.5,33,58],"y":[40,93.5,35.5,30,52,17,38.5,8.5,33,9.5,21,79],"z":[37,50,34,36,43,28,37,20,34,30,38,47],"type":"scatter3d","mode":"markers","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
 
 
 ---
-
-# Heart catheter example
-
-.scrollable[
+class: clear, middle
 
 
 ```r
@@ -952,24 +921,21 @@ summary(heart_fit)
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)  
 ## (Intercept)  20.3758     8.3859   2.430    0.038 *
-## Height        0.2107     0.3455   0.610    0.557  
-## Weight        0.1911     0.1583   1.207    0.258  
+*## Height        0.2107     0.3455   0.610    0.557  
+*## Weight        0.1911     0.1583   1.207    0.258  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Residual standard error: 3.778 on 9 degrees of freedom
-## Multiple R-squared:  0.8254,	Adjusted R-squared:  0.7865 
-## F-statistic: 21.27 on 2 and 9 DF,  p-value: 0.0003888
+*## Multiple R-squared:  0.8254,	Adjusted R-squared:  0.7865 
+*## F-statistic: 21.27 on 2 and 9 DF,  p-value: 0.0003888
 ```
-
-]
 
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.large[
+.code150[
 
 
 ```r
@@ -986,7 +952,7 @@ summary(heart_fit)
 
 --
 
-.large[
+.font150[
 
 * Both variance inflation factors are greater than 10 😱
 
@@ -994,11 +960,11 @@ summary(heart_fit)
 
 --
 
-.large[.center[.content-box-blue[
+.font150.center.content-box-blue[
 
 What are some potential remedies?
 
-]]]
+]
 
 
 
@@ -1006,7 +972,7 @@ What are some potential remedies?
 
 # Remedies for multicollinearity
 
-.larger[
+.font150[
 
 * Omit some of the predictors
 
@@ -1014,7 +980,7 @@ What are some potential remedies?
 
 --
 
-.larger[
+.font150[
 
 * Standardize the predictor column(s) (.blue[useful in polyomial models])
 
@@ -1022,7 +988,7 @@ What are some potential remedies?
 
 --
 
-.larger[
+.font150[
 
 * [*Regularized regression*](https://koalaverse.github.io/AnalyticsSummit18/03-Regularization.html#1)
 
@@ -1037,7 +1003,7 @@ What are some potential remedies?
 
 # Your turn 😱
 
-.large[
+.font150[
 
 Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Does multicollinearity appear to be an issue here? Explain.
 
@@ -1048,7 +1014,7 @@ Return to the Boston housing example from the previous lecture. Fit an MLR model
 
 # Solution 😎
 
-.large[
+.font150[
 
 
 ```r
@@ -1067,7 +1033,7 @@ pdp::boston %&gt;%
 
 --
 
-.center[.huger[
+.center[.font300[
 
 👍
 
@@ -1078,7 +1044,7 @@ pdp::boston %&gt;%
 
 # Other useful diagnostics
 
-.huge[
+.font150[
 
 * DFFITS
 

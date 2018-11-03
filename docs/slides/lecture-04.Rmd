@@ -20,13 +20,10 @@ options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
 
 # Global chunk options
 knitr::opts_chunk$set(
-  cache = FALSE,
+  cache = TRUE,
   echo = TRUE,
   dev = "svglite",
   fig.align = "center",
-  # fig.width = 6,
-  # fig.asp = 0.618,
-  # out.width = "70%",
   message = FALSE,
   warning = FALSE,
   error = FALSE
@@ -39,7 +36,7 @@ my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 library(ggplot2)
 ```
 
-.large[
+.font150[
 
 * Required reading
 
@@ -62,7 +59,7 @@ library(ggplot2)
 
 .scrollable[
 
-.medium[
+.font125[
 
 ```{r prerequisites, eval=FALSE}
 # List of required (CRAN) packages
@@ -98,7 +95,7 @@ set.seed(4); RBitmoji::plot_comic(my_id, tag = "lets go")
 ---
 class: clear, center, middle, inverse
 
-.huger[
+.font300[
 
 What are *residual diagnostics* and *remedial measures* and why do we need them?
 
@@ -108,7 +105,7 @@ What are *residual diagnostics* and *remedial measures* and why do we need them?
 ---
 class: clear, center, middle, inverse
 
-.huger[
+.font300[
 
 What's wrong with my model and how do I fix it?
 
@@ -118,9 +115,9 @@ What's wrong with my model and how do I fix it?
 ---
 class: clear 
 
-.large[.bold[.center[.green[What are the typical assumptions of the linear regression model?]]]]
+.font150[.bold[.center[.green[What are the typical assumptions of the linear regression model?]]]]
 
-.large[
+.font150[
 
 $$Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i\\i = 1, 2, \dots, n$$
 
@@ -128,7 +125,7 @@ $$Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i\\
 
 --
 
-.large[
+.font150[
 
 * Independent observations: $Cov\left(\epsilon_i, \epsilon_j\right) = 0$ $\left(i \ne j\right)$
 
@@ -136,7 +133,7 @@ $$Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i\\
 
 --
 
-.large[
+.font150[
 
 * Constant variance: $Var\left(\epsilon_i\right) = Cov\left(\epsilon_i, \epsilon_i\right) = \sigma^2$
 
@@ -144,7 +141,7 @@ $$Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i\\
 
 --
 
-.large[
+.font150[
 
 * Normally distributed errors: $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$ (.red[required for **traditional** statistical inference])
 
@@ -152,7 +149,7 @@ $$Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i\\
 
 --
 
-.large[
+.font150[
 
 * We assume that we have the .bold[.darkorange[correct model]]!
 
@@ -162,7 +159,7 @@ $$Y_i = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i\\
 ---
 class: clear, center, middle, inverse
 
-.huger[
+.font300[
 
 How do we know if the model is ~~wrong~~ bad?
 
@@ -172,24 +169,24 @@ How do we know if the model is ~~wrong~~ bad?
 ---
 class: clear, center, middle
 
-.huger[What is a residual?]
+.font300[What is a residual?]
 
 --
 
-.huge[ 
+.font200[ 
 
 $e_i = Y_i - \widehat{Y}_i$ 
 
-.red[observed error = data - fit]
+.font150.red[observed error = data - fit]
 
 ]
 
 
 ---
 
-# What can they tell us?
+# What can residual plots tell us?
 
-.medium[
+.font110[
 
 * Plot of residuals against predictor variable (checking non-linearity).
 
@@ -217,7 +214,7 @@ set.seed(101)
 n <- 100
 df1 <- tibble::tibble(
   x = runif(n, min = -5, max = 5),
-  y = 1 + 2*x^2 + rnorm(n, sd = 2)
+  y = 1 + 2*x^2 + rnorm(n, sd = 10)
 )
 df2 <- tibble::tibble(
   x = runif(n, min = 1, max = 10),
@@ -226,11 +223,11 @@ df2 <- tibble::tibble(
 df2 <- rbind(df2, data.frame(x = 2, y = 50))
 df3 <- tibble::tibble(
   x = runif(n, min = 1, max = 10),
-  y = 1 + 4*x + arima.sim(list(order = c(1,0,0), ar = 0.7), n = n, sd = 20)
+  y = 1 + 4*x + arima.sim(list(order = c(1,0,0), ar = 0.99), n = n, sd = 20)
 )
 df4 <- tibble::tibble(
   x = runif(n, min = 1, max = 10),
-  y = 1 + 4*x + rlnorm(n, sd = 1)
+  y = 1 + 4*x + rlnorm(n, sd = 0.9)
 )
 
 # Fitted models
@@ -250,14 +247,16 @@ par(mfrow = c(2, 2))
 plot(df1$x, r1, xlab = "X", ylab = "Residual", 
      main = "Misspecified mean structure")
 abline(h = 0, lty = "dotted", col = "red2")
+lines(lowess(df1$x, r1), col = "dodgerblue", lwd = 3)
 plot(df2$x, r2, xlab = "X", ylab = "Residual",
      main = "Non-constant variance")
 points(df2$x[101L], r2[101L], pch = 19, col = "red2")
 abline(h = 0, lty = "dotted", col = "red2")
-plot(residuals(fit3), xlab = "Index", ylab = "Residual", type = "b",
+plot(residuals(fit3), xlab = "Index", ylab = "Residual", type = "l",
      main = "Serial correlation")
+points(residuals(fit3), col = adjustcolor("black", alpha.f = 0.2))
 abline(h = 0, lty = "dotted", col = "red2")
-qqnorm(r4, main = "Non-normal errors")
+qqnorm(r4, main = "Non-normal errors", ylim = c(-5, 15))
 qqline(r4, lty = "dotted", col = "red2")
 ```
 
@@ -266,7 +265,7 @@ qqline(r4, lty = "dotted", col = "red2")
 
 # Residual analysis
 
-.large[
+.font130[
 
 * Residuals help in identifying a misspecified mean structure (i.e., $\boldsymbol{\beta}\boldsymbol{X}$)
 
@@ -286,57 +285,69 @@ qqline(r4, lty = "dotted", col = "red2")
 ---
 class: clear, middle, center
 
-.huge[Normal Q-Q plot can be used to asses the "normalityness" of a set of observations]
+.font200[Normal Q-Q plots* can be used to asses the "normalityness" of a set of observations]
+
+<br><br>
+
+*Q-Q plots can, in general, be used to compare data with any distirbution!
 
 
 ---
 class: clear 
 
+.code125[
 ```{r qqnorm-normal, fig.width=6, fig.asp=0.618, out.width="70%"}
 set.seed(101)
 x <- rnorm(100)
 qqnorm(x, main = "Normal data")
 qqline(x, lty = "dotted", col = "red2")
 ```
+]
 
 
 ---
 class: clear 
 
+.code125[
 ```{r qqnorm-skew-right, fig.width=6, fig.asp=0.618, out.width="70%"}
 set.seed(101)
 x <- rlnorm(100)
 qqnorm(x, main = "Skew right data")
 qqline(x, lty = "dotted", col = "red2")
 ```
+]
 
 
 ---
 class: clear 
 
+.code125[
 ```{r qqnorm-skew-left, fig.width=6, fig.asp=0.618, out.width="70%"}
 set.seed(101)
 x <- -rlnorm(100)
 qqnorm(x, main = "Skew left data")
 qqline(x, lty = "dotted", col = "red2")
 ```
+]
 
 
 ---
 class: clear 
 
+.code125[
 ```{r qqnorm-heavy tails, fig.width=6, fig.asp=0.618, out.width="70%"}
 set.seed(101)
 x <- rt(100, df = 1)
 qqnorm(x, main = "Heavy-tailed data")
 qqline(x, lty = "dotted", col = "red2")
 ```
+]
 
 
 ---
 class: clear, middle, center
 
-.larger[When should you use normality tests?]
+.font200[When should you use normality tests?]
 
 --
 
@@ -349,9 +360,9 @@ set.seed(4); RBitmoji::plot_comic(my_id, tag = "never")
 ---
 class: clear, middle
 
-.large[
+.font150[
 
-```{r normality-tests}
+```{r normality-tests, highlight.output=1:2}
 # Shapiro-Wilk test and sample size
 set.seed(101)  # for reproducibility
 x <- replicate(100, c(
@@ -370,14 +381,14 @@ rowMeans(x < 0.05)
 ---
 class: clear, middle, center
 
-```{r normal-vs-t, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="90%"}
+```{r normal-vs-t, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 x <- seq(from = -5, to = 5, length = 500)
 y1 <- dnorm(x)
 y2 <- dt(x, df = 40)
 df <- data.frame(
   x = c(x, x), 
   y = c(y1, y2),
-  Distribution = rep(c("Standard\nnormal", "t(df = 50)"), each = length(x))
+  Distribution = rep(c("Standard\nnormal", "t(df = 40)"), each = length(x))
 )
 set.seed(2); comic <- RBitmoji::get_comic(my_id, tag = "fuck")
 ggplot(df, aes(x = x, y = y, color = Distribution)) +
@@ -388,31 +399,26 @@ ggplot(df, aes(x = x, y = y, color = Distribution)) +
 
 
 ---
-class: clean, middle, center, inverse
+class: clear, middle, center
 
-.huge[Scaling the residuals]
+.font300[Scaling the residuals]
 
 
 ---
 
 # Standardized residuals
 
-.large[
+.font130[
 
 $$r_i^{stan} = \frac{r_i}{\sqrt{Var\left(r_i\right)}}$$
-]
 
---
-
-.large[
-
-* The $r_i^{stan}$s have mean zero and variance .bold[approximately equal to one]
+* We want the standardized residuals to have .bold[mean zero] and .bold[unit variance]
 
 ]
 
 --
 
-.large[
+.font150[
 
 * Large positive/negative values of $r_i^{stan}$, say $\left|r_i^{stan}\right| > 3$ may indicate an outlier
 
@@ -420,18 +426,18 @@ $$r_i^{stan} = \frac{r_i}{\sqrt{Var\left(r_i\right)}}$$
 
 --
 
-.large[.center[.content-box-blue[
+.font150.center.content-box-blue[
 
 So what is $Var\left(r_i\right)$? `r emo::ji("thinking")`
 
-]]]
+]
 
 
 ---
 
 # Standardized residuals
 
-.large[
+.font150[
 
 * If $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$, then $\epsilon_i/\sigma \stackrel{iid}{\sim} N\left(0, 1\right)$, so it seems intuitive to define a standardized residual as $$r_i^{stan} =\frac{r_i}{\sqrt{MSE}} = \frac{r_i}{RMSE}$$
 
@@ -439,30 +445,28 @@ So what is $Var\left(r_i\right)$? `r emo::ji("thinking")`
 
 --
 
-.large[
+.pull-left.font200.center.red[
 
-However, $Var\left(r_i\right) \ne MSE$!! 
+However, $$Var\left(r_i\right) \ne MSE$$ 
 
 ]
 
-```{r say-what, echo=FALSE, out.width="20%"}
+.pull-right[
+
+```{r say-what, echo=FALSE, out.width="50%"}
 set.seed(4); RBitmoji::plot_comic(my_id, tag = "say what")
 ```
+
+]
 
 
 ---
 
 # Standardized residuals
 
-.large[
+.font140[
 
 * Recall that $r_i = Y_i - \widehat{Y}_i$, or, in matrix form $$\boldsymbol{r} = \boldsymbol{Y} - \widehat{\boldsymbol{Y}}$$
-
-]
-
---
-
-.large[
 
 * It can be shown that the variance of $r_i$ is given by $\sigma^2\left(1 - h_{ii}\right)$, which can be estimated with $MSE\left(1 - h_{ii}\right)$
 
@@ -470,7 +474,7 @@ set.seed(4); RBitmoji::plot_comic(my_id, tag = "say what")
 
 --
 
-.large[
+.font140[
 
 * .purple[Studentized residual]: $r_i^{stud} = \frac{r_i}{\sqrt{MSE\left(1 - h_{ii}\right)}}$
 
@@ -485,17 +489,17 @@ set.seed(4); RBitmoji::plot_comic(my_id, tag = "say what")
 
 # PRESS residuals
 
-.medium[
+.font115[
 
 * Another refinement to make the residuals more effective at detecting outlying $Y$ observations is to measure the *i*-th residual $r_i = Y_i - \widehat{Y}_i$ when the fitted regression is based on all of the cases except the *i*-th one
 
-    - Also referred to as the *deleted residuals* or *jackknife residuals*
+    - Also referred to as the __*deleted residuals*__ or __*jackknife residuals*__
 
     - A form of *leave one out cross-validation* (LOOCV)
 
-* It can be shown that these residuals can be obtained without refitting the model $n$ times using $$d_i = \frac{r_i}{1 - h_{ii}}$$
+* It can be shown that these residuals can be obtained without refitting the model $n$ times using $$r_i^{PRESS} = d_i = \frac{r_i}{1 - h_{ii}}$$
 
-* PRESS statistic: $PRESS = \sum_{i=1}^n d_i^2$ (.red[useful for model selection])
+* PRESS statistic: $PRESS = \sum_{i=1}^n d_i^2$ (.red[useful for model building/selection])
 
 ]
 
@@ -509,26 +513,25 @@ knitr::include_graphics("images/residual-patterns.png")
 
 
 ---
+class: clear, middle
 
-# Delivery data example `r emo::ji("truck")`
-
-.medium[
+.code125[
 
 ```{r delivery-01}
 # Load the delivery data
-url <- "https://bgreenwell.github.io/uc-bana7052/data/delivery.csv"
+url <- paste0("https://bgreenwell.github.io/",
+              "uc-bana7052/data/delivery.csv")
 delivery <- read.csv(url)
-head(delivery, n = 10)  # print first 10 observations
+head(delivery, n = 5)  # print first 5 observations
 ```
 
 ]
 
 
 ---
+class: clear, middle
 
-# Delivery data example `r emo::ji("truck")`
-
-.medium[
+.code110[
 
 ```{r delivery-02}
 # Fit an MLR model
@@ -540,10 +543,10 @@ yhat <- fitted(delivery_fit)
 # equivalent to `yhat <- predict(delivery_fit)`  #<<
 
 # Residuals
-r <- residuals(delivery_fit)  # ordinary  #<<
-rstan <- rstandard(delivery_fit)  # studentized  #<<
-rstud <- rstudent(delivery_fit)  # studentized deleted  #<<
-press <- rstandard(delivery_fit, type = "predictive")  # PRESS  #<<
+rorig <- residuals(delivery_fit)  # ordinary
+rstan <- rstandard(delivery_fit)  # studentized
+rstud <- rstudent(delivery_fit)  # studentized deleted
+press <- rstandard(delivery_fit, type = "predict")  # PRESS
 ```
 
 ]
@@ -551,9 +554,9 @@ press <- rstandard(delivery_fit, type = "predictive")  # PRESS  #<<
 
 ---
 
-class: clear, middle
+class: clear
 
-.scrollable[
+.code90[
 
 ```{r rstandard}
 getAnywhere("rstandard.lm")
@@ -564,9 +567,9 @@ getAnywhere("rstandard.lm")
 
 ---
 
-class: clear, middle
+class: clear
 
-.medium[
+.code90[
 
 ```{r rstudent}
 getAnywhere("rstudent.lm")
@@ -607,14 +610,14 @@ gridExtra::grid.arrange(p1, p2, nrow = 1)
 ---
 class: clear, middle, center
 
-.huge[Such problems are easy to see when there is only a single predictor!]
+.font200[Such problems are easy to see when there is only a single predictor!]
 
 
 ---
 
 # Remedial measures
 
-.center[
+.center.font200[
 
 What do we do once we've discovered inadequacies in the model?
 
@@ -635,11 +638,11 @@ What do we do once we've discovered inadequacies in the model?
 
 ---
 
-# Your turn `r emo::ji("scream")`
+# Your turn
 
-.large[
+.font175[
 
-Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Check the adequacy of the fitted model using the methods discussed in this lecture. Does the model appear adequate? What assumptions appear to be violated? Are there outlying and/or influential values?
+Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Check the adequacy of the fitted model using the methods discussed in this lecture. Does the model appear adequate? What assumptions, if any, appear to be violated? Are there potential outlying and/or influential values?
 
 ]
 
@@ -647,13 +650,15 @@ Return to the Boston housing example from the previous lecture. Fit an MLR model
 ---
 class: clear, middle, center
 
-```{r boston-spm, echo=FALSE, out.width="60%"}
+```{r boston-spm, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 GGally::ggpairs(pdp::boston[, c("cmedv", "lstat", "rm")])
 ```
 
 
 ---
 class: clear, middle
+
+.code100[
 
 ```{r boston-broom-01, echo=FALSE}
 library(broom)
@@ -664,15 +669,14 @@ boston2 <- pdp::boston %>%
   mutate(row_num = 1:n())
 ```
 
-.scrollable[
-
 ```{r boston-broom-02}
 library(broom)
 library(dplyr)
 pdp::boston %>%
   lm(cmedv ~ lstat + rm, data = .) %>%
   broom::augment() %>%
-  mutate(row_num = 1:n())
+  mutate(row_num = 1:n()) %>%
+  head(5)
 ```
 
 ]
@@ -681,7 +685,7 @@ pdp::boston %>%
 ---
 class: clear, middle, center
 
-```{r boston-residual-plots-01, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+```{r boston-residual-plots-01, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 ggplot(boston2, aes(x = .fitted, y = .std.resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red2") +
@@ -696,7 +700,7 @@ ggplot(boston2, aes(x = .fitted, y = .std.resid)) +
 ---
 class: clear, middle, center
 
-```{r boston-residual-plots-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+```{r boston-residual-plots-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 ggplot(boston2, aes(sample = .std.resid)) +
   geom_qq(alpha = 0.3) +
   geom_qq_line(linetype = "dashed", color = "red2") +
@@ -709,7 +713,7 @@ ggplot(boston2, aes(sample = .std.resid)) +
 ---
 class: clear, middle, center
 
-```{r boston-residual-plots-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+```{r boston-residual-plots-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 ggplot(boston2, aes(x = .fitted, y = .hat)) +
   geom_point(alpha = 0.3) +
   xlab("Fitted value") +
@@ -721,7 +725,7 @@ ggplot(boston2, aes(x = .fitted, y = .hat)) +
 ---
 class: clear, middle, center
 
-```{r boston-residual-plots-04, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+```{r boston-residual-plots-04, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 ggplot(boston2, aes(x = row_num, y = .std.resid)) +
   geom_point(alpha = 0.3) +
   geom_line() +
@@ -735,7 +739,7 @@ ggplot(boston2, aes(x = row_num, y = .std.resid)) +
 ---
 class: clear, middle, center
 
-```{r boston-residual-plots-05, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+```{r boston-residual-plots-05, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 ggplot(boston2, aes(x = lstat, y = .std.resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red2") +
@@ -763,7 +767,7 @@ ggplot(boston2, aes(x = rm, y = .std.resid)) +
 ---
 class: clear, middle, center
 
-.huge[Leverage values]
+.font300[Leverage values]
 
 
 ---
@@ -778,7 +782,7 @@ class: clear, middle, center
     
     - The diagonal entries of $\boldsymbol{H}$, denoted $h_{ii}$, can be useful for detecting outlying cases
     
-    - $X_{new}$ is considered "outlying" if $h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}$ lies outside of the range of the diagonal entries of $\boldsymbol{H}$
+    - $X_{new}$ is considered "outlying" if $h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}_{new}$ lies outside of the range of the diagonal entries of $\boldsymbol{H}$
     
     - See `?influence.measures`
 
@@ -788,12 +792,13 @@ class: clear, middle, center
 
 .middle[
 
-```{r chull, echo=FALSE}
+```{r chull, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 hull <- delivery[chull(delivery$NumberofCases, delivery$Distance), ]
 ggplot(delivery, aes(x = NumberofCases, y = Distance)) +
   geom_polygon(data = hull, fill = "red", alpha = 0.1) +
-  geom_point(size = 2) +
-  geom_point(data = delivery[c(9, 22), ], size = 2, col = "red2")
+  geom_point(size = 3) +
+  geom_point(data = delivery[c(9, 22), ], size = 3, col = "red2") +
+  theme_light()
 ```
 
 ]
@@ -802,20 +807,26 @@ ggplot(delivery, aes(x = NumberofCases, y = Distance)) +
 
 
 ---
+class: clear, middle
 
-# Delivery data example `r emo::ji("truck")`
-
-.scrollable[
-
-.medium[
+.code80[
 
 ```{r delivery-hatvalue, fig.width=6, fig.asp=0.618, out.width="70%"}
 # Which training observations might be considered as outliers?
 h <- hatvalues(delivery_fit)
-plot(h, type = "h", ylim = extendrange(h, f = 0.1))
+plot(h, type = "h", ylim = extendrange(h, f = 0.15))
 abline(h = 2 * 3 / nrow(delivery), lty = "dotted")  #<<
 text(h, labels = seq_len(nrow(delivery)), pos = 3, col = "red2")
+```
+]
 
+
+---
+class: clear, middle
+
+.code80[
+
+```{r}
 # Determine outlyingness of new observations
 X <- model.matrix(delivery_fit)
 head(X)
@@ -826,13 +837,11 @@ h_new > max(abs(h))
 
 ]
 
-]
-
 
 ---
 class: clear, middle, center
 
-.huge[Multicollinearity]
+.font300[Multicollinearity]
 
 
 ---
@@ -858,24 +867,23 @@ class: clear, middle, center
 
 # Heart catheter example
 
-.large[
+.font150[
 
 A study was conducted and data collected to fit a regression model to predict the length of a catheter needed to pass from a major artery at the femoral region and moved into the heart for children (Weisberg 1980). For 12 children, the proper catheter length was determined by checking with a fluoroscope that the catheter tip had reached the right position. The goal is to determine a model where a child’s height and weight could be used to predict the proper catheter length.
 
 ]
 
-.large[.center[
+.font150.center[
 
 [heart.R](https://github.com/bgreenwell/stt7140-env/blob/master/code/heart.R)
 
-]]
+]
 
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.large[
+.code100[
 
 ```{r heart-01}
 # Load required packages
@@ -885,31 +893,24 @@ library(plotly)  # for interactive plotting
 # Load the data
 url <- "https://bgreenwell.github.io/uc-bana7052/data/heart"
 heart <- read.table(url, header = TRUE)
-head(heart)  
+head(heart, 5)  
 ```
 
 ]
 
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.scrollable[
-
-```{r heart-02, out.width="70%"}
-# Scatterplot matrix
-pairs(heart)
+```{r heart-02, fig.width=6, fig.asp=0.618, out.width="100%"}
+GGally::ggpairs(heart)  # scatterplot matrix
 ```
-
-]
 
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.larger[
+.code150[
 
 ```{r heart-03, out.width="70%"}
 # Correlation matrix
@@ -920,12 +921,9 @@ pairs(heart)
 
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.scrollable[
-
-```{r heart-04}
+```{r heart-04, echo=FALSE, out.width="100%"}
 # Interactive 3-D scatterplot
 p <- plot_ly(heart, x = ~Height, y = ~Weight, z = ~Length) %>%
   add_markers() %>%
@@ -935,29 +933,21 @@ p <- plot_ly(heart, x = ~Height, y = ~Weight, z = ~Length) %>%
 p
 ```
 
-]
-
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.scrollable[
-
-```{r heart-05}
+```{r heart-05, highlight.output=c(12:13, 18:19)}
 # Fit a linear model
 heart_fit <- lm(Length ~ Height + Weight, data = heart)
 summary(heart_fit)
 ```
 
-]
-
 
 ---
+class: clear, middle
 
-# Heart catheter example
-
-.large[
+.code150[
 
 ```{r heart-06}
 # Compute variance inflation factors
@@ -968,7 +958,7 @@ vif(heart_fit)  #<<
 
 --
 
-.large[
+.font150[
 
 * Both variance inflation factors are greater than 10 `r emo::ji("scream")`
 
@@ -976,11 +966,11 @@ vif(heart_fit)  #<<
 
 --
 
-.large[.center[.content-box-blue[
+.font150.center.content-box-blue[
 
 What are some potential remedies?
 
-]]]
+]
 
 
 
@@ -988,7 +978,7 @@ What are some potential remedies?
 
 # Remedies for multicollinearity
 
-.larger[
+.font150[
 
 * Omit some of the predictors
 
@@ -996,7 +986,7 @@ What are some potential remedies?
 
 --
 
-.larger[
+.font150[
 
 * Standardize the predictor column(s) (.blue[useful in polyomial models])
 
@@ -1004,7 +994,7 @@ What are some potential remedies?
 
 --
 
-.larger[
+.font150[
 
 * [*Regularized regression*](https://koalaverse.github.io/AnalyticsSummit18/03-Regularization.html#1)
 
@@ -1019,7 +1009,7 @@ What are some potential remedies?
 
 # Your turn `r emo::ji("scream")`
 
-.large[
+.font150[
 
 Return to the Boston housing example from the previous lecture. Fit an MLR model using `cmed` as the response and `lstat` and `rm` as the predictors. Does multicollinearity appear to be an issue here? Explain.
 
@@ -1030,7 +1020,7 @@ Return to the Boston housing example from the previous lecture. Fit an MLR model
 
 # Solution `r emo::ji("sunglasses")`
 
-.large[
+.font150[
 
 ```{r boston-vif}
 # Compute VIF scores for the Boston housing example
@@ -1043,7 +1033,7 @@ pdp::boston %>%
 
 --
 
-.center[.huger[
+.center[.font300[
 
 `r emo::ji("thumbsup")`
 
@@ -1054,7 +1044,7 @@ pdp::boston %>%
 
 # Other useful diagnostics
 
-.huge[
+.font150[
 
 * DFFITS
 

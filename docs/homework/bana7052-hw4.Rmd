@@ -1,6 +1,6 @@
 ---
 title: "BANA 7052: Applied Linear Regression"
-subtitle: "Homework #4"
+subtitle: "Homework #4 (30 points)"
 output: html_document
 ---
 
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **Please make sure that you include a cover page.**
 
-**Question 1.** Alumni Donation Data (Multiple Linear Regression). Continue with the same data from [homework 1](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw1) and fit a multiple linear regression model to the data, where the alumni giving rate is the response variable ($Y$), and the percentage of classes with fewer than 20 students ($X_1$) and Student/Faculty Ratio ($X_2$) as the predictors.
+**Question 1. (10 points)** Alumni Donation Data (Multiple Linear Regression). Continue with the same data from [homework 1](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw1) and fit a multiple linear regression model to the data, where the alumni giving rate is the response variable ($Y$), and the percentage of classes with fewer than 20 students ($X_1$) and Student/Faculty Ratio ($X_2$) as the predictors.
 
 Explore various residual diagnostics and possible remedies, including but not limited to:
  
@@ -30,13 +30,13 @@ e. What is the predicted alumni giving rate for an observation with ($X_1 = 40$,
 * Write a brief report (**no more than three pages**). Please clearly label your figures and tables. No raw outputs please.
 
 
-**Question 2.** Simulation Study (Simple Linear Regression). Assume mean function $E\left(Y|X\right) = 10 + 5 X - 2X^2$
+**Question 2. (10 points)** Simulation Study (Simple Linear Regression). Assume mean function $E\left(Y|X\right) = 10 + 5 X - 2X^2$
 
-a. Generate data with $X_1 \sim N\left(\mu = 3, \sigma^2 = 0.5^2\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)$. 
+a. Generate data with $X_1 \sim N\left(\mu = 3, \sigma = 0.5\right)$, sample size $n = 100$, and error term $\epsilon \sim N\left(\mu = 0, \sigma = 0.5\right)$. 
 
-b. First, fit a simple linear regression using just $X$. What is the estimated model? Please conduct model estimation, inference, and residual diagnostics. What do you conclude? 
+b. Fit a simple linear regression using just $X$. What is the estimated regression equation? Please conduct model estimation, inference, and residual diagnostics. What do you conclude? 
 
-c. Update the model from part b) by adding a quadratic term to the model. Conduct model estimation, inference, and residual diagnostics. What do you conclude? 
+c. Update the model from part b) by adding a quadratic term. Conduct model estimation, inference, and residual diagnostics. What do you conclude? Does this model seem to fit the data better? Please explain.
 
 d. What is the variance inflation factor (VIF) for the quadratic model? Any concern of multicollinearity?
 
@@ -61,9 +61,9 @@ fit_centered <- lm(y ~ x_centered + I(x_centered^2), data = my_data)
 
 ### Mathematics part (feel free to type or handwrite your solutions)
 
-**Question 3.** 
+**Question 3. (10 points)** 
 
-a. What are the assumptions of the (normal) linear regression model? What are the assumptions of the corresponding model random error term $\epsilon$? Please carefully state using bulleted points.
+a. What are the assumptions of the (normal) linear regression model? (Be sure to include the assumptions of the random error term $\epsilon$.) Please carefully state using bulleted points.
 
 b. Are the residuals from linear regression uncorrelated in general? Please explain. What is the distribution of residuals? 
 

@@ -75,5 +75,5 @@
 <line x1='363.49' y1='138.25' x2='377.31' y2='138.25' style='stroke-width: 2.13; stroke: #00BFC4; stroke-opacity: 0.50; stroke-linecap: butt;' clip-path='url(#cpMHw0MzJ8MjY2Ljk3Nnww)' />
 <g clip-path='url(#cpMHw0MzJ8MjY2Ljk3Nnww)'><text x='384.52' y='118.78' style='font-size: 8.80px; font-family: Arial;' textLength='36.53px' lengthAdjust='spacingAndGlyphs'>Standard</text></g>
 <g clip-path='url(#cpMHw0MzJ8MjY2Ljk3Nnww)'><text x='384.52' y='128.28' style='font-size: 8.80px; font-family: Arial;' textLength='27.51px' lengthAdjust='spacingAndGlyphs'>normal</text></g>
-<g clip-path='url(#cpMHw0MzJ8MjY2Ljk3Nnww)'><text x='384.52' y='141.47' style='font-size: 8.80px; font-family: Arial;' textLength='36.27px' lengthAdjust='spacingAndGlyphs'>t(df = 50)</text></g>
+<g clip-path='url(#cpMHw0MzJ8MjY2Ljk3Nnww)'><text x='384.52' y='141.47' style='font-size: 8.80px; font-family: Arial;' textLength='36.27px' lengthAdjust='spacingAndGlyphs'>t(df = 40)</text></g>
 </svg>

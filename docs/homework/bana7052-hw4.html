@@ -306,7 +306,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">BANA 7052: Applied Linear Regression</h1>
-<h3 class="subtitle"><em>Homework #4</em></h3>
+<h3 class="subtitle"><em>Homework #4 (30 points)</em></h3>
 
 </div>
 
@@ -314,7 +314,7 @@ $(document).ready(function () {
 <div id="computational-part-type-and-submit-your-answers-in-word-only" class="section level3">
 <h3>Computational part (type and submit your answers in WORD only)</h3>
 <p><strong>Please make sure that you include a cover page.</strong></p>
-<p><strong>Question 1.</strong> Alumni Donation Data (Multiple Linear Regression). Continue with the same data from <a href="https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw1">homework 1</a> and fit a multiple linear regression model to the data, where the alumni giving rate is the response variable (<span class="math inline">\(Y\)</span>), and the percentage of classes with fewer than 20 students (<span class="math inline">\(X_1\)</span>) and Student/Faculty Ratio (<span class="math inline">\(X_2\)</span>) as the predictors.</p>
+<p><strong>Question 1. (10 points)</strong> Alumni Donation Data (Multiple Linear Regression). Continue with the same data from <a href="https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw1">homework 1</a> and fit a multiple linear regression model to the data, where the alumni giving rate is the response variable (<span class="math inline">\(Y\)</span>), and the percentage of classes with fewer than 20 students (<span class="math inline">\(X_1\)</span>) and Student/Faculty Ratio (<span class="math inline">\(X_2\)</span>) as the predictors.</p>
 <p>Explore various residual diagnostics and possible remedies, including but not limited to:</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Does the assumption of error normality appear to be violated?</p></li>
@@ -326,11 +326,11 @@ $(document).ready(function () {
 <ul>
 <li>Write a brief report (<strong>no more than three pages</strong>). Please clearly label your figures and tables. No raw outputs please.</li>
 </ul>
-<p><strong>Question 2.</strong> Simulation Study (Simple Linear Regression). Assume mean function <span class="math inline">\(E\left(Y|X\right) = 10 + 5 X - 2X^2\)</span></p>
+<p><strong>Question 2. (10 points)</strong> Simulation Study (Simple Linear Regression). Assume mean function <span class="math inline">\(E\left(Y|X\right) = 10 + 5 X - 2X^2\)</span></p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Generate data with <span class="math inline">\(X_1 \sim N\left(\mu = 3, \sigma^2 = 0.5^2\right)\)</span>, sample size <span class="math inline">\(n = 100\)</span>, and error term <span class="math inline">\(\epsilon \sim N\left(\mu = 0, \sigma^2 = 0.25\right)\)</span>.</p></li>
-<li><p>First, fit a simple linear regression using just <span class="math inline">\(X\)</span>. What is the estimated model? Please conduct model estimation, inference, and residual diagnostics. What do you conclude?</p></li>
-<li><p>Update the model from part b) by adding a quadratic term to the model. Conduct model estimation, inference, and residual diagnostics. What do you conclude?</p></li>
+<li><p>Generate data with <span class="math inline">\(X_1 \sim N\left(\mu = 3, \sigma = 0.5\right)\)</span>, sample size <span class="math inline">\(n = 100\)</span>, and error term <span class="math inline">\(\epsilon \sim N\left(\mu = 0, \sigma = 0.5\right)\)</span>.</p></li>
+<li><p>Fit a simple linear regression using just <span class="math inline">\(X\)</span>. What is the estimated regression equation? Please conduct model estimation, inference, and residual diagnostics. What do you conclude?</p></li>
+<li><p>Update the model from part b) by adding a quadratic term. Conduct model estimation, inference, and residual diagnostics. What do you conclude? Does this model seem to fit the data better? Please explain.</p></li>
 <li><p>What is the variance inflation factor (VIF) for the quadratic model? Any concern of multicollinearity?</p></li>
 <li><p>Now center the <span class="math inline">\(X\)</span> variable and compare the VIF from d). What did you find? Which VIF is smaller? Please briefly explain the reason. <strong>Hint:</strong> you can center the <span class="math inline">\(X\)</span> variable in R using the following pseudocode:</p></li>
 </ol>
@@ -350,9 +350,9 @@ fit_centered &lt;- lm(y ~ x_centered + I(x_centered^2), data = my_data)
 </div>
 <div id="mathematics-part-feel-free-to-type-or-handwrite-your-solutions" class="section level3">
 <h3>Mathematics part (feel free to type or handwrite your solutions)</h3>
-<p><strong>Question 3.</strong></p>
+<p><strong>Question 3. (10 points)</strong></p>
 <ol style="list-style-type: lower-alpha">
-<li><p>What are the assumptions of the (normal) linear regression model? What are the assumptions of the corresponding model random error term <span class="math inline">\(\epsilon\)</span>? Please carefully state using bulleted points.</p></li>
+<li><p>What are the assumptions of the (normal) linear regression model? (Be sure to include the assumptions of the random error term <span class="math inline">\(\epsilon\)</span>.) Please carefully state using bulleted points.</p></li>
 <li><p>Are the residuals from linear regression uncorrelated in general? Please explain. What is the distribution of residuals?</p></li>
 <li><p>Why do we plot the residuals against the fitted values (<span class="math inline">\(\widehat{Y}_i\)</span>) rather than against the observed response values (<span class="math inline">\(Y_i\)</span>)? Please explain.</p></li>
 <li><p>What is multicollinearity? Computationally, what kind of problems can multicollinearity cause when using ordinary least squares? Please explain.</p></li>
