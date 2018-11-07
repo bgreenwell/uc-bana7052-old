@@ -714,18 +714,6 @@ ggplot(boston2, aes(sample = .std.resid)) +
 class: clear, middle, center
 
 ```{r boston-residual-plots-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
-ggplot(boston2, aes(x = .fitted, y = .hat)) +
-  geom_point(alpha = 0.3) +
-  xlab("Fitted value") +
-  ylab("Leverage (i.e., hat value)") +
-  theme_light()
-```
-
-
----
-class: clear, middle, center
-
-```{r boston-residual-plots-04, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 ggplot(boston2, aes(x = row_num, y = .std.resid)) +
   geom_point(alpha = 0.3) +
   geom_line() +
@@ -739,7 +727,7 @@ ggplot(boston2, aes(x = row_num, y = .std.resid)) +
 ---
 class: clear, middle, center
 
-```{r boston-residual-plots-05, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+```{r boston-residual-plots-04, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 ggplot(boston2, aes(x = lstat, y = .std.resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red2") +
@@ -753,7 +741,7 @@ ggplot(boston2, aes(x = lstat, y = .std.resid)) +
 ---
 class: clear, middle, center
 
-```{r boston-residual-plots-06, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+```{r boston-residual-plots-05, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 ggplot(boston2, aes(x = rm, y = .std.resid)) +
   geom_point(alpha = 0.3) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red2") +
@@ -836,6 +824,36 @@ h_new > max(abs(h))
 ```
 
 ]
+
+
+---
+class: clear, middle
+
+.font200[
+
+Using base R functionality (see `?plot.lm` for details):
+
+]
+
+.code125[
+
+```{r base-residual-plots-01, eval=FALSE}
+# Set up plotting grid
+par(mfrow = c(2, 3))  # three rows and two columns
+plot(delivery_fit, which = 1:6)
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r base-residual-plots-02, echo=FALSE, fig.width=6, fig.asp=2/3, out.width="100%"}
+# Set up plotting grid
+par(mfrow = c(2, 3))  # three rows and two columns
+plot(delivery_fit, which = 1:6)
+```
 
 
 ---

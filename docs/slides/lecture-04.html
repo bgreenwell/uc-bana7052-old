@@ -25,7 +25,7 @@ class: center, middle, inverse, title-slide
 # Residual Diagnostics and Remedial Measures
 ## Lecture 04
 ### Brandon M. Greenwell
-### 03 November, 2018
+### 07 November, 2018
 
 ---
 
@@ -691,12 +691,6 @@ class: clear, middle, center
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-04_files/figure-html/boston-residual-plots-06-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
-
-
----
-class: clear, middle, center
-
 .font300[Leverage values]
 
 
@@ -787,6 +781,33 @@ h_new &gt; max(abs(h))
 ```
 
 ]
+
+
+---
+class: clear, middle
+
+.font200[
+
+Using base R functionality (see `?plot.lm` for details):
+
+]
+
+.code125[
+
+
+```r
+# Set up plotting grid
+par(mfrow = c(2, 3))  # three rows and two columns
+plot(delivery_fit, which = 1:6)
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-04_files/figure-html/base-residual-plots-02-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
