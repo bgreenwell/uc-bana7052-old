@@ -239,7 +239,7 @@ class: clear, middle, center
 
 &lt;br&gt;&lt;br&gt;
 
-*Q-Q plots can, in general, be used to compare data with any distirbution!
+*Q-Q plots can, in general, be used to compare data with any distribution!
 
 
 ---
@@ -601,7 +601,7 @@ What do we do once we've discovered inadequacies in the model?
 
 --
 
-* Misspecified mean structure: transformations and non-parametric algorithms (e.g., MARS or a decision tree), etc.
+* Misspecified mean structure: transformations and non-parametric algorithms (e.g., [MARS](https://koalaverse.github.io/AnalyticsSummit18/04-MARS.html#1) or a [decision tree](https://koalaverse.github.io/AnalyticsSummit18/09-Trees.html#1)), etc.
 
 * Non-constant variance: transformations, *weighted least squares* (WLS), and *generalized linear models* (GLMs)
 
@@ -709,12 +709,8 @@ class: clear, middle, center
     - This region is difficult to visualize whenever `\(k &gt; 2\)`
     
     - The diagonal entries of `\(\boldsymbol{H}\)`, denoted `\(h_{ii}\)`, can be useful for detecting outlying cases
-    
-    - `\(X_{new}\)` is considered "outlying" if `\(h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}_{new}\)` lies outside of the range of the diagonal entries of `\(\boldsymbol{H}\)`
-    
-    - See `?influence.measures`
 
-]
+]  
 
 .pull-right[
 
@@ -723,6 +719,20 @@ class: clear, middle, center
 &lt;img src="lecture-04_files/figure-html/chull-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 ]
+
+]
+
+- A new case, `\(X_{new}\)`, is considered "outlying" if `\(h_{new} = \boldsymbol{X}_{new}^\top\left(\boldsymbol{X}^\top\boldsymbol{X}\right)^{-1}\boldsymbol{X}_{new}\)` lies outside of the range of the diagonal entries of `\(\boldsymbol{H}\)`
+    
+- See `?influence.measures`
+
+
+---
+class: clear, middle, center
+
+.font200[
+
+Cases with leverage (i.e., hat) values greater than `\(2p/n = 2\sum_{i=1}^nh_{ii}/n\)` are considered as outliers with respect to their `\(X\)` values!
 
 ]
 
@@ -777,7 +787,7 @@ X_new &lt;- rbind(c(1, 10, 1000), c(1, 40, 3))
 ```
 
 ```r
-h_new &gt; max(abs(h))
+h_new &gt; max(h)
 ```
 
 ```
@@ -804,6 +814,18 @@ Using base R functionality (see `?plot.lm` for details):
 par(mfrow = c(2, 3))  # three rows and two columns
 plot(delivery_fit, which = 1:6)
 ```
+
+]
+
+
+---
+class: clear, middle, center
+
+.font200.right[
+
+"Analysis of outlying and influential cases is a necessary component of good regression analysis. However, it is neither automatic nor foolproof and requires good judgement by the analyst."
+
+--The Book
 
 ]
 
@@ -1007,7 +1029,7 @@ What are some potential remedies?
 
 .font150[
 
-* Standardize the predictor column(s) (.blue[useful in polyomial models])
+* Standardize the predictor column(s) (.blue[useful in polynomial models])
 
 ]
 
