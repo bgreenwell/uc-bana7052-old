@@ -55,7 +55,7 @@ library(ggplot2)
 
 ---
 
-# Prerquisites
+# Prerequisites
 
 .scrollable[
 
@@ -64,7 +64,15 @@ library(ggplot2)
 ```{r prerequisites, eval=FALSE}
 # List of required (CRAN) packages
 pkgs <- c(
-  NULL
+  "broom",      # for augment() function  #<<
+  "car",        # for vif() function  #<<
+  "GGally",     # for ggpairs() function
+  "ggplot2",    # for awesome graphics
+  "ggrepel",    # for geom_text_repel() function
+  "gridExtra",  # for grid.arrange() function
+  "pdp",        # for Boston housing data
+  "plotly",     # for interactive plots
+  "tibble"      # for nicer data frames
 )
 
 # Install required (CRAN) packages
@@ -73,10 +81,6 @@ for (pkg in pkgs) {
     install.packages(pkg)  # install it
   }
 }
-
-# Install additional (optional) awesomeness
-install.packages(c("devtools", "magick"))
-devtools::install_github("bgreenwell/roundhouse")
 ```
 
 ]
@@ -593,15 +597,20 @@ df2 <- tibble::tibble(
   y = 1 + 2*x + rnorm(length(x))
 )
 df2 <- rbind(df2, data.frame(x = 20, y = 5))
-p1 <- ggplot(df1, aes(x, y)) +
+df1$h <- paste0("h = ", round(hatvalues(lm(y ~ x, data = df1)), digits = 3))
+df2$h <- paste0("h = ", round(hatvalues(lm(y ~ x, data = df2)), digits = 3))
+p1 <- ggplot(df1, aes(x, y, label = h)) +
   geom_point(size = 2) +
   geom_smooth(method = "lm", se = FALSE) +
+  ggrepel::geom_text_repel(nudge_x = 5, direction = "y", hjust = 0, 
+                           alpha = 0.3, segment.alpha = 0.3) +
   ggtitle("Pure leverage point") +
   theme_light()
-p2 <- ggplot(df2, aes(x, y)) +
+p2 <- ggplot(df2, aes(x, y, label = h)) +
   geom_point(size = 2) +
   geom_smooth(method = "lm", se = FALSE) +
-  ggtitle("Influential point") +
+  ggrepel::geom_text_repel(nudge_x = 5, direction = "y", hjust = 0, 
+                           alpha = 0.3, segment.alpha = 0.3) +  ggtitle("Influential point") +
   theme_light()
 gridExtra::grid.arrange(p1, p2, nrow = 1)
 ```

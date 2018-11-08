@@ -25,7 +25,7 @@ class: center, middle, inverse, title-slide
 # Residual Diagnostics and Remedial Measures
 ## Lecture 04
 ### Brandon M. Greenwell
-### 07 November, 2018
+### 08 November, 2018
 
 ---
 
@@ -52,7 +52,7 @@ class: clear, middle
 
 ---
 
-# Prerquisites
+# Prerequisites
 
 .scrollable[
 
@@ -62,7 +62,15 @@ class: clear, middle
 ```r
 # List of required (CRAN) packages
 pkgs &lt;- c(
-  NULL
+* "broom",      # for augment() function
+* "car",        # for vif() function
+  "GGally",     # for ggpairs() function
+  "ggplot2",    # for awesome graphics
+  "ggrepel",    # for geom_text_repel() function
+  "gridExtra",  # for grid.arrange() function
+  "pdp",        # for Boston housing data
+  "plotly",     # for interactive plots
+  "tibble"      # for nicer data frames
 )
 
 # Install required (CRAN) packages
@@ -71,10 +79,6 @@ for (pkg in pkgs) {
     install.packages(pkg)  # install it
   }
 }
-
-# Install additional (optional) awesomeness
-install.packages(c("devtools", "magick"))
-devtools::install_github("bgreenwell/roundhouse")
 ```
 
 ]
