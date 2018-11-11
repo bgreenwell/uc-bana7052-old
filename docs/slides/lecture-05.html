@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 # BANA 7052: Lecture 05
 ## Regression Models for Quantitative and Qualitative Predictors
 ### Brandon M. Greenwell
-### 16 October, 2018
+### 11 November, 2018
 
 ---
 
@@ -597,6 +597,70 @@ anova(fit3, fit1)
 class: clear, middle, center
 
 &lt;img src="lecture-05_files/figure-html/fruitfly-07-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+--- 
+
+# More than three levels
+
+.font125[
+
+An electric utility is investigating the effect of the size of a single-family house and the type of air conditioning used in the house on the total electricity consumption during warm weather months
+
+]
+
+
+---
+class: clear, middle, center
+
+.font300[
+
+Transformations
+
+]
+
+
+---
+
+# Variance stabilizing transformations
+
+.font125[
+
+* Homoscedasticity is often violated when the variance is functionally related to the mean
+
+    - If not satisfied, the estimated regression coefficients will have larger standard errors (i.e., less precision)
+
+* Applying a transformation to the response may alleviate the problem
+
+* The strength of the transformation depends on the amount of curvature that is induced
+
+* While subject matter expertise and prior knowledge can be used to help select an appropriate transformation, such transformation are typically selected **empirically**
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-05_files/figure-html/residuals-vs-x-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Useful transformations
+
+.font150[
+
+|  Relationship between `\(\sigma^2\)` and `\(E\left(Y\right)\)` | Transformation |
+|:--|:--|
+| `\(\sigma^2 \propto \text{constant}\)` | `\(Y^\star = Y\)` |
+| `\(\sigma^2 \propto E\left(Y\right)\)` | `\(Y^\star = \sqrt{Y}\)` |
+| `\(\sigma^2 \propto E\left(Y\right)\left[1 - E\left(Y\right)\right]\)` | `\(Y^\star = \sin^{-1}\left(\sqrt{Y}\right)\)` |
+| `\(\sigma^2 \propto \left[E\left(Y\right)\right]^2\)` | `\(Y^\star = Y^{-1/2}\)` |
+| `\(\sigma^2 \propto \left[E\left(Y\right)\right]^3\)` | `\(Y^\star = Y\)` |
+| `\(\sigma^2 \propto \left[E\left(Y\right)\right]^4\)` | `\(Y^\star = Y^{-1}\)` |
+
+]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

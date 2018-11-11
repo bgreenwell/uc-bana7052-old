@@ -456,7 +456,86 @@ anova(fit3, fit1)
 class: clear, middle, center
 
 ```{r fruitfly-07, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+library(lattice)
 xyplot(lifespan ~ thorax, groups = group, data = fruitfly, pch = 19, 
        alpha = 0.5, type = c("p", "r"), xlab = "Thorax length (mm)",
        ylab = "Lifespan (days)", auto.key = list(corner = c(0, 1)))
 ```
+
+
+--- 
+
+# More than three levels
+
+.font125[
+
+An electric utility is investigating the effect of the size of a single-family house and the type of air conditioning used in the house on the total electricity consumption during warm weather months
+
+]
+
+
+---
+class: clear, middle, center
+
+.font300[
+
+Transformations
+
+]
+
+
+---
+
+# Variance stabilizing transformations
+
+.font125[
+
+* Homoscedasticity is often violated when the variance is functionally related to the mean
+
+    - If not satisfied, the estimated regression coefficients will have larger standard errors (i.e., less precision)
+
+* Applying a transformation to the response may alleviate the problem
+
+* The strength of the transformation depends on the amount of curvature that is induced
+
+* While subject matter expertise and prior knowledge can be used to help select an appropriate transformation, such transformation are typically selected **empirically**
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r residuals-vs-x, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+set.seed(101)
+n <- 100
+df <- tibble::tibble(
+  x = runif(n, min = 1, max = 5),
+  y = 1 + 4*x + rnorm(n, sd = x)
+)
+fit <- lm(y ~ x, data = df)
+df$r <- residuals(fit)
+ggplot(df, aes(x, r)) +
+  geom_point(alpha = 0.7) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(x = "X", y = "Residual", title = "Error variance increases with X") +
+  theme_light()
+```
+
+
+---
+
+# Useful transformations
+
+.font150[
+
+|  Relationship between $\sigma^2$ and $E\left(Y\right)$ | Transformation |
+|:--|:--|
+| $\sigma^2 \propto \text{constant}$ | $Y^\star = Y$ |
+| $\sigma^2 \propto E\left(Y\right)$ | $Y^\star = \sqrt{Y}$ |
+| $\sigma^2 \propto E\left(Y\right)\left[1 - E\left(Y\right)\right]$ | $Y^\star = \sin^{-1}\left(\sqrt{Y}\right)$ |
+| $\sigma^2 \propto \left[E\left(Y\right)\right]^2$ | $Y^\star = Y^{-1/2}$ |
+| $\sigma^2 \propto \left[E\left(Y\right)\right]^3$ | $Y^\star = Y$ |
+| $\sigma^2 \propto \left[E\left(Y\right)\right]^4$ | $Y^\star = Y^{-1}$ |
+
+]
