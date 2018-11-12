@@ -661,6 +661,158 @@ class: clear, middle, center
 | `\(\sigma^2 \propto \left[E\left(Y\right)\right]^4\)` | `\(Y^\star = Y^{-1}\)` |
 
 ]
+
+
+---
+class: clear, middle
+
+.code125[
+
+
+```r
+# Load the utility data
+url &lt;- paste0("https://bgreenwell.github.io/",
+              "uc-bana7052/data/utility.csv")
+utility &lt;- read.csv(url)
+head(utility, n = 5)  # print first 5 observations 
+```
+
+```
+##   Customer Usage Demand
+## 1        1   679   0.79
+## 2        2   292   0.44
+## 3        3  1012   0.56
+## 4        4   493   0.79
+## 5        5   582   2.70
+```
+
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+
+```r
+# Scatterplot
+plot(Demand ~ Usage, data = utility, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5))
+
+# Fitted regression line
+abline(fit &lt;- lm(Demand ~ Usage, data = utility), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/utility-03-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/utility-04-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle, center
+
+.font300[
+
+Which transformation(s) should we try?
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+
+```r
+# Scatterplot
+plot(sqrt(Demand) ~ Usage, data = utility, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5))
+
+# Fitted regression line
+*abline(fit &lt;- lm(sqrt(Demand) ~ Usage, data = utility),
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/utility-06-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/utility-07-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Transformations to linearize the model
+
+.font150[
+
+* Nonlinearity may be detected via plots or a *lack-of-fit* test 
+
+* If a transformation of a nonlinear function can result in a linear function we say it is *intrinsically linear* or *transformably linear*
+
+* Example: `$$Y = \beta_0\exp{\left(\beta_1 X\right)} \\ \implies \ln{Y} = \ln{\beta_0} + \beta_1 X + \epsilon^\star \\ \implies Y^\star = \beta_0^\star + \beta_1 X + \epsilon^\star$$` 
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-05_files/figure-html/prototype-01-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+.font150[
+
+Suggested transformation(s): `\(X^\star = \log_{10}\left(X\right)\)` or `\(X^\star = \sqrt{X}\)`
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-05_files/figure-html/prototype-02-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+.font150[
+
+Suggested transformation(s): `\(X^\star = X^2\)` or `\(X^\star = \exp{\left(X\right)}\)`
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-05_files/figure-html/prototype-03-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+
+.font150[
+
+Suggested transformation(s): `\(X^\star = 1/X\)` or `\(X^\star = \exp{\left(-X\right)}\)`
+
+]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

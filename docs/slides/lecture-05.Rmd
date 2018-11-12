@@ -539,3 +539,215 @@ ggplot(df, aes(x, r)) +
 | $\sigma^2 \propto \left[E\left(Y\right)\right]^4$ | $Y^\star = Y^{-1}$ |
 
 ]
+
+
+---
+class: clear, middle
+
+.code125[
+
+```{r utility-01}
+# Load the utility data
+url <- paste0("https://bgreenwell.github.io/",
+              "uc-bana7052/data/utility.csv")
+utility <- read.csv(url)
+head(utility, n = 5)  # print first 5 observations 
+```
+
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+```{r utility-02, eval=FALSE}
+# Scatterplot
+plot(Demand ~ Usage, data = utility, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5))
+
+# Fitted regression line
+abline(fit <- lm(Demand ~ Usage, data = utility), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+```{r utility-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Scatterplot
+plot(Demand ~ Usage, data = utility, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5))
+abline(fit <- lm(Demand ~ Usage, data = utility), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+
+---
+class: clear, middle
+
+```{r utility-04, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Residual plots
+# par(mfrow = c(1, 2))
+plot(
+  x = fitted(fit), 
+  y = rstudent(fit),
+  pch = 19,
+  las = 1,
+  col = adjustcolor("darkblue", alpha.f = 0.5),
+  xlab = "Fitted value",
+  ylab = "Studentized residual"
+)
+abline(h = 0, lty = 2)
+# plot(
+#   x = utility$Usage, 
+#   y = residuals(fit),
+#   pch = 19,
+#   las = 1,
+#   col = adjustcolor("darkblue", alpha.f = 0.5),
+#   xlab = "Usage (KWH)",
+#   ylab = "Residual"
+# )
+# abline(h = 0, lty = 2)
+```
+
+
+---
+class: clear, middle, center
+
+.font300[
+
+Which transformation(s) should we try?
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+```{r utility-05, eval=FALSE}
+# Scatterplot
+plot(sqrt(Demand) ~ Usage, data = utility, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5))
+
+# Fitted regression line
+abline(fit <- lm(sqrt(Demand) ~ Usage, data = utility),  #<<
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+```{r utility-06, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Scatterplot
+plot(sqrt(Demand) ~ Usage, data = utility, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5))
+abline(fit <- lm(sqrt(Demand) ~ Usage, data = utility), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+
+---
+class: clear, middle
+
+```{r utility-07, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Residual plots
+# par(mfrow = c(1, 2))
+plot(
+  x = fitted(fit), 
+  y = rstudent(fit),
+  pch = 19,
+  las = 1,
+  col = adjustcolor("darkblue", alpha.f = 0.5),
+  xlab = "Fitted value",
+  ylab = "Studentized residual"
+)
+abline(h = 0, lty = 2)
+# plot(
+#   x = utility$Usage, 
+#   y = residuals(fit),
+#   pch = 19,
+#   las = 1,
+#   col = adjustcolor("darkblue", alpha.f = 0.5),
+#   xlab = "Usage (KWH)",
+#   ylab = "Residual"
+# )
+# abline(h = 0, lty = 2)
+```
+
+
+---
+
+# Transformations to linearize the model
+
+.font150[
+
+* Nonlinearity may be detected via plots or a *lack-of-fit* test 
+
+* If a transformation of a nonlinear function can result in a linear function we say it is *intrinsically linear* or *transformably linear*
+
+* Example: $$Y = \beta_0\exp{\left(\beta_1 X\right)} \\ \implies \ln{Y} = \ln{\beta_0} + \beta_1 X + \epsilon^\star \\ \implies Y^\star = \beta_0^\star + \beta_1 X + \epsilon^\star$$ 
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r prototype-01, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+curve(log10(x), xlab = "X", ylab = "Y", lwd = 10, axes = FALSE)
+axis(1, labels = FALSE, tick = TRUE)
+axis(2, labels = FALSE, tick = TRUE)
+```
+
+.font150[
+
+Suggested transformation(s): $X^\star = \log_{10}\left(X\right)$ or $X^\star = \sqrt{X}$
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r prototype-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+curve(x^2, xlab = "X", ylab = "Y", lwd = 10, axes = FALSE)
+axis(1, labels = FALSE, tick = TRUE)
+axis(2, labels = FALSE, tick = TRUE)
+```
+
+.font150[
+
+Suggested transformation(s): $X^\star = X^2$ or $X^\star = \exp{\left(X\right)}$
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r prototype-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
+curve(1/x, xlab = "X", ylab = "Y", lwd = 10, axes = FALSE, xlim = c(0.1, 0.5))
+axis(1, labels = FALSE, tick = TRUE)
+axis(2, labels = FALSE, tick = TRUE)
+```
+
+.font150[
+
+Suggested transformation(s): $X^\star = 1/X$ or $X^\star = \exp{\left(-X\right)}$
+
+]
