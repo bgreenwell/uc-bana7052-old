@@ -52,16 +52,10 @@ class: clear, middle
 ```r
 # List of required (CRAN) packages
 pkgs &lt;- c(
-  "animation",   # for pre-built statistical animations
-  "broom",       # for tidying the output from statistical models
-  "dplyr",       # for data wrangling
-  "ggplot2",     # for drawing nicer graphics
-  "gridExtra",   # for grid.arrange() function
-  "HistData",    # for historical data sets
-  "investr",     # for inverse estimation
-  "magick",      # for working with images
-  "roundhouse",  # for pure awesomeness
-  "tibble"       # for nicer data frames
+  "ggplot2",  # for drawing nicer graphics
+  "lattice",  # for drawing nicer graphics
+  "MASS",     # for boxcox() function
+  "tibble"    # for nicer data frames
 )
 
 # Install required (CRAN) packages
@@ -803,7 +797,7 @@ library(MASS)  # should already be available
 boxcox(Demand ~ Usage, data = utility)
 ```
 
-&lt;img src="lecture-05_files/figure-html/unnamed-chunk-2-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-05_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1047,6 +1041,29 @@ The estimated coefficients still have the same properties, but only with respect
 ⚠️⚠️⚠️
 
 ]
+
+
+---
+
+# Automated procedures
+
+.font125[
+
+* Alternating conditional expectations (ACE): uses the *alternating conditional expectations* algorithm to find the transformations of `\(Y\)` and `\(X\)` that maximise the proportion of variation in `\(Y\)` explained by `\(X\)`
+
+* Additivity and variance stabilization for regression (AVAS): estimates transformations of `\(X\)` and `\(Y\)` such that the regression of `\(Y\)` on `\(X\)` is approximately linear with constant variance
+
+    - Both of these procedures are available in the [acepack](https://cran.r-project.org/package=acepack) package for R
+    
+* Multivariate adaptive regression splines (MARS): piecewise linear splines approach to multiple linear regression that automatically models nonlinearities and interactions between variables
+
+]
+
+
+---
+class: clear, middle, center
+
+&lt;img src="lecture-05_files/figure-html/quittin-time-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

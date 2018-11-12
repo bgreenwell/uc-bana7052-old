@@ -24,9 +24,6 @@ knitr::opts_chunk$set(
   echo = TRUE,
   dev = "svglite",
   fig.align = "center",
-  # fig.width = 6,
-  # fig.asp = 0.618,
-  # out.width = "70%",
   message = FALSE,
   warning = FALSE,
   error = FALSE
@@ -65,16 +62,10 @@ library(ggplot2)
 ```{r prerequisites, eval=FALSE}
 # List of required (CRAN) packages
 pkgs <- c(
-  "animation",   # for pre-built statistical animations
-  "broom",       # for tidying the output from statistical models
-  "dplyr",       # for data wrangling
-  "ggplot2",     # for drawing nicer graphics
-  "gridExtra",   # for grid.arrange() function
-  "HistData",    # for historical data sets
-  "investr",     # for inverse estimation
-  "magick",      # for working with images
-  "roundhouse",  # for pure awesomeness
-  "tibble"       # for nicer data frames
+  "ggplot2",  # for drawing nicer graphics
+  "lattice",  # for drawing nicer graphics
+  "MASS",     # for boxcox() function
+  "tibble"    # for nicer data frames
 )
 
 # Install required (CRAN) packages
@@ -980,3 +971,28 @@ The estimated coefficients still have the same properties, but only with respect
 `r emo::ji("warning")``r emo::ji("warning")``r emo::ji("warning")`
 
 ]
+
+
+---
+
+# Automated procedures
+
+.font125[
+
+* Alternating conditional expectations (ACE): uses the *alternating conditional expectations* algorithm to find the transformations of $Y$ and $X$ that maximise the proportion of variation in $Y$ explained by $X$
+
+* Additivity and variance stabilization for regression (AVAS): estimates transformations of $X$ and $Y$ such that the regression of $Y$ on $X$ is approximately linear with constant variance
+
+    - Both of these procedures are available in the [acepack](https://cran.r-project.org/package=acepack) package for R
+    
+* Multivariate adaptive regression splines (MARS): piecewise linear splines approach to multiple linear regression that automatically models nonlinearities and interactions between variables
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r quittin-time, echo=FALSE, out.width="60%"}
+RBitmoji::plot_comic(my_id, tag = "quittin")
+```
