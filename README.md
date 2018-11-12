@@ -54,6 +54,8 @@ Lectures
     [Homework](https://bgreenwell.github.io/uc-bana7052/homework/bana7052-hw6);
     Quiz
 
+-   [Final exam](https://bgreenwell.github.io/uc-bana7052/final)
+
 ``` r
 # Some more useful R code
 roundhouse::kick(
