@@ -13,7 +13,7 @@ output:
       highlightLines: true
       countIncrementalSlides: false
 ---
-class: clear, middle
+class: clear, middle, center
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
@@ -35,6 +35,16 @@ my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 # Load required packages
 library(ggplot2)
 ```
+
+.font300[
+
+[R code for these slides](https://github.com/bgreenwell/uc-bana7052/blob/master/code/lecture-05.R)
+
+]
+
+
+---
+class: clear, middle
 
 .font150[
 
@@ -413,7 +423,8 @@ url <- "https://bgreenwell.github.io/uc-bana7052/data/cutting_tool.csv"
 cutting_tool <- read.csv(url)
 ggplot(cutting_tool, aes(x = rpm, y = Hour, color = ToolType)) +
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE, fullrange = TRUE)
+  geom_smooth(method = "lm", se = FALSE, fullrange = TRUE) +
+  theme_light()
 ```
 
 
@@ -826,13 +837,18 @@ abline(h = 0, lty = 2)
 ]
 
 
-```{r}
-# Load required packages
-library(MASS)  # should already be available
+---
+class: clear, middle
 
+.code125[
+
+```{r boxcox-01, fig.wdith=6, fig.asp=0.618, out.width="60%"}
 # Find optimal lambda value via ML estimation
-boxcox(Demand ~ Usage, data = utility)
+bc <- MASS::boxcox(Demand ~ Usage, data = utility)
+(lambda <- bc$x[which.max(bc$y)])
 ```
+
+]
 
 
 ---
@@ -854,14 +870,15 @@ boxcox(Demand ~ Usage, data = utility)
 class: clear, middle, center
 
 ```{r prototype-01, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
-curve(log10(x), xlab = "X", ylab = "Y", lwd = 10, axes = FALSE)
+curve(log10(x), xlab = "X", ylab = "Y", main = "General trend", 
+      lwd = 10, axes = FALSE, lend = 2)
 axis(1, labels = FALSE, tick = TRUE)
 axis(2, labels = FALSE, tick = TRUE)
 ```
 
-.font150[
+.font130[
 
-Suggested transformation(s): $X^\star = \log_{10}\left(X\right)$ or $X^\star = \sqrt{X}$
+Suggested transformations: $X^\star = \log_{10}\left(X\right)$ or $X^\star = \sqrt{X}$
 
 ]
 
@@ -870,14 +887,15 @@ Suggested transformation(s): $X^\star = \log_{10}\left(X\right)$ or $X^\star = \
 class: clear, middle, center
 
 ```{r prototype-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
-curve(x^2, xlab = "X", ylab = "Y", lwd = 10, axes = FALSE)
+curve(x^2, xlab = "X", ylab = "Y", main = "General trend", 
+      lwd = 10, axes = FALSE, lend = 2)
 axis(1, labels = FALSE, tick = TRUE)
 axis(2, labels = FALSE, tick = TRUE)
 ```
 
-.font150[
+.font130[
 
-Suggested transformation(s): $X^\star = X^2$ or $X^\star = \exp{\left(X\right)}$
+Suggested transformations: $X^\star = X^2$ or $X^\star = \exp{\left(X\right)}$
 
 ]
 
@@ -886,14 +904,15 @@ Suggested transformation(s): $X^\star = X^2$ or $X^\star = \exp{\left(X\right)}$
 class: clear, middle, center
 
 ```{r prototype-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"}
-curve(1/x, xlab = "X", ylab = "Y", lwd = 10, axes = FALSE, xlim = c(0.1, 0.5))
+curve(1/x, xlab = "X", ylab = "Y", main = "General trend", 
+      lwd = 10, axes = FALSE, xlim = c(0.1, 0.5), lend = 2)
 axis(1, labels = FALSE, tick = TRUE)
 axis(2, labels = FALSE, tick = TRUE)
 ```
 
-.font150[
+.font130[
 
-Suggested transformation(s): $X^\star = 1/X$ or $X^\star = \exp{\left(-X\right)}$
+Suggested transformations: $X^\star = 1/X$ or $X^\star = \exp{\left(-X\right)}$
 
 ]
 

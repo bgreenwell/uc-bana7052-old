@@ -21,9 +21,19 @@ class: center, middle, inverse, title-slide
 
 ---
 
+class: clear, middle, center
+
+
+
+.font300[
+
+[R code for these slides](https://github.com/bgreenwell/uc-bana7052/blob/master/code/lecture-05.R)
+
+]
+
+
+---
 class: clear, middle
-
-
 
 .font150[
 
@@ -949,16 +959,28 @@ class: clear, middle
 ]
 
 
+---
+class: clear, middle
+
+.code125[
+
 
 ```r
-# Load required packages
-library(MASS)  # should already be available
-
 # Find optimal lambda value via ML estimation
-boxcox(Demand ~ Usage, data = utility)
+bc &lt;- MASS::boxcox(Demand ~ Usage, data = utility)
 ```
 
-&lt;img src="lecture-05_files/figure-html/unnamed-chunk-1-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-05_files/figure-html/boxcox-01-1.svg" width="60%" style="display: block; margin: auto;" /&gt;
+
+```r
+(lambda &lt;- bc$x[which.max(bc$y)])
+```
+
+```
+## [1] 0.5454545
+```
+
+]
 
 
 ---
@@ -981,9 +1003,9 @@ class: clear, middle, center
 
 &lt;img src="lecture-05_files/figure-html/prototype-01-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
-.font150[
+.font130[
 
-Suggested transformation(s): `\(X^\star = \log_{10}\left(X\right)\)` or `\(X^\star = \sqrt{X}\)`
+Suggested transformations: `\(X^\star = \log_{10}\left(X\right)\)` or `\(X^\star = \sqrt{X}\)`
 
 ]
 
@@ -993,9 +1015,9 @@ class: clear, middle, center
 
 &lt;img src="lecture-05_files/figure-html/prototype-02-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
-.font150[
+.font130[
 
-Suggested transformation(s): `\(X^\star = X^2\)` or `\(X^\star = \exp{\left(X\right)}\)`
+Suggested transformations: `\(X^\star = X^2\)` or `\(X^\star = \exp{\left(X\right)}\)`
 
 ]
 
@@ -1005,9 +1027,9 @@ class: clear, middle, center
 
 &lt;img src="lecture-05_files/figure-html/prototype-03-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
-.font150[
+.font130[
 
-Suggested transformation(s): `\(X^\star = 1/X\)` or `\(X^\star = \exp{\left(-X\right)}\)`
+Suggested transformations: `\(X^\star = 1/X\)` or `\(X^\star = \exp{\left(-X\right)}\)`
 
 ]
 
