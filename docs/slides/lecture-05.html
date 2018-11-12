@@ -766,6 +766,48 @@ class: clear, middle
 
 ---
 
+# Box-Cox procedure
+
+.font150[
+
+* Suppose that we wish to transform `\(Y\)` to correct for non-normality and/or non-constant variance (i.e., heteroscedasticity)
+
+* A useful class of transformations is the power transformation, `\(Y^\lambda\)` where `\(\lambda\)` is a parameter to be estimated from the data
+
+* The parameters of the regression model and `\(\lambda\)` can be estimated simultaneously using the method of maximum likelihood estimation
+
+]
+
+
+---
+
+# Box-cox procedure
+
+.font130[
+
+* The Box-Cox transformation uses `$$Y_i^{\left(\lambda\right)} = \begin{cases} \frac{Y_i^\lambda - 1}{\lambda \dot{Y}^{\lambda - 1}}, &amp; \quad \lambda \ne 0 \\ \ln\left(Y_i\right), &amp; \quad \lambda = 0 \end{cases}$$`
+
+    - Where `\(\dot{Y}\)` is the **geometric mean** of the `\(n\)` response values
+    
+* The model to be fit is `$$Y_i^{\left(\lambda\right)} = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i \\ i = 1, 2, \dots, n$$`
+
+]
+
+
+
+```r
+# Load required packages
+library(MASS)  # should already be available
+
+# Find optimal lambda value via ML estimation
+boxcox(Demand ~ Usage, data = utility)
+```
+
+&lt;img src="lecture-05_files/figure-html/unnamed-chunk-2-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
 # Transformations to linearize the model
 
 .font150[
@@ -811,6 +853,198 @@ class: clear, middle, center
 .font150[
 
 Suggested transformation(s): `\(X^\star = 1/X\)` or `\(X^\star = \exp{\left(-X\right)}\)`
+
+]
+
+
+---
+
+# Windmill example
+
+.font200[
+
+A research engineer is investigating the use of a windmill to generate electricity and has collected data on the DC output from this windmill ( `\(X\)` ) and the corresponding wind velocity ( `\(Y\)` ).
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+
+```r
+# Load the windmill data
+url &lt;- paste0("https://bgreenwell.github.io/",
+              "uc-bana7052/data/windmill.csv")
+windmill &lt;- read.csv(url)
+head(windmill, n = 5)  # print first 5 observations 
+```
+
+```
+##   Observation.Number Velocity Output
+## 1                  1      5.0  1.582
+## 2                  2      6.0  1.822
+## 3                  3      3.4  1.057
+## 4                  4      2.7  0.500
+## 5                  5     10.0  2.236
+```
+
+
+]
+
+
+---
+class: clear, middle
+
+.code115[
+
+
+```r
+# Scatterplot
+plot(Output ~ Velocity, data = windmill, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Wind velocity", ylab = "DC output")
+
+# Fitted regression line
+abline(fit &lt;- lm(Output ~ Velocity, data = windmill), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/windmill-03-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+.code115[
+
+
+```r
+# Residual plot
+plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Fitted value", ylab = "Studentized residual")
+abline(h = 0, lty = 2, 
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/windmill-05-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+.code115[
+
+
+```r
+# Scatterplot
+plot(Output ~ I(1/Velocity), data = windmill, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Wind velocity", ylab = "DC output")
+
+# Fitted regression line
+abline(fit &lt;- lm(Output ~ I(1/Velocity), data = windmill), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/windmill-07-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+.code115[
+
+
+```r
+# Residual plot
+*plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Fitted value", ylab = "Studentized residual")
+abline(h = 0, lty = 2, 
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/windmill-09-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle 
+
+
+```r
+summary(fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = Output ~ I(1/Velocity), data = windmill)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.20547 -0.04940  0.01100  0.08352  0.12204 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     2.9789     0.0449   66.34   &lt;2e-16 ***
+*## I(1/Velocity)  -6.9345     0.2064  -33.59   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.09417 on 23 degrees of freedom
+## Multiple R-squared:   0.98,	Adjusted R-squared:  0.9792 
+## F-statistic:  1128 on 1 and 23 DF,  p-value: &lt; 2.2e-16
+```
+
+
+---
+class: clear, middle 
+
+.center.font300[
+
+⚠️⚠️⚠️
+
+]
+
+.font200[
+
+The estimated coefficients still have the same properties, but only with respect to the transformed data, not the original data!
+
+]
+
+.center.font300[
+
+⚠️⚠️⚠️
 
 ]
     </textarea>

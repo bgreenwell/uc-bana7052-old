@@ -692,6 +692,45 @@ abline(h = 0, lty = 2)
 
 ---
 
+# Box-Cox procedure
+
+.font150[
+
+* Suppose that we wish to transform $Y$ to correct for non-normality and/or non-constant variance (i.e., heteroscedasticity)
+
+* A useful class of transformations is the power transformation, $Y^\lambda$ where $\lambda$ is a parameter to be estimated from the data
+
+* The parameters of the regression model and $\lambda$ can be estimated simultaneously using the method of maximum likelihood estimation
+
+]
+
+
+---
+
+# Box-cox procedure
+
+.font130[
+
+* The Box-Cox transformation uses $$Y_i^{\left(\lambda\right)} = \begin{cases} \frac{Y_i^\lambda - 1}{\lambda \dot{Y}^{\lambda - 1}}, & \quad \lambda \ne 0 \\ \ln\left(Y_i\right), & \quad \lambda = 0 \end{cases}$$
+
+    - Where $\dot{Y}$ is the **geometric mean** of the $n$ response values
+    
+* The model to be fit is $$Y_i^{\left(\lambda\right)} = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i \\ i = 1, 2, \dots, n$$
+
+]
+
+
+```{r}
+# Load required packages
+library(MASS)  # should already be available
+
+# Find optimal lambda value via ML estimation
+boxcox(Demand ~ Usage, data = utility)
+```
+
+
+---
+
 # Transformations to linearize the model
 
 .font150[
@@ -749,5 +788,195 @@ axis(2, labels = FALSE, tick = TRUE)
 .font150[
 
 Suggested transformation(s): $X^\star = 1/X$ or $X^\star = \exp{\left(-X\right)}$
+
+]
+
+
+---
+
+# Windmill example
+
+.font200[
+
+A research engineer is investigating the use of a windmill to generate electricity and has collected data on the DC output from this windmill ( $X$ ) and the corresponding wind velocity ( $Y$ ).
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+```{r windmill-01}
+# Load the windmill data
+url <- paste0("https://bgreenwell.github.io/",
+              "uc-bana7052/data/windmill.csv")
+windmill <- read.csv(url)
+head(windmill, n = 5)  # print first 5 observations 
+```
+
+
+]
+
+
+---
+class: clear, middle
+
+.code115[
+
+```{r windmill-02, eval=FALSE}
+# Scatterplot
+plot(Output ~ Velocity, data = windmill, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Wind velocity", ylab = "DC output")
+
+# Fitted regression line
+abline(fit <- lm(Output ~ Velocity, data = windmill), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+```{r windmill-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Scatterplot
+plot(Output ~ Velocity, data = windmill, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Wind velocity", ylab = "DC output")
+
+# Fitted regression line
+abline(fit <- lm(Output ~ Velocity, data = windmill), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+
+---
+class: clear, middle
+
+.code115[
+
+```{r windmill-04, eval=FALSE}
+# Residual plot
+plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Fitted value", ylab = "Studentized residual")
+abline(h = 0, lty = 2, 
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+```{r windmill-05, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Residual plot
+plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Fitted value", ylab = "Studentized residual")
+abline(h = 0, lty = 2, 
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+
+---
+class: clear, middle
+
+.code115[
+
+```{r windmill-06, eval=FALSE}
+# Scatterplot
+plot(Output ~ I(1/Velocity), data = windmill, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Wind velocity", ylab = "DC output")
+
+# Fitted regression line
+abline(fit <- lm(Output ~ I(1/Velocity), data = windmill), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+```{r windmill-07, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Scatterplot
+plot(Output ~ I(1/Velocity), data = windmill, pch = 19, las = 1,  #<<
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Wind velocity", ylab = "DC output")
+
+# Fitted regression line
+abline(fit <- lm(Output ~ I(1/Velocity), data = windmill), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+
+---
+class: clear, middle
+
+.code115[
+
+```{r windmill-08, eval=FALSE}
+# Residual plot
+plot(fitted(fit), rstudent(fit), pch = 19, las = 1,  #<<
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Fitted value", ylab = "Studentized residual")
+abline(h = 0, lty = 2, 
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+]
+
+
+---
+class: clear, middle
+
+```{r windmill-09, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Residual plot
+plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5),
+     xlab = "Fitted value", ylab = "Studentized residual")
+abline(h = 0, lty = 2, 
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+
+---
+class: clear, middle 
+
+```{r windmill-10, highlight.output=12}
+summary(fit)
+```
+
+
+---
+class: clear, middle 
+
+.center.font300[
+
+`r emo::ji("warning")``r emo::ji("warning")``r emo::ji("warning")`
+
+]
+
+.font200[
+
+The estimated coefficients still have the same properties, but only with respect to the transformed data, not the original data!
+
+]
+
+.center.font300[
+
+`r emo::ji("warning")``r emo::ji("warning")``r emo::ji("warning")`
 
 ]
