@@ -143,7 +143,7 @@ $$Y = \begin{cases} \beta_0 + \beta_1 X_1 + \epsilon, & \quad \text{if tool A} \
 
 --
 
-```{r cutting-tool, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="70%"}
+```{r cutting-tool-01, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="70%"}
 n <- 20
 set.seed(1213)
 df <- tibble::tibble(
@@ -248,6 +248,121 @@ The actual cutting tool data are availble in [here](https://bgreenwell.github.io
 # Solution
 
 .font300[[R code](https://github.com/bgreenwell/uc-bana7052/blob/master/code/cutting-tool.R)]
+
+
+---
+class: clear, middle
+
+.code125[
+
+```{r cutting-tool-02}
+# Load required packages
+library(broom)
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(lattice)
+
+# Load the data
+url <- paste0("https://bgreenwell.github.io/",
+              "uc-bana7052/data/cutting_tool.csv")
+cutting_tool <- read.csv(url)
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+```{r cutting-tool-03}
+# Inspect data
+head(cutting_tool)
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+```{r cutting-tool-04}
+# Check column types
+sapply(cutting_tool, class)
+
+# Inspect ToolType column
+head(cutting_tool$ToolType)
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+```{r cutting-tool-05}
+# How will R encode ToolType?
+head(model.matrix( ~ rpm + ToolType, 
+                   data = cutting_tool))
+```
+
+]
+
+
+---
+class: clear, middle
+
+```{r cutting-tool-06, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+ggplot(cutting_tool, aes(x = rpm, y = Hour, group = ToolType)) +
+  geom_point(aes(colour = ToolType), size = 3) +
+  # geom_smooth(method = "lm", formula = y ~ x, se = FALSE,
+  #             color = "black") +
+  theme_light()
+```
+
+
+---
+class: clear, middle
+
+```{r cutting-tool-07, highlight.output=12:13}
+# Regression model
+summary(fit <- lm(Hour ~ rpm + ToolType, data = cutting_tool))
+```
+
+
+---
+class: clear, middle
+
+```{r cutting-tool-08, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# FItted regression line(s)
+ggplot(augment(fit), aes(x = rpm, y = .fitted)) +
+  geom_point(aes(y = Hour, colour = ToolType), size = 3) +
+  geom_line(aes(group = ToolType), color = "black") +
+  labs(x = "rpm", y = "Hour") +
+  theme_light()
+```
+
+
+---
+class: clear, middle
+
+.font200[
+
+Estimated regression equation:
+
+]
+
+.font170[
+
+$$\widehat{\text{Hour}} = \begin{cases} 36.986 - 0.027 \text{rpm}, & \quad \text{tool A} \\ 51.990 - 0.027 \text{rpm}, & \quad \text{tool B} \end{cases}$$
+
+]
 
 
 ---

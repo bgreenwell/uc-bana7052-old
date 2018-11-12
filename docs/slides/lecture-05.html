@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 # BANA 7052: Lecture 05
 ## Regression Models for Quantitative and Qualitative Predictors
 ### Brandon M. Greenwell
-### 11 November, 2018
+### 12 November, 2018
 
 ---
 
@@ -131,7 +131,7 @@ Suppose we want to relate the effective life of a cutting tool ( `\(Y\)` ) used 
 
 --
 
-&lt;img src="lecture-05_files/figure-html/cutting-tool-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-05_files/figure-html/cutting-tool-01-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -255,6 +255,167 @@ The actual cutting tool data are availble in [here](https://bgreenwell.github.io
 # Solution
 
 .font300[[R code](https://github.com/bgreenwell/uc-bana7052/blob/master/code/cutting-tool.R)]
+
+
+---
+class: clear, middle
+
+.code125[
+
+
+```r
+# Load required packages
+library(broom)
+library(dplyr)
+library(ggplot2)
+library(gridExtra)
+library(lattice)
+
+# Load the data
+url &lt;- paste0("https://bgreenwell.github.io/",
+              "uc-bana7052/data/cutting_tool.csv")
+cutting_tool &lt;- read.csv(url)
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+
+```r
+# Inspect data
+head(cutting_tool)
+```
+
+```
+##    Hour rpm ToolType    Oil
+## 1 18.73 610        A    Low
+## 2 14.52 950        A    Low
+## 3 17.43 720        A    Low
+## 4 14.54 840        A    Low
+## 5 13.44 980        A    Low
+## 6 24.39 530        A Medium
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+
+```r
+# Check column types
+sapply(cutting_tool, class)
+```
+
+```
+##      Hour       rpm  ToolType       Oil 
+## "numeric" "integer"  "factor"  "factor"
+```
+
+```r
+# Inspect ToolType column
+head(cutting_tool$ToolType)
+```
+
+```
+## [1] A A A A A A
+## Levels: A B
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code125[
+
+
+```r
+# How will R encode ToolType?
+head(model.matrix( ~ rpm + ToolType, 
+                   data = cutting_tool))
+```
+
+```
+##   (Intercept) rpm ToolTypeB
+## 1           1 610         0
+## 2           1 950         0
+## 3           1 720         0
+## 4           1 840         0
+## 5           1 980         0
+## 6           1 530         0
+```
+
+]
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/cutting-tool-06-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+
+```r
+# Regression model
+summary(fit &lt;- lm(Hour ~ rpm + ToolType, data = cutting_tool))
+```
+
+```
+## 
+## Call:
+## lm(formula = Hour ~ rpm + ToolType, data = cutting_tool)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.5527 -1.7868 -0.0016  1.8395  4.9838 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 36.98560    3.51038  10.536 7.16e-09 ***
+*## rpm         -0.02661    0.00452  -5.887 1.79e-05 ***
+*## ToolTypeB   15.00425    1.35967  11.035 3.59e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.039 on 17 degrees of freedom
+## Multiple R-squared:  0.9003,	Adjusted R-squared:  0.8886 
+## F-statistic: 76.75 on 2 and 17 DF,  p-value: 3.086e-09
+```
+
+
+---
+class: clear, middle
+
+&lt;img src="lecture-05_files/figure-html/cutting-tool-08-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: clear, middle
+
+.font200[
+
+Estimated regression equation:
+
+]
+
+.font170[
+
+`$$\widehat{\text{Hour}} = \begin{cases} 36.986 - 0.027 \text{rpm}, &amp; \quad \text{tool A} \\ 51.990 - 0.027 \text{rpm}, &amp; \quad \text{tool B} \end{cases}$$`
+
+]
 
 
 ---
