@@ -1,0 +1,63 @@
+---
+title: "BANA 7052: Applied Linear Regression"
+subtitle: "Homework #5 (30 points)"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Alumni Donation Case Study 
+
+## Format
+
+1. 5 page maximum (quality over quantity), single 1 1/2 spacing, 1 inch margins, and 11pt font.
+2. Do not include data sets and/or R/SAS code in the report. 
+3. Select and label necessary figures, tables, and R/SAS outputs that are immediately related to the discussion in the report. For instance, all tables and figures should have an appropriate caption.
+4. For the analysis, you may use R, SAS, or both.
+
+<!-- I'd like to have two groups volunteering to present the case study at the beginning of Week 7 class. Please email me if your group would like to volunteer. If no group is volunteering, I will randomly pick two. -->
+
+## Content 
+
+Here are the requirements for data analysis in your case report.
+
+A. Describe your data using plots (scatter plots, histograms, box plots, etc.) and other statistical tools you find appropriate (a table of descriptive statistics for each variavle is pretty common).
+
+B. Analyze the data set using linear regression models. Carry out model diagnostic analysis. If there are any violations of the model assumptions, propose and carry out possible remedies. Select the "best" model for the data set.
+
+The minimum requirement for the data analysis includes: exploratory data analysis of your data set (summaries, plots, etc.), linear regression models and model diagnostic analysis, and appropriate remedies (e.g., transformations, if necessary). You will use the alumni giving rate as the response variable ( $Y$ ) of interest. The potential predictors should include the percentage of classes with fewer than 20 students ( $X_1$ ), student/faculty ratio ( $X_2$ ), and the indicator variable private ( $X_3$ ) (i.e., a 1 indicates a private school).
+
+An excellent case study needs to work on selecting the "best" model for the data and/or carrying out appropriate remedies to improve the statistical inferences (e.g., you can try Box-Cox transformation if necessary). **(Optional)** Applying models and/or methods that are not covered in our course materials is a plus. For example, you may collect additional data/predictor variables to improve the prediction performance as a lot of useful information may be available online. You can check the out-of-sample prediction by validating the performance on the test data. You may apply different tests if needed.
+
+## Structure 
+
+Different report structures can be used. It may vary based on the complexity of your individual group project. Please do not hesitate to discuss with the instructor if you have any questions.
+
+ 
+Here is the structure of a sample case report:
+
+### Introduction
+
+Statement of the problem. The data set used in the project. The statistical models used. The main findings and your conclusions. If additional data and predictor variables are collected, please explain the motivation. 
+
+### Data description
+
+Data source and data structure. Describe your data using plots (scatter plots, histogram, box plots, etc.) and other statistical tools you find related and appropriate. Describe the preliminary results using linear regression models and model diagnostic analysis.
+
+### Methods
+
+Describe the statistical models and methods you choose based on the exploratory analysis of the data and the preliminary results you obtained. Describe how you select the “best” model for your data set. Describe your methods of remedies.
+
+### Results 
+
+Present your results. Interpret your findings. 
+
+### Discussion
+
+You may include a section of discussion summarizing your results. It is also interesting to end with a discussion for possible future study and limitations of the current case study.
+
+### Reference
+
+Please cite others' work appropriately (**this part is not included in the 5-page limitation**). 
