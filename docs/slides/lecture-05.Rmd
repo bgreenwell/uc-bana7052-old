@@ -248,7 +248,7 @@ model.matrix( ~ dow2)
 
 .font150[
 
-The actual cutting tool data are availble in [here](https://bgreenwell.github.io/uc-bana7052/data/cutting_tool.csv). Fit a linear regression model using `Hour` as the response and `rpm` (quantiative) and `ToolType` (qualitative with two categories) as the predictors of interest. Does the model fit seem reasonable? What do you conclude about the relationship between `Hour` and `rpm` for each category of `ToolType`?
+The actual cutting tool data are available in [here](https://bgreenwell.github.io/uc-bana7052/data/cutting_tool.csv). Fit a linear regression model using `Hour` as the response and `rpm` (quantitative) and `ToolType` (qualitative with two categories) as the predictors of interest. Does the model fit seem reasonable? What do you conclude about the relationship between `Hour` and `rpm` for each category of `ToolType`?
 
 ]
 
@@ -434,7 +434,7 @@ ggplot(cutting_tool, aes(x = rpm, y = Hour, color = ToolType)) +
 
 .font150[
 
-Refit your previous regression model to the cutting tool data, but be sure to include an interaction between `rpm` and `ToolType`. **Hint:** use `:` to model an intercation between two predictors in `lm()` (i.e., `x1 + x2 + x1:x2`). Reinterpret your results. What are the two estimated prediction equations implied by this model? Use the general linear test aproach to compare this model with the previous one. Which model do you conclude is "better"?
+Refit your previous regression model to the cutting tool data, but be sure to include an interaction between `rpm` and `ToolType`. **Hint:** use `:` to model an interaction between two predictors in `lm()` (i.e., `x1 + x2 + x1:x2`). Reinterpret your results. What are the two estimated prediction equations implied by this model? Use the general linear test approach to compare this model with the previous one. Which model do you conclude is "better"?
 
 ]
 
@@ -580,17 +580,6 @@ xyplot(lifespan ~ thorax, groups = group, data = fruitfly, pch = 19,
 ```
 
 
---- 
-
-# More than three levels
-
-.font125[
-
-An electric utility is investigating the effect of the size of a single-family house and the type of air conditioning used in the house on the total electricity consumption during warm weather months
-
-]
-
-
 ---
 class: clear, middle, center
 
@@ -632,10 +621,12 @@ df <- tibble::tibble(
 )
 fit <- lm(y ~ x, data = df)
 df$r <- residuals(fit)
-ggplot(df, aes(x, r)) +
+df$f <- fitted(fit)
+ggplot(df, aes(f, r)) +
   geom_point(alpha = 0.7) +
   geom_hline(yintercept = 0, linetype = "dashed") +
-  labs(x = "X", y = "Residual", title = "Error variance increases with X") +
+  labs(x = "Fitted value", y = "Residual", 
+       title = "Error variance increases with E(Y)") +
   theme_light()
 ```
 
@@ -661,6 +652,12 @@ ggplot(df, aes(x, r)) +
 ---
 class: clear, middle
 
+.font125[
+
+An electric utility is investigating the effect of the size of a single-family house and the type of air conditioning used in the house on the total electricity consumption during warm weather months
+
+]
+
 .code125[
 
 ```{r utility-01}
@@ -670,7 +667,6 @@ url <- paste0("https://bgreenwell.github.io/",
 utility <- read.csv(url)
 head(utility, n = 5)  # print first 5 observations 
 ```
-
 
 ]
 
@@ -741,7 +737,15 @@ class: clear, middle, center
 
 .font300[
 
-Which transformation(s) should we try?
+Which transformation(s) should we try? 
+
+]
+
+--
+
+.font200[
+
+(.red[This can involve a bit of trial and error!])
 
 ]
 
@@ -753,7 +757,8 @@ class: clear, middle
 
 ```{r utility-05, eval=FALSE}
 # Scatterplot
-plot(sqrt(Demand) ~ Usage, data = utility, pch = 19, las = 1,
+plot(sqrt(Demand) ~ Usage, data = utility, 
+     pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5))
 
 # Fitted regression line
@@ -826,15 +831,16 @@ abline(h = 0, lty = 2)
 
 # Box-cox procedure
 
-.font130[
+.font150[
 
-* The Box-Cox transformation uses $$Y_i^{\left(\lambda\right)} = \begin{cases} \frac{Y_i^\lambda - 1}{\lambda \dot{Y}^{\lambda - 1}}, & \quad \lambda \ne 0 \\ \ln\left(Y_i\right), & \quad \lambda = 0 \end{cases}$$
+* The Box-Cox transformation uses $$Y_i^{\left(\lambda\right)} = \begin{cases} \frac{Y_i^\lambda - 1}{\lambda}, & \quad \lambda \ne 0 \\ \ln\left(Y_i\right), & \quad \lambda = 0 \end{cases}$$
 
-    - Where $\dot{Y}$ is the **geometric mean** of the $n$ response values
-    
 * The model to be fit is $$Y_i^{\left(\lambda\right)} = \beta_0 + \beta_1 X_{i1} + \dots + \beta_{p-1} X_{i, p-1} + \epsilon_i \\ i = 1, 2, \dots, n$$
 
+* In R, you can use [MASS::boxcox()](https://www.rdocumentation.org/packages/MASS/versions/7.3-50/topics/boxcox) or [car::boxCox()](https://www.rdocumentation.org/packages/car/versions/2.1-4/topics/boxCox) to find the "optimal" value of $\lambda$
+
 ]
+
 
 
 ---
@@ -852,6 +858,33 @@ bc <- MASS::boxcox(Demand ~ Usage, data = utility)
 
 
 ---
+class: clear, middle
+
+```{r boxcox-02, fig.wdith=6, fig.asp=0.618, out.width="80%"}
+# Scatterplot and fitted model
+utility$Demand2 <- (utility$Demand ^ lambda - 1) / lambda
+plot(Demand2 ~ Usage, data = utility, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5))
+abline(fit <- lm(Demand2 ~ Usage, data = utility), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+```
+
+
+---
+class: clear, middle
+
+.code125[
+
+```{r boxcox-03, fig.wdith=7, fig.asp=0.5, out.width="100%"}
+par(mfrow = c(1, 2))  # side-by-side plots
+plot(fit, which = 1:2)
+```
+
+]
+
+
+---
 
 # Transformations to linearize the model
 
@@ -861,7 +894,17 @@ bc <- MASS::boxcox(Demand ~ Usage, data = utility)
 
 * If a transformation of a nonlinear function can result in a linear function we say it is *intrinsically linear* or *transformably linear*
 
-* Example: $$Y = \beta_0\exp{\left(\beta_1 X\right)} \\ \implies \ln{Y} = \ln{\beta_0} + \beta_1 X + \epsilon^\star \\ \implies Y^\star = \beta_0^\star + \beta_1 X + \epsilon^\star$$ 
+* Example: 
+
+$$Y = \beta_0\exp{\left(\beta_1 X\right)}\epsilon$$ 
+
+]
+
+--
+
+.font150[
+
+$$\implies \ln{Y} = \ln{\beta_0} + \beta_1 X + \epsilon^\star \\ \implies Y^\star = \beta_0^\star + \beta_1 X + \epsilon^\star$$ 
 
 ]
 
@@ -919,6 +962,23 @@ Suggested transformations: $X^\star = 1/X$ or $X^\star = \exp{\left(-X\right)}$
 
 ---
 
+# Boston housing example 
+
+.font150[
+
+The data violate many classical assumptions like linearity, normality, and constant variance. Nonetheless, Harrison and Rubinfeld (1978) (using a combination of **transformations**, **significance testing**, and **grid searches**) were able to find a reasonable fitting model ( $R^2 = 0.81$ ):
+
+]
+
+.font100[
+
+$$\widehat{\log\left(MV\right)} = 9.76 + 0.0063 RM^2 + 8.98\times10^{-5} AGE - 0.19\log\left(DIS\right) + 0.096\log\left(RAD\right) \\- 4.20\times10^{-4} TAX - 0.031 PTRATIO + 0.36\left(B - 0.63\right)^2 - 0.37\log\left(LSTAT\right) \\- 0.012 CRIM + 8.03\times10^{-5} ZN + 2.41\times10^{-4} INDUS + 0.088 CHAS \\- 0.0064 NOX^2$$
+
+]
+
+
+---
+
 # Windmill example
 
 .font200[
@@ -954,7 +1014,8 @@ class: clear, middle
 # Scatterplot
 plot(Output ~ Velocity, data = windmill, pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Wind velocity", ylab = "DC output")
+     xlab = "Wind velocity", ylab = "DC output",
+     main = "Original data")
 
 # Fitted regression line
 abline(fit <- lm(Output ~ Velocity, data = windmill), 
@@ -972,7 +1033,8 @@ class: clear, middle
 # Scatterplot
 plot(Output ~ Velocity, data = windmill, pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Wind velocity", ylab = "DC output")
+     xlab = "Wind velocity", ylab = "DC output",
+     main = "Original data")
 
 # Fitted regression line
 abline(fit <- lm(Output ~ Velocity, data = windmill), 
@@ -990,7 +1052,8 @@ class: clear, middle
 # Residual plot
 plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Fitted value", ylab = "Studentized residual")
+     xlab = "Fitted value", ylab = "Studentized residual",
+     main = "Original data")
 abline(h = 0, lty = 2, 
        col = adjustcolor("darkred", alpha.f = 0.5))
 ```
@@ -1005,7 +1068,8 @@ class: clear, middle
 # Residual plot
 plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Fitted value", ylab = "Studentized residual")
+     xlab = "Fitted value", ylab = "Studentized residual",
+     main = "Original data")
 abline(h = 0, lty = 2, 
        col = adjustcolor("darkred", alpha.f = 0.5))
 ```
@@ -1020,7 +1084,8 @@ class: clear, middle
 # Scatterplot
 plot(Output ~ I(1/Velocity), data = windmill, pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Wind velocity", ylab = "DC output")
+     xlab = "Wind velocity", ylab = "DC output",
+     main = "Transformed data")
 
 # Fitted regression line
 abline(fit <- lm(Output ~ I(1/Velocity), data = windmill), 
@@ -1038,7 +1103,8 @@ class: clear, middle
 # Scatterplot
 plot(Output ~ I(1/Velocity), data = windmill, pch = 19, las = 1,  #<<
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Wind velocity", ylab = "DC output")
+     xlab = "Wind velocity", ylab = "DC output",
+     main = "Transformed data")
 
 # Fitted regression line
 abline(fit <- lm(Output ~ I(1/Velocity), data = windmill), 
@@ -1056,7 +1122,8 @@ class: clear, middle
 # Residual plot
 plot(fitted(fit), rstudent(fit), pch = 19, las = 1,  #<<
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Fitted value", ylab = "Studentized residual")
+     xlab = "Fitted value", ylab = "Studentized residual",
+     main = "Transformed data")
 abline(h = 0, lty = 2, 
        col = adjustcolor("darkred", alpha.f = 0.5))
 ```
@@ -1071,7 +1138,8 @@ class: clear, middle
 # Residual plot
 plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Fitted value", ylab = "Studentized residual")
+     xlab = "Fitted value", ylab = "Studentized residual",
+     main = "Transformed data")
 abline(h = 0, lty = 2, 
        col = adjustcolor("darkred", alpha.f = 0.5))
 ```
@@ -1113,7 +1181,7 @@ The estimated coefficients still have the same properties, but only with respect
 
 .font125[
 
-* Alternating conditional expectations (ACE): uses the *alternating conditional expectations* algorithm to find the transformations of $Y$ and $X$ that maximise the proportion of variation in $Y$ explained by $X$
+* Alternating conditional expectations (ACE): uses the *alternating conditional expectations* algorithm to find the transformations of $Y$ and $X$ that maximize the proportion of variation in $Y$ explained by $X$
 
 * Additivity and variance stabilization for regression (AVAS): estimates transformations of $X$ and $Y$ such that the regression of $Y$ on $X$ is approximately linear with constant variance
 
