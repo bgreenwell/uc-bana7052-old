@@ -254,13 +254,6 @@ The actual cutting tool data are available in [here](https://bgreenwell.github.i
 
 
 ---
-
-# Solution
-
-.font300[[R code](https://github.com/bgreenwell/uc-bana7052/blob/master/code/cutting-tool.R)]
-
-
----
 class: clear, middle
 
 .code125[
