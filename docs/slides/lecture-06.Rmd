@@ -194,7 +194,7 @@ plot_ly(x = ~lstat, y = ~rm, z = ~yhat2,
 
 ---
 
-# Model-Building Problem 
+# The model building problem 
 
 .font120[
 
@@ -202,7 +202,7 @@ plot_ly(x = ~lstat, y = ~rm, z = ~yhat2,
 
     - Want **as many (useful) predictors as possible** so that the "information content" in the features will influence $\widehat{Y}$      
 
-    - Want **as few predictors as necessary** because $Var\left(\widehat{Y}\right)$ increases with the number of predictors; also, sometimes collecting data on more features bd costly in terms of data collection/model maintenance
+    - Want **as few predictors as necessary** because $Var\left(\widehat{Y}\right)$ increases with the number of predictors; also, sometimes collecting more features is costly in terms of data collection/model maintenance
 
 * Need to find a compromise that leads to the "best" regression equation
 
@@ -213,17 +213,17 @@ plot_ly(x = ~lstat, y = ~rm, z = ~yhat2,
 
 ---
 
-# Some notes on variable selection techniques 
+# Some notes on variable selection
 
 .font120[
 
-* None of the variable selection techniques guarantees to find the "best" regression equation for the dataset of interest
+* No variable selection technique guarantees to find the "best" regression equation for the data set of interest
 
-* Different variable selection techniques may very well give different results
+* Different variable selection techniques may very well give different results (and often they do!)
 
 * Complete reliance on the algorithm for results is to be avoided
 
-* Other valuable information such as experience with and knowledge of the data and problem should be utilized whenever possible
+* Other valuable information such as experience with, and knowledge of the data and problem, should be utilized whenever possible
 
 ]
 
@@ -238,7 +238,7 @@ plot_ly(x = ~lstat, y = ~rm, z = ~yhat2,
 
 * Improves the precision of the variance of the predicted response
 
-* Can induce bias into the estimates of coefficients and variance of the predicted response
+* Can induce bias into the estimated regression coefficients and variance of the predicted response
 
 ]
 
@@ -521,7 +521,7 @@ for $p$ much larger than 40), we can seek a good path through them!
 
 2. Fit $p - 1$ simple linear regressions and add to the null model the predictor that gives the .bold["biggest improvement"]
 
-3. Add to that model the predictor that results in the .bold["biggest improvement"] amongst all two-predictor models
+3. Add to that model the predictor that results in the .bold["biggest improvement"] among all two-predictor models
 
 4. Continue until some stopping rule is satisfied, for example when all remaining variables have a *p*-value above some threshold
 
@@ -772,6 +772,13 @@ summary(fs_2)
 ```
 
 ]
+
+
+---
+
+# Some cautions
+
+TBD.
 
 
 ---
