@@ -1,0 +1,803 @@
+---
+title: "BANA 7052: Lecture 06"
+subtitle: "Model Building and Selection"
+author: "Brandon M. Greenwell"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  xaringan::moon_reader:
+    mathjax: "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_HTMLorMML"
+    css: [default, metropolis, metropolis-fonts, hygge, "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: clear, middle, center
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE, servr.daemon = TRUE, 
+        crayon.enabled = FALSE)
+
+# Global chunk options
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = TRUE,
+  dev = "svglite",
+  fig.align = "center",
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE
+)
+
+# Bitmoji id
+my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
+
+# Load required packages
+library(ggplot2)
+```
+
+.font300[
+
+[R code for these slides](https://github.com/bgreenwell/uc-bana7052/blob/master/code/lecture-06.R)
+
+]
+
+
+---
+class: clear, middle
+
+.font150[
+
+* Required reading
+
+    - Chapters: 9
+
+    - Sections: 9.3-9.4
+
+* Main topics:
+
+    - Model selection
+
+]
+
+
+---
+
+# Prerequisites
+
+.code100[
+
+```{r prerequisites, eval=FALSE}
+# List of required (CRAN) packages
+pkgs <- c(
+  "car",          # for subsets() function
+  "ggplot2",      # for awesome graphics
+  "gridExtra",    # for grid.arrange() function
+  "leaps",        # for regsubsets() function
+  "plotly",       # for interactive plots
+  "SMPracticals"  # for cement data
+)
+
+# Install required (CRAN) packages
+for (pkg in pkgs) {
+  if (!(pkg %in% installed.packages()[, "Package"])) {
+    install.packages(pkg)
+  }
+}
+```
+
+]
+
+
+---
+class: clear, center, middle
+
+```{r lets-go, echo=FALSE, out.width="70%"}
+set.seed(4); RBitmoji::plot_comic(my_id, tag = "lets go")
+```
+
+
+---
+
+# Removing the additive assumption
+
+.font110[
+
+* In our previous analyses of the Boston housing data, we assumed that the effect on median home value (`cmedv`) of increasing the average number of rooms per dwelling (`rm`) was independent of the percentage of lower status of the population (`lstat`)
+
+* For example, the linear model $$E\left(cmedv\right) = \beta_0 + \beta_1 lstat + \beta_2 rm$$ states that the average effect on median home value of a one-unit increase in `rm` is always $\beta_2$, regardless of the percentage of lower status of the population
+
+* By adding a *two-way interaction effect* between `rm` and `lstat`, we allow the effect of `rm` on `cmedv` to vary with `lstat` (and vice versa): $$E\left(cmedv\right) = \beta_0 + \beta_1 lstat + \beta_2 rm + 
+\beta_3 lstat \times rm$$ 
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r boston-plotly-01, echo=FALSE, out.width="100%"}
+# Load required packages
+library(plotly)
+
+# Draw (interactive) 3-D scatterplot w/ fitted regression plane
+plot_ly(data = pdp::boston, x = ~lstat, y = ~rm, z = ~cmedv, 
+        mode = "markers", type = "scatter3d",
+        marker = list(opacity = 0.3, symbol = 1, 
+                      size = 5, color = "black")) %>%
+  layout(
+    scene = list(
+      aspectmode = "manual", 
+      aspectratio = list(x = 1, y = 1, z = 1)
+    )
+  )
+```
+
+
+---
+class: clear, middle, center
+
+```{r boston-plotly-02, echo=FALSE, out.width="100%"}
+# Draw (interactive) 3-D scatterplot w/ fitted regression plane
+fit <- lm(cmedv ~ lstat + rm, data = pdp::boston)
+betas <- coef(fit)                
+lstat <- seq(from = 1.73, to = 37.97, length = 50)
+rm <- seq(from = 3.561, to = 8.780, length = 50)
+yhat <- t(outer(lstat, rm, function(x1, x2) {
+  betas[1] + betas[2]*x1 + betas[3]*x2
+}))
+plot_ly(x = ~lstat, y = ~rm, z = ~yhat, 
+        type = "surface", opacity = 0.7) %>%
+  add_trace(data = pdp::boston, x = ~lstat, y = ~rm, z = ~cmedv, 
+            mode = "markers", 
+            type = "scatter3d",
+            marker = list(opacity = 0.7, symbol = 1, 
+                          size = 5, color = "black")) %>%
+  layout(
+    scene = list(
+      aspectmode = "manual", 
+      aspectratio = list(x = 1, y = 1, z = 1),
+      zaxis = list(title = "cmedv")
+    )
+  )
+```
+
+
+---
+class: clear, middle, center
+
+```{r boston-plotly-03, echo=FALSE, out.width="100%"}
+# Draw (interactive) 3-D scatterplot w/ fitted regression plane (curvature)
+fit2 <- lm(cmedv ~ lstat * rm, data = pdp::boston)
+betas2 <- coef(fit2)  
+yhat2 <- t(outer(lstat, rm, function(x1, x2) {
+  betas2[1] + betas2[2]*x1 + betas2[3]*x2 + betas2[4]*x1*x2
+}))
+plot_ly(x = ~lstat, y = ~rm, z = ~yhat2, 
+        type = "surface", opacity = 0.7) %>%
+  add_trace(data = pdp::boston, x = ~lstat, y = ~rm, z = ~cmedv, 
+            mode = "markers", 
+            type = "scatter3d",
+            marker = list(opacity = 0.7, symbol = 1, 
+                          size = 5, color = "black")) %>%
+  layout(
+    scene = list(
+      aspectmode = "manual", 
+      aspectratio = list(x = 1, y = 1, z = 1),
+      zaxis = list(title = "cmedv")
+    )
+  )
+
+```
+
+
+---
+
+# Model-Building Problem 
+
+.font120[
+
+* "Conflicting" goals in regression model building:
+
+    - Want **as many (useful) predictors as possible** so that the "information content" in the features will influence $\widehat{Y}$      
+
+    - Want **as few predictors as necessary** because $Var\left(\widehat{Y}\right)$ increases with the number of predictors; also, sometimes collecting data on more features bd costly in terms of data collection/model maintenance
+
+* Need to find a compromise that leads to the "best" regression equation
+
+.center.blue[A .bold[parsimonious model] is the simplest model with the least assumptions and variables, but with the greatest explanatory power!]
+
+]
+
+
+---
+
+# Some notes on variable selection techniques 
+
+.font120[
+
+* None of the variable selection techniques guarantees to find the "best" regression equation for the dataset of interest
+
+* Different variable selection techniques may very well give different results
+
+* Complete reliance on the algorithm for results is to be avoided
+
+* Other valuable information such as experience with and knowledge of the data and problem should be utilized whenever possible
+
+]
+
+
+---
+
+# Consequences of deleting variables
+
+.font130[
+
+* Improves the precision of the parameter estimates of retained variables
+
+* Improves the precision of the variance of the predicted response
+
+* Can induce bias into the estimates of coefficients and variance of the predicted response
+
+]
+
+
+---
+
+# Some important questions
+
+.font150[
+
+1. Is at least one of the predictors $X_1, X_2, \dots, X_p$ useful in
+predicting the response?
+
+2. Do all the predictors help to explain $Y$ , or is only a subset
+of the predictors useful?
+
+3. How well does the model fit the data?
+
+4. Given a set of predictor values, what response value should we predict, and how accurate is our prediction?
+
+]
+
+
+---
+
+# Is at least one predictor useful?
+
+.font150[
+
+For the first question, we can use the general *F*-statistic $$F_{obs} = \frac{SSE(R) - SSE(F)}{df_R - df_F} \div \frac{SSE(F)}{df_F} = \frac{MSR}{MSE}$$
+
+]
+
+```{r, echo=FALSE}
+fit <- lm(cmedv ~ ., data = pdp::boston)
+```
+
+.pull-left[
+
+.font200.right.green[Boston housing example (all 15 predictors):]
+
+]
+
+.font140.pull-right[
+
+| Quantity | Value |
+|:---|:---|
+| $RMSE$ | `r round(sigma(fit), digits = 3)` |
+| $R^2$ | `r round(summary(fit)$r.squared, digits = 3)` |
+| $R_{adj}^2$ | `r round(summary(fit)$adj.r.squared, digits = 3)` |
+| $F_{obs}$ | `r round(summary(fit)$fstatistic, digits = 3)` |
+
+]
+
+
+---
+
+# Deciding on the important variables
+
+.font125[
+
+* The most direct approach is called .bold[all subsets] or .bold[best subsets] regression: .purple[compute the least squares fit for all possible subsets and then choose between them based on some criterion that balances training error with model size.]
+
+* It is often impossible to examine all possible models; for example, with 40 potential predictors, there are .bold[over a billion models!] Instead we often rely on automated approaches that search through a subset of them. We'll discuss a common approach called [stepwise regression](https://en.wikipedia.org/wiki/Stepwise_regression).
+
+]
+
+.font150.bold.center[
+
+In general, with $p - 1$ predictors, there are $2^{p - 1}$ possible models!
+
+]
+
+
+---
+
+# Hald cement data
+
+.code125[
+
+```{r cement-load}
+# Load the Hald cement data
+data(cement, package = "SMPracticals")
+head(cement)  # see ?cement for details
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code130[
+
+```{r cement-leaps-01}
+# Load required packages
+library(leaps)
+
+# All subsets regression (main effects only)
+a1 <- regsubsets(y ~ ., data = cement, 
+                 nbest = 15, nvmax = 100)
+```
+
+]
+
+
+---
+class: clear, middle
+
+```{r cement-leaps-02, echo=FALSE, fig.width=6, fig.asp=1, out.width="60%"}
+# Plot results from all subsets regression
+plot(a1, scale = "bic")
+```
+
+
+---
+class: clear, middle
+
+```{r cement-leaps-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Load required packages
+library(ggplot2)
+
+# Gather results
+res1 <- data.frame(
+  "nvar" = apply(summary(a1)$which, 1, FUN = function(x) sum(x) - 1),
+  "bic" = summary(a1)$bic,
+  "adjr2" = summary(a1)$adjr2
+)
+
+# Plot results
+p1 <- ggplot(res1, aes(x = nvar, y = bic)) +
+  geom_point(alpha = 0.5, size = 2, color = "darkred") +
+  stat_summary(fun.y = min, geom = "line", alpha = 0.5, linetype = "dashed") +
+  theme_light() +
+  labs(x = "Number of predictors", y = "BIC")
+p2 <- ggplot(res1, aes(x = nvar, y = adjr2)) +
+  geom_point(alpha = 0.5, size = 2, color = "darkgreen") +
+  stat_summary(fun.y = max, geom = "line", alpha = 0.5, linetype = "dashed") +
+  theme_light() +
+  labs(x = "Number of predictors", y = "Adjusted R-squared")
+gridExtra::grid.arrange(p1, p2, nrow = 2)
+```
+
+
+---
+class: clear, middle
+
+.code100[
+
+```{r cement-best-01, echo=FALSE}
+# Summarize best model
+summary(best1 <- lm(y ~ x1 + x2, data = cement))
+```
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r cement-best-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Plot residuals from best model
+par(mfrow = c(1, 2))
+plot(best1, which = 1:2)
+```
+
+
+---
+class: clear, middle, center
+
+.font300[
+
+What about interactions?
+
+]
+
+
+---
+class: clear, middle
+
+.code130[
+
+```{r cement-leaps-04}
+# All subsets regression (with two-way interactions)
+a2 <- regsubsets(y ~ .^2, data = cement, 
+                 nbest = 40, nvmax = 1000)
+```
+
+]
+
+
+---
+class: clear, middle
+
+```{r cement-leaps-05, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Gather results
+res2 <- data.frame(
+  "nvar" = apply(summary(a2)$which, 1, FUN = function(x) sum(x) - 1),
+  "bic" = summary(a2)$bic,
+  "adjr2" = summary(a2)$adjr2
+)
+
+# Plot results
+p3 <- ggplot(res2, aes(x = nvar, y = bic)) +
+  geom_point(alpha = 0.5, size = 2, color = "darkred") +
+  stat_summary(fun.y = min, geom = "line", alpha = 0.5, linetype = "dashed") +
+  scale_x_continuous(breaks = 1:10) +
+  theme_light() +
+  labs(x = "Number of predictors", y = "BIC")
+p4 <- ggplot(res2, aes(x = nvar, y = adjr2)) +
+  geom_point(alpha = 0.5, size = 2, color = "darkgreen") +
+  stat_summary(fun.y = max, geom = "line", alpha = 0.5, linetype = "dashed") +
+  scale_x_continuous(breaks = 1:10) +
+  theme_light() +
+  labs(x = "Number of predictors", y = "Adjusted R-squared")
+gridExtra::grid.arrange(p3, p4, nrow = 2)
+```
+
+
+---
+class: clear, middle
+
+.code120[
+
+```{r cement-leaps-06, echo=FALSE}
+# Summarize best model
+id <- which.min(summary(a2)$bic)
+trms <- names(which(summary(a2)$which[id, ])[-1L])
+form <- as.formula(paste("y ~", paste(trms, collapse = "+")))
+round(summary(best2 <- lm(form, data = cement))$coefficients, digits = 3)
+```
+
+]
+
+
+---
+class: clear, middle
+
+.font200.bold[The hierarchy principle:]
+
+.font150.content-box-yellow[
+
+If we include an interaction in a model, we should also include the main effects, even if the *p*-values associated with their coefficients are not significant
+
+]
+
+.font200.blue.center.bold[Why?]
+
+
+---
+class: clear, middle
+
+.font300.bold[Pop quiz:]
+
+.font200[
+
+What is the maximum number of terms we could have if we allowed for three-way interaction effects (e.g., $x_1 x_2 x_3$)?
+
+]
+
+
+---
+class: clear, middle, center
+
+.font200[
+
+Rather than search through all possible subsets (which becomes infeasible
+for $p$ much larger than 40), we can seek a good path through them!
+
+]
+
+
+---
+
+# Forward selection
+
+.font125[
+
+1. Begin with the **null model** - a model that contains an intercept, but no predictors
+
+2. Fit $p - 1$ simple linear regressions and add to the null model the predictor that gives the .bold["biggest improvement"]
+
+3. Add to that model the predictor that results in the .bold["biggest improvement"] amongst all two-predictor models
+
+4. Continue until some stopping rule is satisfied, for example when all remaining variables have a *p*-value above some threshold
+
+]
+
+.red.font125.center[
+
+Can still be used when $n \le p - 1$ (i.e., wide data)
+
+]
+
+
+---
+
+# Backward selection
+
+.font125[
+
+1. Start with all candidate predictors in the model (.red[including interactions])
+
+2. Fit $p - 1$ simple linear regressions and remove from the model the predictor that has the .bold["least impact on the fit"]
+
+
+3. The new $\left(p - 1\right)$-predictor model is fit, and the predictor with the .bold["least impact on the fit"] is removed
+
+4. Continue until some stopping rule is satisfied, for example when all remaining variables have a *p*-value above some threshold
+
+]
+
+.red.font125.center[
+
+Requires that $n > p - 1$
+
+]
+
+
+---
+
+# Selecting an "optimal" model
+
+.font130[
+
+There are a number of criteria for helping to select an "optimal" member in the path of models produced by forward or backward stepwise selection **in OLS**, for example:
+
+* *Akaike information criterion*: $AIC = n\ln\left(SSE/n\right) + 2p$
+
+* *Bayesian information criterion*: $BIC = n\ln\left(SSE/n\right) + \ln\left(n\right)p$
+
+* Mallow's $C_p$; $C_p = AIC$ for linear regression with normal errors
+
+* $R_{adj}^2 = 1 - \left(\frac{n - 1}{n - p}\right)\frac{SSE}{SST} = 1 - \left(\frac{n - 1}{n - p}\right)\left(1 - R^2\right)$
+
+* $PRESS = \sum_{i = 1}^n e_{\left(i\right)}^2 = \sum_{i = 1}^n\left[e_i / \left(1 - h_i\right)\right]^2$
+
+]
+
+
+---
+
+# Model selection in R
+
+.font175[
+
+* Base R's `step()` function and **MASS**'s `stepAIC()` function can be used to choose a model by AIC in a stepwise algorithm (i.e., forward, backward, or both)
+
+* **leaps**'s `regsubsets()` function can be used to choose a model using an exhaustive search (i.e., best subsets), a stepwise algorithm (i.e., forward, backward, or both), or sequential replacement
+
+]
+
+
+---
+class: clear, middle
+
+.code100[
+
+```{r boston-load}
+# Load the Boston housing data
+data(boston, package = "pdp")
+
+# Print first few observations
+head(tibble::as_tibble(boston), n = 5)
+```
+
+]
+
+
+---
+class: clear middle
+
+.code115[
+
+```{r press-function}
+# Function to compute the PRESS statistic (a form of 
+# cross-validation). Note: smaller is better!
+PRESS <- function(object, ...) {
+  if(!missing(...)) {
+    res <- sapply(list(object, ...), FUN = function(x) {
+      sum(rstandard(x, type = "predictive") ^ 2)
+    })
+    names(res) <- as.character(match.call()[-1L])
+    res
+  } else {
+    sum(rstandard(object, type = "predictive") ^ 2)
+  }
+}
+```
+
+]
+
+
+---
+class: clear middle
+
+.scrollable.code115[
+
+```{r modelMetrics-function}
+# Function to compute various model metrics
+modelMetrics <- function(object, ...) {
+  if(!missing(...)) {
+    res <- sapply(list(object, ...), FUN = function(x) {
+      c("AIC" = AIC(x), "BIC" = BIC(x), 
+        "adjR2" = summary(x)$adj.r.squared,
+        "RMSE"  = sigma(x), "PRESS" = PRESS(x), 
+        "nterms" = length(coef(x)))
+    })
+    colnames(res) <- as.character(match.call()[-1L])
+    res
+  } else {
+    c("AIC" = AIC(object), "BIC" = BIC(object), 
+      "adjR2" = summary(object)$adj.r.squared, 
+      "RMSE"  = sigma(object), "PRESS" = PRESS(object),
+      "nterms" = length(coef(object)))
+  }
+}
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code115[
+
+```{r boston-be}
+# Backward elimination --------------------------
+
+# Note that setting `k = 2` in the call to step(), which 
+# is the default, corresponds to using AIC; below we set 
+# it to `k = ln(n)`, which corresponds to using BIC!
+
+# Main effects only (i.e., no interactions)
+fit_max_1 <- lm(cmedv ~ ., data = boston)  #<<
+be_1 <- step(fit_max_1, direction = "backward", 
+             trace = 0, k = log(nrow(boston)))
+
+# Main effects and two-way interactions
+fit_max_2 <- lm(cmedv ~ .^2, data = boston)  #<<
+be_2 <- step(fit_max_2, direction = "backward", 
+             trace = 0, k = log(nrow(boston)))
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code115[
+
+```{r boston-fs}
+# Forward selection -----------------------------
+
+# Main effects only (i.e., no interactions)
+fit_min <- lm(cmedv ~ 1, data = boston)
+fs_1 <- step(fit_min, direction = "forward", 
+             scope = list(lower = fit_min,     #<<
+                          upper = fit_max_1),  #<<
+             trace = 0, k = log(nrow(boston)))
+
+# Main effects and two-way interactions
+fs_2 <- step(fit_min, direction = "forward", 
+             scope = list(lower = fit_min,     #<<
+                          upper = fit_max_2),  #<<
+             trace = 0, k = log(nrow(boston)))
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code115[
+
+```{r boston-ss}
+# Stepwise selection ----------------------------
+
+# Main effects only (i.e., no interactions)
+ss_1 <- step(be_1, direction = "both", 
+             scope = list(lower = fit_min,     #<<
+                          upper = fit_max_1),  #<<
+             trace = 0, k = log(nrow(boston)))
+
+# Main effects and two-way interactions
+ss_2 <- step(be_2, direction = "both", 
+           scope = list(lower = fit_min,     #<<
+                        upper = fit_max_2),  #<<
+           trace = 0, k = log(nrow(boston)))
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code100[
+
+```{r boston-compare-models, highlight.output = 6:7}
+# Compare models
+res <- modelMetrics(be_1, be_2, fs_1, fs_2, ss_1, ss_2)
+round(res, digits = 3)
+```
+
+]
+
+
+---
+class: clear, middle
+
+.scrollable[
+
+```{r boston-ss-2}
+summary(ss_2)
+```
+
+]
+
+
+---
+class: clear, middle
+
+.scrollable[
+
+```{r boston-fs-2}
+summary(fs_2)
+```
+
+]
+
+
+---
+
+# Modern alternatives
+
+.font130[
+
+* [Regularized regression](https://koalaverse.github.io/AnalyticsSummit18/03-Regularization.html#1); for example, the LASSO
+
+* Multivariate adaptive regression splines ([MARS](https://koalaverse.github.io/AnalyticsSummit18/04-MARS.html#1)): piecewise linear splines approach to multiple linear regression that automatically models nonlinearities and interactions between variables
+
+  - Variable selection `r emo::ji("check")`
+
+  - Nonlinear relationships `r emo::ji("check")`
+    
+  - Variable interactions `r emo::ji("check")`
+    
+  - Variable importance `r emo::ji("check")`
+
+]
+
+
+---
+class: clear, middle, center
+
+```{r quittin-time, echo=FALSE, out.width="60%"}
+RBitmoji::plot_comic(my_id, tag = "quittin")
+```
