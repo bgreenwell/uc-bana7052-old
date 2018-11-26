@@ -71,12 +71,16 @@ class: clear, middle
 ```{r prerequisites, eval=FALSE}
 # List of required (CRAN) packages
 pkgs <- c(
-  "car",          # for subsets() function
-  "ggplot2",      # for awesome graphics
-  "gridExtra",    # for grid.arrange() function
-  "leaps",        # for regsubsets() function
-  "plotly",       # for interactive plots
-  "SMPracticals"  # for cement data
+  "car",           # for subsets() function
+  "GGally",        # for ggpairs() function
+  "ggplot2",       # for awesome graphics
+  "gridExtra",     # for grid.arrange() function
+  "leaps",         # for regsubsets() function
+  "pdp",           # for Boston housing data set
+  "plotly",        # for interactive plots
+  "scales",        # for comma() function
+  "SMPracticals",  # for Hald's cement data
+  "tibble",        # for nicer data frames
 )
 
 # Install required (CRAN) packages
@@ -148,13 +152,13 @@ yhat <- t(outer(lstat, rm, function(x1, x2) {
   betas[1] + betas[2]*x1 + betas[3]*x2
 }))
 plot_ly(x = ~lstat, y = ~rm, z = ~yhat, 
-        type = "surface", opacity = 0.7) %>%
+        type = "surface", opacity = 0.7, showlegend = FALSE) %>%
   add_trace(data = pdp::boston, x = ~lstat, y = ~rm, z = ~cmedv, 
-            mode = "markers", 
+            mode = "markers",
             type = "scatter3d",
             marker = list(opacity = 0.7, symbol = 1, 
                           size = 5, color = "black")) %>%
-  layout(
+  layout(title = "Without interaction",
     scene = list(
       aspectmode = "manual", 
       aspectratio = list(x = 1, y = 1, z = 1),
@@ -175,13 +179,13 @@ yhat2 <- t(outer(lstat, rm, function(x1, x2) {
   betas2[1] + betas2[2]*x1 + betas2[3]*x2 + betas2[4]*x1*x2
 }))
 plot_ly(x = ~lstat, y = ~rm, z = ~yhat2, 
-        type = "surface", opacity = 0.7) %>%
+        type = "surface", opacity = 0.7, showlegend = FALSE) %>%
   add_trace(data = pdp::boston, x = ~lstat, y = ~rm, z = ~cmedv, 
             mode = "markers", 
             type = "scatter3d",
             marker = list(opacity = 0.7, symbol = 1, 
                           size = 5, color = "black")) %>%
-  layout(
+  layout(title = "With interaction",
     scene = list(
       aspectmode = "manual", 
       aspectratio = list(x = 1, y = 1, z = 1),
@@ -211,21 +215,6 @@ plot_ly(x = ~lstat, y = ~rm, z = ~yhat2,
 ]
 
 
----
-
-# Some notes on variable selection
-
-.font120[
-
-* No variable selection technique guarantees to find the "best" regression equation for the data set of interest
-
-* Different variable selection techniques may very well give different results (and often they do!)
-
-* Complete reliance on the algorithm for results is to be avoided
-
-* Other valuable information such as experience with, and knowledge of the data and problem, should be utilized whenever possible
-
-]
 
 
 ---
@@ -253,11 +242,11 @@ plot_ly(x = ~lstat, y = ~rm, z = ~yhat2,
 predicting the response?
 
 2. Do all the predictors help to explain $Y$ , or is only a subset
-of the predictors useful?
+of the predictors useful? (.blue[model selection])
 
-3. How well does the model fit the data?
+3. How well does the model fit the data? (.blue[model evaluation])
 
-4. Given a set of predictor values, what response value should we predict, and how accurate is our prediction?
+4. Given a set of predictor values, what response value should we predict, and how accurate is our prediction? (.blue[model performance])
 
 ]
 
@@ -296,7 +285,95 @@ fit <- lm(cmedv ~ ., data = pdp::boston)
 
 ---
 
-# Deciding on the important variables
+# Selecting an "optimal" model
+
+.font125[
+
+There are a number of criteria for helping to select an "optimal" member in the path of models produced by automatic search procedures, for example:
+
+* Adjusted R-squared; $R_{adj}^2$ (.purple[larger is better])
+
+* Mean square error; $MSE$ (.purple[smaller is better])
+
+* Mallow's $C_p$ (.purple[smaller is better])
+
+* *Akaike information criterion*; $AIC$ (.purple[smaller is better])
+
+* *Bayesian information criterion*; $BIC$ (.purple[smaller is better])
+
+* Prediction sum of squares; $PRESS$ (.purple[smaller is better])
+
+]
+
+
+---
+
+# RMSE and $R_{adj}^2$
+
+.font125[
+
+* $RMSE = \sqrt{MSE} = \sqrt{\sum\left(Y_i - \widehat{Y}_i\right) / \left(n - p\right)}$
+
+* $R_{adj}^2 = 1 - \left(\frac{n - 1}{n - p}\right)\frac{SSE}{SST} = 1 - \frac{MSE}{SST / \left(n - 1\right)} = 1 - \left(\frac{n - 1}{n - p}\right)\left(1 - R^2\right)$
+
+    - Both $RMSE$ and $R_{adj}^2$ take the number of coefficients, $p$, into account
+
+    - Unlike the ordinary $R^2$, $R_{adj}^2$ increases if and only if MSE decreases (or RMSE decreases)
+
+    - In my opinion, $R_{adj}^2$ is preferred since it is more interpretable by itself (i.e., as the fraction of variance in the response explained by the predictors in the current model)
+
+]
+
+
+---
+
+# AIC and BIC
+
+.font125[
+
+* $AIC = n\ln\left(SSE/n\right) + 2p$ 
+
+* $BIC = n\ln\left(SSE/n\right) + \ln\left(n\right)p$ 
+
+    - For a fixed sample size $n$, the first term, $n\ln\left(SSE/n\right)$ decreases as $p$, the number of coefficients increases
+    
+    - For a fixed sample size $n$, the second term increases with $p$
+    
+    - The BIC penalizes large $p$ more than AIC whenever $n \ge 8$ (i.e., the BIC criterion tends to favor more *parsimonious* models)
+    
+    - BIC is also sometimes referred to as the *Schwarz Bayesian criterion* (SBC)
+
+]
+
+
+---
+
+# Prediction sum of squares
+
+.font125[
+
+* $PRESS = \sum_{i = 1}^n \left(Y_i - \widehat{Y}_{\left(i\right)}\right)^2 = \sum_{i = 1}^n e_{\left(i\right)}^2 = \sum_{i = 1}^n\left[e_i / \left(1 - h_i\right)\right]^2$
+
+    - Summarizes the prediction errors across all observations (similar to $SSE$)
+
+    - Models with "small" $PRESS$ statistics are considered good candidate models (in the sense that they have "small" prediction error)
+
+    - Equivalent to *leave on out cross-validation* (LOOCV)
+
+    - Can be computed at the cost of a single fit!
+
+]
+
+
+---
+class: clear, middle, center
+
+.font300[Automatic Search Procedures for Model Selection]
+
+
+---
+
+# "Best" subsets
 
 .font125[
 
@@ -306,16 +383,29 @@ fit <- lm(cmedv ~ ., data = pdp::boston)
 
 ]
 
-.font150.bold.center[
+.font125.center.content-box-red[
 
-In general, with $p - 1$ predictors, there are $2^{p - 1}$ possible models!
+With $p - 1$ predictors, there are $2^{p - 1}$ possible models!
 
 ]
 
 
 ---
+class: clear, middle, center
 
-# Hald cement data
+```{r all-subsets, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+tib <- tibble::tibble(x = 1:20, y = 2^x / 1000)
+ggplot(tib, aes(x, y)) + 
+  geom_line() +
+  geom_point(color = "dodgerblue2", size = 2) +
+  labs(x = "Number of predictors", y = "Number of possible subsets (thousands)") +
+  theme_light()
+```
+
+
+---
+
+# Hald's cement data
 
 .code125[
 
@@ -326,6 +416,17 @@ head(cement)  # see ?cement for details
 ```
 
 ]
+
+.right.bold.font125[How many possible subsets?]
+
+
+---
+class: clear, middle, center
+
+```{r cement-cor, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
+# Scatterplot matrix
+GGally::ggpairs(cement, mapping = aes(alpha = 0.5)) + theme_light()
+```
 
 
 ---
@@ -339,7 +440,8 @@ library(leaps)
 
 # All subsets regression (main effects only)
 a1 <- regsubsets(y ~ ., data = cement, 
-                 nbest = 15, nvmax = 100)
+                 nbest = 6, nvmax = 4)
+# why 6 and 4?  #<<
 ```
 
 ]
@@ -348,7 +450,7 @@ a1 <- regsubsets(y ~ ., data = cement,
 ---
 class: clear, middle
 
-```{r cement-leaps-02, echo=FALSE, fig.width=6, fig.asp=1, out.width="60%"}
+```{r cement-leaps-02, echo=FALSE, fig.width=6, fig.asp=0.9, out.width="80%"}
 # Plot results from all subsets regression
 plot(a1, scale = "bic")
 ```
@@ -419,6 +521,48 @@ What about interactions?
 ---
 class: clear, middle
 
+.code125[
+
+```{r numSubsets}
+numSubsets <- function(x, max.int = 1) {
+  if (max.int > x) {
+    stop("`max.int` cannot be larger than ", 
+         x, ".", call. = FALSE)
+  }
+  x <- as.integer(x)
+  max.int <- as.integer(max.int)
+  res <- 0
+  for (i in seq_len(max.int)) {
+    res <- res + choose(n = x, k = i)
+  }
+  2 ^ res
+}
+```
+
+]
+
+
+---
+class: clear, middle
+
+.code150[
+
+```{r all-subsets-int}
+# How many possible subsets if we allow for 
+# interactions?
+x <- c(numSubsets(4, max.int = 1),
+       numSubsets(4, max.int = 2),
+       numSubsets(4, max.int = 3),
+       numSubsets(4, max.int = 4))
+scales::comma(x)
+```
+
+]
+
+
+---
+class: clear, middle
+
 .code130[
 
 ```{r cement-leaps-04}
@@ -481,12 +625,15 @@ class: clear, middle
 
 .font150.content-box-yellow[
 
-If we include an interaction in a model, we should also include the main effects, even if the *p*-values associated with their coefficients are not significant
+If we include an interaction in a model, we should also include all the lower level effects involved in the interaction, even if the *p*-values associated with their coefficients are not significant!
 
 ]
 
-.font200.blue.center.bold[Why?]
+.center.font175[
 
+`r emo::ji("warning")` "best" subsets does not respect this principle `r emo::ji("warning")`
+
+]
 
 ---
 class: clear, middle
@@ -495,7 +642,7 @@ class: clear, middle
 
 .font200[
 
-What is the maximum number of terms we could have if we allowed for three-way interaction effects (e.g., $x_1 x_2 x_3$)?
+In Hald's cement example, what is the maximum number of terms we could have if we included the four-way interaction effect (e.g., $x_1 x_2 x_3 x_4$)?
 
 ]
 
@@ -536,7 +683,7 @@ Can still be used when $n \le p - 1$ (i.e., wide data)
 
 ---
 
-# Backward selection
+# Backward elimination
 
 .font125[
 
@@ -554,27 +701,6 @@ Can still be used when $n \le p - 1$ (i.e., wide data)
 .red.font125.center[
 
 Requires that $n > p - 1$
-
-]
-
-
----
-
-# Selecting an "optimal" model
-
-.font130[
-
-There are a number of criteria for helping to select an "optimal" member in the path of models produced by forward or backward stepwise selection **in OLS**, for example:
-
-* *Akaike information criterion*: $AIC = n\ln\left(SSE/n\right) + 2p$
-
-* *Bayesian information criterion*: $BIC = n\ln\left(SSE/n\right) + \ln\left(n\right)p$
-
-* Mallow's $C_p$; $C_p = AIC$ for linear regression with normal errors
-
-* $R_{adj}^2 = 1 - \left(\frac{n - 1}{n - p}\right)\frac{SSE}{SST} = 1 - \left(\frac{n - 1}{n - p}\right)\left(1 - R^2\right)$
-
-* $PRESS = \sum_{i = 1}^n e_{\left(i\right)}^2 = \sum_{i = 1}^n\left[e_i / \left(1 - h_i\right)\right]^2$
 
 ]
 
@@ -778,18 +904,34 @@ summary(fs_2)
 
 # Some cautions
 
-TBD.
+.font110[
+
+* No variable selection technique guarantees to find the "best" regression equation for the data set of interest
+
+* Different variable selection techniques may very well give different results (and they often do!)
+
+* Complete reliance on the algorithm for results is to be avoided (.purple[Why?] `r emo::ji("thinking")`)
+
+* Other valuable information such as experience with, and knowledge of the data and problem, should be utilized whenever possible!!
+
+* Model selection techniques are high variance procedures; that is, models identified by stepwise methods have an inflated risk of capitalizing on chance features of the data and will not apply well to new data
+
+* And many more...
+
+]
 
 
 ---
 
 # Modern alternatives
 
-.font130[
+.font110[
 
 * [Regularized regression](https://koalaverse.github.io/AnalyticsSummit18/03-Regularization.html#1); for example, the LASSO
 
-* Multivariate adaptive regression splines ([MARS](https://koalaverse.github.io/AnalyticsSummit18/04-MARS.html#1)): piecewise linear splines approach to multiple linear regression that automatically models nonlinearities and interactions between variables
+  - Variable selection `r emo::ji("check")`
+
+* Multivariate adaptive regression splines ([MARS](https://koalaverse.github.io/AnalyticsSummit18/04-MARS.html#1)) and tree-based methods (like Friedman's stochastic GBMs and random forests)
 
   - Variable selection `r emo::ji("check")`
 
@@ -798,7 +940,7 @@ TBD.
   - Variable interactions `r emo::ji("check")`
     
   - Variable importance `r emo::ji("check")`
-
+  
 ]
 
 
