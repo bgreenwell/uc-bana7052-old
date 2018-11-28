@@ -25,7 +25,7 @@ class: center, middle, inverse, title-slide
 # BANA 7052: Lecture 06
 ## Model Building and Selection
 ### Brandon M. Greenwell
-### 26 November, 2018
+### 28 November, 2018
 
 ---
 
@@ -135,16 +135,24 @@ class: clear, middle, center
 
 
 ---
+class: clear, middle
+
+# False color level plot
+
+&lt;img src="lecture-06_files/figure-html/contours-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
 
 # The model building problem 
 
-.font120[
+.font125[
 
-* "Conflicting" goals in regression model building:
+* "Conflicting" goals in regression model building ([*bias-variance tradeoff*](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff)):
 
-    - Want **as many (useful) predictors as possible** so that the "information content" in the features will influence `\(\widehat{Y}\)`      
-
-    - Want **as few predictors as necessary** because `\(Var\left(\widehat{Y}\right)\)` increases with the number of predictors; also, sometimes collecting more features is costly in terms of data collection/model maintenance
+    - Want **as many (useful) predictors as possible** so that the "information content" in the features will influence `\(\widehat{Y}\)` (**low bias**)   
+    
+    - Want **as few predictors as necessary** because `\(Var\left(\widehat{Y}\right)\)` increases with the number of predictors (**low variance**)
 
 * Need to find a compromise that leads to the "best" regression equation
 
@@ -153,45 +161,24 @@ class: clear, middle, center
 ]
 
 
-
-
 ---
 
-# Consequences of deleting variables
-
-.font130[
-
-* Improves the precision of the parameter estimates of retained variables
-
-* Improves the precision of the variance of the predicted response
-
-* Can induce bias into the estimated regression coefficients and variance of the predicted response
-
-]
-
-
----
-
-# Some important questions
+# Over fitting
 
 .font150[
 
-1. Is at least one of the predictors `\(X_1, X_2, \dots, X_p\)` useful in
-predicting the response?
-
-2. Do all the predictors help to explain `\(Y\)` , or is only a subset
-of the predictors useful? (.blue[model selection])
-
-3. How well does the model fit the data? (.blue[model evaluation])
-
-4. Given a set of predictor values, what response value should we predict, and how accurate is our prediction? (.blue[model performance])
+It is possible to "over tune" your models to maximize performance on the training data. Such models will not generalize well to new data. We call this process [*over fitting*](https://en.wikipedia.org/wiki/Overfitting):
 
 ]
+
+&lt;img src="lecture-06_files/figure-html/overfitting-linear-regression-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Is at least one predictor useful?
+
+--
 
 .font150[
 
@@ -220,83 +207,12 @@ For the first question, we can use the general *F*-statistic `$$F_{obs} = \frac{
 
 
 ---
+class: clear, middle
 
-# Selecting an "optimal" model
+.font300[
 
-.font125[
-
-There are a number of criteria for helping to select an "optimal" member in the path of models produced by automatic search procedures, for example:
-
-* Adjusted R-squared; `\(R_{adj}^2\)` (.purple[larger is better])
-
-* Mean square error; `\(MSE\)` (.purple[smaller is better])
-
-* Mallow's `\(C_p\)` (.purple[smaller is better])
-
-* *Akaike information criterion*; `\(AIC\)` (.purple[smaller is better])
-
-* *Bayesian information criterion*; `\(BIC\)` (.purple[smaller is better])
-
-* Prediction sum of squares; `\(PRESS\)` (.purple[smaller is better])
-
-]
-
-
----
-
-# RMSE and `\(R_{adj}^2\)`
-
-.font125[
-
-* `\(RMSE = \sqrt{MSE} = \sqrt{\sum\left(Y_i - \widehat{Y}_i\right) / \left(n - p\right)}\)`
-
-* `\(R_{adj}^2 = 1 - \left(\frac{n - 1}{n - p}\right)\frac{SSE}{SST} = 1 - \frac{MSE}{SST / \left(n - 1\right)} = 1 - \left(\frac{n - 1}{n - p}\right)\left(1 - R^2\right)\)`
-
-    - Both `\(RMSE\)` and `\(R_{adj}^2\)` take the number of coefficients, `\(p\)`, into account
-
-    - Unlike the ordinary `\(R^2\)`, `\(R_{adj}^2\)` increases if and only if MSE decreases (or RMSE decreases)
-
-    - In my opinion, `\(R_{adj}^2\)` is preferred since it is more interpretable by itself (i.e., as the fraction of variance in the response explained by the predictors in the current model)
-
-]
-
-
----
-
-# AIC and BIC
-
-.font125[
-
-* `\(AIC = n\ln\left(SSE/n\right) + 2p\)` 
-
-* `\(BIC = n\ln\left(SSE/n\right) + \ln\left(n\right)p\)` 
-
-    - For a fixed sample size `\(n\)`, the first term, `\(n\ln\left(SSE/n\right)\)` decreases as `\(p\)`, the number of coefficients increases
-    
-    - For a fixed sample size `\(n\)`, the second term increases with `\(p\)`
-    
-    - The BIC penalizes large `\(p\)` more than AIC whenever `\(n \ge 8\)` (i.e., the BIC criterion tends to favor more *parsimonious* models)
-    
-    - BIC is also sometimes referred to as the *Schwarz Bayesian criterion* (SBC)
-
-]
-
-
----
-
-# Prediction sum of squares
-
-.font125[
-
-* `\(PRESS = \sum_{i = 1}^n \left(Y_i - \widehat{Y}_{\left(i\right)}\right)^2 = \sum_{i = 1}^n e_{\left(i\right)}^2 = \sum_{i = 1}^n\left[e_i / \left(1 - h_i\right)\right]^2\)`
-
-    - Summarizes the prediction errors across all observations (similar to `\(SSE\)`)
-
-    - Models with "small" `\(PRESS\)` statistics are considered good candidate models (in the sense that they have "small" prediction error)
-
-    - Equivalent to *leave on out cross-validation* (LOOCV)
-
-    - Can be computed at the cost of a single fit!
+Do all the predictors help to explain `\(Y\)`, or is only a subset
+of the predictors useful? 🤔
 
 ]
 
@@ -330,6 +246,96 @@ With `\(p - 1\)` predictors, there are `\(2^{p - 1}\)` possible models!
 class: clear, middle, center
 
 &lt;img src="lecture-06_files/figure-html/all-subsets-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Selecting an "optimal" model
+
+.font125[
+
+There are a number of criteria for helping to select an "optimal" member in the path of models produced by automatic search procedures, for example:
+
+* Adjusted R-squared; `\(R_{adj}^2\)` (.purple[larger is better])
+
+* Mean square error; `\(MSE\)` (.purple[smaller is better])
+
+* Mallow's `\(C_p\)` (.purple[smaller is better])
+
+* *Akaike information criterion*; `\(AIC\)` (.purple[smaller is better])
+
+* *Bayesian information criterion*; `\(BIC\)` (.purple[smaller is better])
+
+* Prediction sum of squares; `\(PRESS\)` (.purple[smaller is better])
+
+]
+
+
+---
+
+# RMSE and `\(R_{adj}^2\)`
+
+.font110[
+
+`\(\begin{align} RMSE &amp;= \sqrt{MSE} = \sqrt{\sum\left(Y_i - \widehat{Y}_i\right) / \left(n - p\right)} \\ R_{adj}^2 &amp;= 1 - \left(\frac{n - 1}{n - p}\right)\frac{SSE}{SST} = 1 - \frac{MSE}{SST / \left(n - 1\right)} = 1 - \left(\frac{n - 1}{n - p}\right)\left(1 - R^2\right) \end{align}\)`
+
+]
+
+.font120[
+
+* Both `\(RMSE\)` and `\(R_{adj}^2\)` take the number of coefficients, `\(p\)`, into account
+
+* Unlike the ordinary `\(R^2\)`, `\(R_{adj}^2\)` increases if and only if MSE decreases (or RMSE decreases)
+
+* In my opinion, `\(R_{adj}^2\)` is preferred since it is more interpretable by itself (e.g., as the fraction of variance in the response explained by the predictors in the current model)
+
+]
+
+
+---
+
+# Information criterion
+
+.font150[
+
+General formula: `\(-2 \log\left(L\right) + kp\)`
+
+]
+
+.font120[
+
+* `\(AIC \implies k = 2\)` and `\(BIC \implies k = \ln\left(n\right)\)` 
+
+* For a fixed sample size `\(n\)`, the first term decreases as `\(p\)`, the number of coefficients, increases
+    
+* For a fixed sample size `\(n\)`, the second term increases with `\(p\)`
+    
+* The BIC penalizes large `\(p\)` more than AIC whenever `\(n \ge 8\)` (i.e., the BIC criterion tends to favor more *parsimonious* models); BIC is also sometimes referred to as the *Schwarz Bayesian criterion* (SBC)
+
+* R has built-in functions called `AIC()`, `BIC()`, and `extractAIC()`
+
+]
+
+
+---
+
+# Prediction sum of squares
+
+.font120[
+
+`\(PRESS = \sum_{i = 1}^n \left(Y_i - \widehat{Y}_{\left(i\right)}\right)^2 = \sum_{i = 1}^n e_{\left(i\right)}^2 = \sum_{i = 1}^n\left[e_i / \left(1 - h_i\right)\right]^2\)`
+
+* Summarizes the prediction errors across all observations (similar to `\(SSE\)`)
+
+* Models with "small" `\(PRESS\)` statistics are considered good candidate models (in the sense that they have "small" prediction error)
+
+* Equivalent to *leave on out cross-validation* (LOOCV)
+
+* Can be computed at the cost of a single fit!
+
+* R has no built-in `PRESS()` function, so we'll write our own!
+
+]
 
 
 ---
@@ -564,7 +570,7 @@ In Hald's cement example, what is the maximum number of terms we could have if w
 
 
 ---
-class: clear, middle, center
+class: clear, middle
 
 .font200[
 
@@ -665,7 +671,38 @@ head(tibble::as_tibble(boston), n = 5)
 
 
 ---
-class: clear middle
+class: clear, middle
+
+.code115[
+
+
+```r
+# How many subsets (main effects only)
+scales::comma(numSubsets(15, 1))
+```
+
+```
+## [1] "32,768"
+```
+
+```r
+# How many subsets (two-way interactions)
+scales::comma(numSubsets(15, 2))
+```
+
+```
+## [1] "1,329,227,995,784,915,872,903,807,060,280,344,576"
+```
+
+```r
+# Over 1 undecillion!
+```
+
+]
+
+
+---
+class: clear, middle
 
 .code115[
 
