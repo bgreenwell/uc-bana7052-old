@@ -1,29 +1,38 @@
+## ----setup, include=FALSE------------------------------------------------
+options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
 
-
-
-
-## ----prerequisites, eval=FALSE-------------------------------------------
-# # List of required (CRAN) packages
-pkgs <- c(
-  "ggplot2",   # for drawing nicer graphics
-  "lattice",   # for drawing nicer graphics
-  "MASS",      # for boxcox() function
-  "RBitmoji",  # just because
-  "tibble"     # for nicer data frames
+# Global chunk options
+knitr::opts_chunk$set(
+  cache = FALSE,
+  echo = TRUE,
+  dev = "svglite",
+  fig.align = "center",
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE
 )
-
-# Install required (CRAN) packages
-for (pkg in pkgs) {
-  if (!(pkg %in% installed.packages()[, "Package"])) {
-    install.packages(pkg)
-  }
-}
 
 # Bitmoji id
 my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 
 # Load required packages
 library(ggplot2)
+
+## ----prerequisites, eval=FALSE-------------------------------------------
+## # List of required (CRAN) packages
+## pkgs <- c(
+##   "ggplot2",  # for drawing nicer graphics
+##   "lattice",  # for drawing nicer graphics
+##   "MASS",     # for boxcox() function
+##   "tibble"    # for nicer data frames
+## )
+## 
+## # Install required (CRAN) packages
+## for (pkg in pkgs) {
+##   if (!(pkg %in% installed.packages()[, "Package"])) {
+##     install.packages(pkg)
+##   }
+## }
 
 ## ----lets-go, echo=FALSE, out.width="70%"--------------------------------
 set.seed(4); RBitmoji::plot_comic(my_id, tag = "lets go")
@@ -45,6 +54,12 @@ ggplot(df, aes(x = x1, y = y, color = as.factor(x2))) +
   guides(color = guide_legend(title = "")) +
   theme(axis.text.x = element_blank(),
         axis.text.y = element_blank())
+
+## ----indicator-variables, echo=FALSE, out.width="100%"-------------------
+knitr::include_graphics("images/indicator-variables.png")
+
+## ----dummy-encoding, echo=FALSE, out.width="100%"------------------------
+knitr::include_graphics("images/dummy-encoding.png")
 
 ## ----categorical-variables-01--------------------------------------------
 # Categorical variable
@@ -107,6 +122,9 @@ ggplot(augment(fit), aes(x = rpm, y = .fitted)) +
   geom_line(aes(group = ToolType), color = "black") +
   labs(x = "rpm", y = "Hour") +
   theme_light()
+
+## ----thinking-picard, echo=FALSE, out.width="100%"-----------------------
+knitr::include_graphics("images/thinking-picard.jpg")
 
 ## ----cutting-tool-unequal-slopes, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="70%"----
 url <- "https://bgreenwell.github.io/uc-bana7052/data/cutting_tool.csv"
@@ -178,10 +196,12 @@ df <- tibble::tibble(
 )
 fit <- lm(y ~ x, data = df)
 df$r <- residuals(fit)
-ggplot(df, aes(x, r)) +
+df$f <- fitted(fit)
+ggplot(df, aes(f, r)) +
   geom_point(alpha = 0.7) +
   geom_hline(yintercept = 0, linetype = "dashed") +
-  labs(x = "X", y = "Residual", title = "Error variance increases with X") +
+  labs(x = "Fitted value", y = "Residual", 
+       title = "Error variance increases with E(Y)") +
   theme_light()
 
 ## ----utility-01----------------------------------------------------------
@@ -235,7 +255,8 @@ abline(h = 0, lty = 2)
 
 ## ----utility-05, eval=FALSE----------------------------------------------
 ## # Scatterplot
-## plot(sqrt(Demand) ~ Usage, data = utility, pch = 19, las = 1,
+## plot(sqrt(Demand) ~ Usage, data = utility,
+##      pch = 19, las = 1,
 ##      col = adjustcolor("darkblue", alpha.f = 0.5))
 ## 
 ## # Fitted regression line
@@ -275,23 +296,39 @@ abline(h = 0, lty = 2)
 # )
 # abline(h = 0, lty = 2)
 
-## ------------------------------------------------------------------------
+## ----boxcox-01, fig.wdith=6, fig.asp=0.618, out.width="60%"--------------
 # Find optimal lambda value via ML estimation
 bc <- MASS::boxcox(Demand ~ Usage, data = utility)
-lambda <- bc$x[which.max(bc$y)]  # should get 0.5454545
+(lambda <- bc$x[which.max(bc$y)])
+
+## ----boxcox-02, fig.wdith=6, fig.asp=0.618, out.width="80%"--------------
+# Scatterplot and fitted model
+utility$Demand2 <- (utility$Demand ^ lambda - 1) / lambda
+plot(Demand2 ~ Usage, data = utility, pch = 19, las = 1,
+     col = adjustcolor("darkblue", alpha.f = 0.5))
+abline(fit <- lm(Demand2 ~ Usage, data = utility), 
+       lwd = 2,
+       col = adjustcolor("darkred", alpha.f = 0.5))
+
+## ----boxcox-03, fig.wdith=7, fig.asp=0.5, out.width="100%"---------------
+par(mfrow = c(1, 2))  # side-by-side plots
+plot(fit, which = 1:2)
 
 ## ----prototype-01, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"----
-curve(log10(x), xlab = "X", ylab = "Y", lwd = 10, axes = FALSE)
+curve(log10(x), xlab = "X", ylab = "Y", main = "General trend", 
+      lwd = 10, axes = FALSE, lend = 2)
 axis(1, labels = FALSE, tick = TRUE)
 axis(2, labels = FALSE, tick = TRUE)
 
 ## ----prototype-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"----
-curve(x^2, xlab = "X", ylab = "Y", lwd = 10, axes = FALSE)
+curve(x^2, xlab = "X", ylab = "Y", main = "General trend", 
+      lwd = 10, axes = FALSE, lend = 2)
 axis(1, labels = FALSE, tick = TRUE)
 axis(2, labels = FALSE, tick = TRUE)
 
 ## ----prototype-03, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="80%"----
-curve(1/x, xlab = "X", ylab = "Y", lwd = 10, axes = FALSE, xlim = c(0.1, 0.5))
+curve(1/x, xlab = "X", ylab = "Y", main = "General trend", 
+      lwd = 10, axes = FALSE, xlim = c(0.1, 0.5), lend = 2)
 axis(1, labels = FALSE, tick = TRUE)
 axis(2, labels = FALSE, tick = TRUE)
 
@@ -306,7 +343,8 @@ head(windmill, n = 5)  # print first 5 observations
 ## # Scatterplot
 ## plot(Output ~ Velocity, data = windmill, pch = 19, las = 1,
 ##      col = adjustcolor("darkblue", alpha.f = 0.5),
-##      xlab = "Wind velocity", ylab = "DC output")
+##      xlab = "Wind velocity", ylab = "DC output",
+##      main = "Original data")
 ## 
 ## # Fitted regression line
 ## abline(fit <- lm(Output ~ Velocity, data = windmill),
@@ -317,7 +355,8 @@ head(windmill, n = 5)  # print first 5 observations
 # Scatterplot
 plot(Output ~ Velocity, data = windmill, pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Wind velocity", ylab = "DC output")
+     xlab = "Wind velocity", ylab = "DC output",
+     main = "Original data")
 
 # Fitted regression line
 abline(fit <- lm(Output ~ Velocity, data = windmill), 
@@ -328,7 +367,8 @@ abline(fit <- lm(Output ~ Velocity, data = windmill),
 ## # Residual plot
 ## plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
 ##      col = adjustcolor("darkblue", alpha.f = 0.5),
-##      xlab = "Fitted value", ylab = "Studentized residual")
+##      xlab = "Fitted value", ylab = "Studentized residual",
+##      main = "Original data")
 ## abline(h = 0, lty = 2,
 ##        col = adjustcolor("darkred", alpha.f = 0.5))
 
@@ -336,7 +376,8 @@ abline(fit <- lm(Output ~ Velocity, data = windmill),
 # Residual plot
 plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Fitted value", ylab = "Studentized residual")
+     xlab = "Fitted value", ylab = "Studentized residual",
+     main = "Original data")
 abline(h = 0, lty = 2, 
        col = adjustcolor("darkred", alpha.f = 0.5))
 
@@ -344,7 +385,8 @@ abline(h = 0, lty = 2,
 ## # Scatterplot
 ## plot(Output ~ I(1/Velocity), data = windmill, pch = 19, las = 1,
 ##      col = adjustcolor("darkblue", alpha.f = 0.5),
-##      xlab = "Wind velocity", ylab = "DC output")
+##      xlab = "Wind velocity", ylab = "DC output",
+##      main = "Transformed data")
 ## 
 ## # Fitted regression line
 ## abline(fit <- lm(Output ~ I(1/Velocity), data = windmill),
@@ -355,7 +397,8 @@ abline(h = 0, lty = 2,
 # Scatterplot
 plot(Output ~ I(1/Velocity), data = windmill, pch = 19, las = 1,  #<<
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Wind velocity", ylab = "DC output")
+     xlab = "Wind velocity", ylab = "DC output",
+     main = "Transformed data")
 
 # Fitted regression line
 abline(fit <- lm(Output ~ I(1/Velocity), data = windmill), 
@@ -366,7 +409,8 @@ abline(fit <- lm(Output ~ I(1/Velocity), data = windmill),
 ## # Residual plot
 ## plot(fitted(fit), rstudent(fit), pch = 19, las = 1,  #<<
 ##      col = adjustcolor("darkblue", alpha.f = 0.5),
-##      xlab = "Fitted value", ylab = "Studentized residual")
+##      xlab = "Fitted value", ylab = "Studentized residual",
+##      main = "Transformed data")
 ## abline(h = 0, lty = 2,
 ##        col = adjustcolor("darkred", alpha.f = 0.5))
 
@@ -374,7 +418,8 @@ abline(fit <- lm(Output ~ I(1/Velocity), data = windmill),
 # Residual plot
 plot(fitted(fit), rstudent(fit), pch = 19, las = 1,
      col = adjustcolor("darkblue", alpha.f = 0.5),
-     xlab = "Fitted value", ylab = "Studentized residual")
+     xlab = "Fitted value", ylab = "Studentized residual",
+     main = "Transformed data")
 abline(h = 0, lty = 2, 
        col = adjustcolor("darkred", alpha.f = 0.5))
 

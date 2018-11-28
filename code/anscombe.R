@@ -4,7 +4,7 @@
 # Scatterplot matrix
 pairs(anscombe)
 
-##-- now some "magic" to do the 4 regressions in a loop:
+##-- Now, some "magic" to do the 4 regressions in a loop:
 ff <- y ~ x
 mods <- setNames(as.list(1:4), paste0("lm", 1:4))
 for(i in 1:4) {
@@ -19,7 +19,7 @@ for(i in 1:4) {
 sapply(mods, coef)
 lapply(mods, function(fm) coef(summary(fm)))
 
-## Now, do what you should have done in the first place: PLOTS
+## Now, do what you should have done in the first place: PLOTS!!
 op <- par(mfrow = c(2, 2), mar = 0.1+c(4,4,1,1), oma =  c(0, 0, 2, 0))
 for(i in 1:4) {
   ff[2:3] <- lapply(paste0(c("y","x"), i), as.name)

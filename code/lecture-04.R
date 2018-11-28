@@ -1,30 +1,43 @@
-## ----prerequisites, eval=FALSE-------------------------------------------
-# List of required (CRAN) packages
-pkgs <- c(
-  "broom",      # for augment() function  #<<
-  "car",        # for vif() function  #<<
-  "GGally",     # for ggpairs() function
-  "ggplot2",    # for awesome graphics
-  "ggrepel",    # for geom_text_repel() function
-  "gridExtra",  # for grid.arrange() function
-  "pdp",        # for Boston housing data
-  "plotly",     # for interactive plots
-  "RBitmoji",   # ummm, just because
-  "tibble"      # for nicer data frames
+## ----setup, include=FALSE------------------------------------------------
+options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
+
+# Global chunk options
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = TRUE,
+  dev = "svglite",
+  fig.align = "center",
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE
 )
 
-# Install required (CRAN) packages
-for (pkg in pkgs) {
-  if (!requireNamespace(pkg)) {  # check if already installed
-    install.packages(pkg)  # install it
-  }
-}
+# Bitmoji id
+my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 
 # Load required packages
 library(ggplot2)
 
-# Bitmoji id
-my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
+## ----prerequisites, eval=FALSE-------------------------------------------
+## # List of required (CRAN) packages
+## pkgs <- c(
+##   "broom",      # for augment() function  #<<
+##   "car",        # for vif() function  #<<
+##   "GGally",     # for ggpairs() function
+##   "ggplot2",    # for awesome graphics
+##   "ggrepel",    # for geom_text_repel() function
+##   "gridExtra",  # for grid.arrange() function
+##   "pdp",        # for Boston housing data
+##   "plotly",     # for interactive plots
+##   "tibble"      # for nicer data frames
+## )
+## 
+## # Install required (CRAN) packages
+## for (pkg in pkgs) {
+##   if (!requireNamespace(pkg)) {  # check if already installed
+##     install.packages(pkg)  # install it
+##   }
+## }
 
 ## ----lets-go, echo=FALSE, out.width="70%"--------------------------------
 set.seed(4); RBitmoji::plot_comic(my_id, tag = "lets go")
@@ -284,7 +297,7 @@ X <- model.matrix(delivery_fit)
 head(X)
 X_new <- rbind(c(1, 10, 1000), c(1, 40, 3))
 (h_new <- diag(X_new %*% solve(t(X) %*% X) %*% t(X_new)))
-h_new > max(abs(h))
+h_new > max(h)
 
 ## ----base-residual-plots-01, eval=FALSE----------------------------------
 ## # Set up plotting grid

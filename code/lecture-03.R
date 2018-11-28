@@ -1,22 +1,42 @@
-## ----prerequisites, eval=FALSE-------------------------------------------
-# List of required (CRAN) packages
-pkgs <- c(
-  "GGally",  # for gggplot2 extensions
-  "pdp",     # for (corrected) Boston housing data
-  "plotly",  # for interactive plots
-  "tibble",  # for nicer data frames
-  "vip"      # for variable importance plots
+## ----setup, include=FALSE------------------------------------------------
+options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
+
+# Global chunk options
+knitr::opts_chunk$set(
+  cache = TRUE,
+  echo = TRUE,
+  dev = "svglite",
+  fig.align = "center",
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE
 )
 
-# Install required (CRAN) packages
-for (pkg in pkgs) {
-  if (!(pkg %in% installed.packages()[, "Package"])) {
-    install.packages(pkg)
-  }
-}
+# Bitmoji id
+my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 
 # Load required packages
 library(dplyr)
+
+## ----linear-algebra-tweet, echo=FALSE, out.width="60%"-------------------
+knitr::include_graphics("images/linear-algebra-tweet.png")
+
+## ----prerequisites, eval=FALSE-------------------------------------------
+## # List of required (CRAN) packages
+## pkgs <- c(
+##   "GGally",  # for gggplot2 extensions
+##   "pdp",     # for (corrected) Boston housing data
+##   "plotly",  # for interactive plots
+##   "tibble",  # for nicer data frames
+##   "vip"      # for variable importance plots
+## )
+## 
+## # Install required (CRAN) packages
+## for (pkg in pkgs) {
+##   if (!(pkg %in% installed.packages()[, "Package"])) {
+##     install.packages(pkg)
+##   }
+## }
 
 ## ----mlr-3d-df-01, fig.width=6, fig.asp=0.618, out.width="100%"----------
 # Simulate data from an MLR model
@@ -29,9 +49,32 @@ df <- tibble::tibble(
 )
 head(df, n = 3)  # print first few rows
 
+## ----mlr-3d-df-02, eval=FALSE--------------------------------------------
+## # CExample
+## pairs(df, cex = 1.2, pch = 19,
+##       col = adjustcolor("darkred", alpha.f = 0.5))  #<<
+
 ## ----mlr-3d-df-02-01, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"----
 # Construct a scatterplot matrix
 pairs(df, cex = 1.2, pch = 19, col = adjustcolor("darkred", alpha.f = 0.5))
+
+## ----mlr-3d-df-03, eval=FALSE--------------------------------------------
+## library(plotly)  # for interactive plotting  #<<
+## 
+## # Draw (interactive) 3-D scatterplot
+## plot_ly(data = df, x = ~x1, y = ~x2, z = ~y,
+##         mode = "markers", type = "scatter3d",
+##         marker = list(opacity = 0.7, symbol = 1,
+##                       size = 5, color = "black")) %>%
+##   layout(
+##     scene = list(
+##       aspectmode = "manual",
+##       aspectratio = list(x = 1, y = 1, z = 1),
+##       xaxis = list(title = "X1", range = c(0, 1)),
+##       yaxis = list(title = "X2", range = c(0, 1)),
+##       zaxis = list(title = "Y")
+##     )
+##   )
 
 ## ----mlr-3d-df-04, echo=FALSE, out.width="100%"--------------------------
 # Load required packages
@@ -49,6 +92,37 @@ plot_ly(data = df, x = ~x1, y = ~x2, z = ~y, mode = "markers",
       zaxis = list(title = "Y")
     )
   )
+
+## ----mlr-3d-df-05, eval=FALSE--------------------------------------------
+## # Fit an MLR model to the simulated data
+## fit <- lm(y ~ x1 + x2, data = df)  #<<
+## (betas <- coef(fit))  #<<
+## ## (Intercept)          x1          x2  #<<
+## ##   0.8834363   2.3265433  -2.9942737  #<<
+## 
+## # Generate predictions over a fine grid  #<<
+## .x1 <- .x2 <- seq(from = 0, to = 1, length = 50)
+## yhat <- t(outer(.x1, .x2, function(x1, x2) {
+##   betas[1] + betas[2]*x1 + betas[3]*x2
+## }))
+## 
+## # Draw (interactive) 3-D scatterplot with fitted mean response
+## plot_ly(x = ~.x1, y = ~.x2, z = ~yhat,
+##         type = "surface", opacity = 0.7) %>%
+##   add_trace(data = df, x = ~x1, y = ~x2, z = ~y,
+##             mode = "markers",
+##             type = "scatter3d",
+##             marker = list(opacity = 0.7, symbol = 1,
+##                           size = 5, color = "black")) %>%
+##   layout(
+##     scene = list(
+##       aspectmode = "manual",
+##       aspectratio = list(x = 1, y = 1, z = 1),
+##       xaxis = list(title = "X1", range = c(0, 1)),
+##       yaxis = list(title = "X2", range = c(0, 1)),
+##       zaxis = list(title = "Y")
+##     )
+##   )
 
 ## ----mlr-3d-df-06, echo=FALSE, out.width="100%"--------------------------
 # Fit an MLR model to the simulated data
@@ -79,16 +153,37 @@ plot_ly(x = ~.x1, y = ~.x2, z = ~yhat,
     )
   )
 
+## ----example-table, echo=FALSE, out.width="100%"-------------------------
+knitr::include_graphics("images/mlr-data.png")
+
+## ----dummy-encoding, echo=FALSE, out.width="100%"------------------------
+knitr::include_graphics("images/dummy-encoding.png")
+
 ## ----delivery-01---------------------------------------------------------
 # Load the delivery data
 url <- "https://bgreenwell.github.io/uc-bana7052/data/delivery.csv"
 delivery <- read.csv(url)
 head(delivery, n = 5)  # print first 5 observations
 
+## ----delivery-ggpairs-01, eval=FALSE-------------------------------------
+## GGally::ggpairs(
+##   data = delivery[, -1]  #<<
+## )
+
 ## ----delivery-ggpairs-02, echo=FALSE, fig.width=5, fig.height=5, out.width="100%"----
 GGally::ggpairs(
   data = delivery[, -1]  #<<
 )  
+
+## ----delivery-splom-01, eval=FALSE---------------------------------------
+## lattice::splom(
+##   x = delivery[, -1],  #<<
+##   type = c("p", "smooth"),
+##   pch = 19,
+##   col = "dodgerblue2",
+##   lty = "dotted",
+##   alpha = 0.6
+## )
 
 ## ----delivery-splom-02, echo=FALSE, fig.width=5, fig.height=5, out.width="100%"----
 lattice::splom(
@@ -205,3 +300,10 @@ summary(delivery_fit)  # SEs and marginal tests  #<<
 
 # Construct 95% CIs for the coefficients
 confint(delivery_fit, level = 0.95)
+
+## ----hell-yeah, echo=FALSE, out.width="40%"------------------------------
+RBitmoji::plot_comic("8b06e67b-d4e9-4f11-a355-f1236df17079-v1", tag = "hell yeah")
+
+## ----quittin-time, echo=FALSE, out.width="60%"---------------------------
+RBitmoji::plot_comic(my_id, tag = "quittin")
+
