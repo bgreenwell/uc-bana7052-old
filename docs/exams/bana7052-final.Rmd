@@ -2,8 +2,8 @@
 title: 'BANA 7052: Applied Linear Regression'
 subtitle: Final exam (60 points)
 output:
-  word_document: default
   html_document: default
+  word_document: default
 ---
 
 **Instructions:** The final is take home and open book. It will be due by noon on Friday, December 7-th. Please upload your competed final to blackboard. This is **NOT** a group assignment and absolutely **NO** working together. Failure to do so will result in a zero for the final. There is a bonus question at the end worth five points.
@@ -284,7 +284,7 @@ product, the fewer units we sell!" Comment.
 
 **Question 33:** (2 pts.) What is a residual? Why are residuals important in regression analysis?
 
-**Question 34:** (4 pts.) The following regression model is being considered in a water resources study: $$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_2 X_{1i}X_{2i} + \beta_p \sqrt{X_{3i}} + \epsilon_i$$ State the reduced models for testing whether or not: 
+**Question 34:** (4 pts.) The following regression model is being considered in a water resources study: $$Y_i = \beta_0 + \beta_1 X_{1i} + \beta_2 X_{2i} + \beta_3 X_{1i}X_{2i} + \beta_4 \sqrt{X_{3i}} + \epsilon_i$$ State the reduced models for testing whether or not: 
 
 a. $\beta_3 = \beta_4 = 0$
 b. $\beta_3 = 0$
