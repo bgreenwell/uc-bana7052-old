@@ -21,11 +21,6 @@ Useful links
 [Homework
 format](https://bgreenwell.github.io/uc-bana7052/homework/BANA7041_HW_format.docx)
 
-Final exam
-([html](https://bgreenwell.github.io/uc-bana7052/exams/bana7052-final))
-([Microsoft
-Word](https://bgreenwell.github.io/uc-bana7052/exams/bana7052-final.docx))
-
 Lectures
 --------
 

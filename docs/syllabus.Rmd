@@ -1,21 +1,22 @@
 ---
 title: "BANA 7052\tApplied Linear Regression (2 cr.)"
-subtitle: Fall Semester, 2018
+subtitle: Fall Semester, 2019
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
+  word_document: default
 ---
 
-Section 001 Wed. 6pm-9:50pm, RECCENTR 3220
+Section 001 Wed. 6pm-9:50pm, LINDHALL 2120
 
-Section 002 Thu. 6pm-9:50pm, RECCENTR 3200
+Section 002 Thu. 6pm-9:50pm, LINDHALL 4230
 
 
 ### Instuctor:
 
 **Name:** Dr. Brandon M. Greenwell
 
-**Office:** 106 Carl H. Lindner Hall
+**Office:** TBD.
 
 **Email:** greenwell.brandon@gmail.com (preferred)
 
@@ -26,11 +27,11 @@ Section 002 Thu. 6pm-9:50pm, RECCENTR 3200
 
 ### Teaching assistant:
 
-**Name:** Tianhai Zu, PhD student
+**Name:** Zewei Lin, PhD student
 
-**Office:** 534 Carl H. Lindner Hall
+**Office:** 3329.09 Carl H. Lindner Hall
 
-**Email:** zuti@mail.uc.edu
+**Email:** linzw@mail.uc.edu
 
 **Office Hours:** TBD
 
@@ -45,7 +46,7 @@ Course materials including syllabus, lecture notes, reading assignments, homewor
 
 **Text:** [Applied Linear Regression Models](https://www.amazon.com/Applied-Linear-Regression-Models-Student/dp/0073014664)
 
-**Slack channel:** uc-bana7052.slack.com
+**Slack channel:** uc-bana7052-fall19.slack.com
 
 ### Grading:	
 
@@ -134,14 +135,14 @@ Students will have homework assignments, quizzes (possibly), and exams on which 
 
 ### Tentative schedule (please bring your laptop to all classes)
 
-|  Week | Date (001/002) | Topic | Chapters | Assignment |
+|  Week | Date (001/002) | Topic | Book chapters | Assignment |
 |:------|:-----|:------|:---------|:-------------|
-| 1 | Oct 17/Oct 18 | Correlation and simple linear regression | 1 | Homework 1 |
-| 2 | Oct 24/Oct 25 | Inferences for SLR | 2 | Homework 2 |
-| 3 | Oct 31/Nov 01 | Multiple linear regression/matrix approach | 5, 6, 7 | Homework 3 |
-| 4 | Nov 07/Nov 08 | Diagnostics and remedial measures | 3, 10 | Homework 4 |
-| 5 | No class | | | |
-| 6 | Nov 14/Nov 15 | Quantitative and qualitative predictors; Transformations | 7.6, 10.5, 8 | Homework 5 |
-| 7 | Nov 28/Nov 29 | Model selection and validation; Introduction to MARS | 9 | |
-| 8 | Dec 05/Dec 06 | Review; final exam (7--9) | | |
+| 1 | Oct 16/Oct 17 | Correlation and simple linear regression | 1 | Homework 1 |
+| 2 | Oct 23/Oct 24 | Inferences for SLR | 2 | Homework 2 |
+| 3 | Oct 30/Oct 31 | Multiple linear regression/matrix approach | 5, 6, 7 | Homework 3 |
+| 4 | Nov 06/Nov 07 | Diagnostics and remedial measures | 3, 10 | Homework 4 |
+| 5 | Nov 13/Nov 14 | Quantitative and qualitative predictors; Transformations | 7.6, 10.5, 8 | Homework 5 |
+| 6 | Nov 20/Nov 21 | Model selection and validation; Introduction to MARS | 9 | |
+| 7 | Nov 27/Nov 28 | No class |
+| 8 | Dec 04/Dec 05 | Review; final exam (7--9) | | |
 

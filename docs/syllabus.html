@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -254,9 +255,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -270,7 +269,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -281,22 +279,80 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -306,26 +362,26 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">BANA 7052 Applied Linear Regression (2 cr.)</h1>
-<h3 class="subtitle"><em>Fall Semester, 2018</em></h3>
+<h3 class="subtitle">Fall Semester, 2019</h3>
 
 </div>
 
 
-<p>Section 001 Wed. 6pm-9:50pm, RECCENTR 3220</p>
-<p>Section 002 Thu. 6pm-9:50pm, RECCENTR 3200</p>
+<p>Section 001 Wed. 6pm-9:50pm, LINDHALL 2120</p>
+<p>Section 002 Thu. 6pm-9:50pm, LINDHALL 4230</p>
 <div id="instuctor" class="section level3">
 <h3>Instuctor:</h3>
 <p><strong>Name:</strong> Dr. Brandon M. Greenwell</p>
-<p><strong>Office:</strong> 106 Carl H. Lindner Hall</p>
-<p><strong>Email:</strong> <a href="mailto:greenwell.brandon@gmail.com">greenwell.brandon@gmail.com</a> (preferred)</p>
+<p><strong>Office:</strong> TBD.</p>
+<p><strong>Email:</strong> <a href="mailto:greenwell.brandon@gmail.com" class="email">greenwell.brandon@gmail.com</a> (preferred)</p>
 <p><strong>Office hours:</strong> TBD</p>
 <p><strong>Phone:</strong> 614-288-9450</p>
 </div>
 <div id="teaching-assistant" class="section level3">
 <h3>Teaching assistant:</h3>
-<p><strong>Name:</strong> Tianhai Zu, PhD student</p>
-<p><strong>Office:</strong> 534 Carl H. Lindner Hall</p>
-<p><strong>Email:</strong> <a href="mailto:zuti@mail.uc.edu">zuti@mail.uc.edu</a></p>
+<p><strong>Name:</strong> Zewei Lin, PhD student</p>
+<p><strong>Office:</strong> 3329.09 Carl H. Lindner Hall</p>
+<p><strong>Email:</strong> <a href="mailto:linzw@mail.uc.edu" class="email">linzw@mail.uc.edu</a></p>
 <p><strong>Office Hours:</strong> TBD</p>
 </div>
 <div id="course-info" class="section level3">
@@ -334,7 +390,7 @@ $(document).ready(function () {
 <p>Course materials including syllabus, lecture notes, reading assignments, homework, data sets, R programs, and course handouts will be posted on the course web page.</p>
 <p><strong>Prerequisites:</strong> Undergraduate Introduction to Probability and Statistics.</p>
 <p><strong>Text:</strong> <a href="https://www.amazon.com/Applied-Linear-Regression-Models-Student/dp/0073014664">Applied Linear Regression Models</a></p>
-<p><strong>Slack channel:</strong> uc-bana7052.slack.com</p>
+<p><strong>Slack channel:</strong> uc-bana7052-fall19.slack.com</p>
 </div>
 <div id="grading" class="section level3">
 <h3>Grading:</h3>
@@ -411,63 +467,63 @@ $(document).ready(function () {
 <th align="left">Week</th>
 <th align="left">Date (001/002)</th>
 <th align="left">Topic</th>
-<th align="left">Chapters</th>
+<th align="left">Book chapters</th>
 <th align="left">Assignment</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">1</td>
-<td align="left">Oct 17/Oct 18</td>
+<td align="left">Oct 16/Oct 17</td>
 <td align="left">Correlation and simple linear regression</td>
 <td align="left">1</td>
 <td align="left">Homework 1</td>
 </tr>
 <tr class="even">
 <td align="left">2</td>
-<td align="left">Oct 24/Oct 25</td>
+<td align="left">Oct 23/Oct 24</td>
 <td align="left">Inferences for SLR</td>
 <td align="left">2</td>
 <td align="left">Homework 2</td>
 </tr>
 <tr class="odd">
 <td align="left">3</td>
-<td align="left">Oct 31/Nov 01</td>
+<td align="left">Oct 30/Oct 31</td>
 <td align="left">Multiple linear regression/matrix approach</td>
 <td align="left">5, 6, 7</td>
 <td align="left">Homework 3</td>
 </tr>
 <tr class="even">
 <td align="left">4</td>
-<td align="left">Nov 07/Nov 08</td>
+<td align="left">Nov 06/Nov 07</td>
 <td align="left">Diagnostics and remedial measures</td>
 <td align="left">3, 10</td>
 <td align="left">Homework 4</td>
 </tr>
 <tr class="odd">
 <td align="left">5</td>
-<td align="left">No class</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">6</td>
-<td align="left">Nov 14/Nov 15</td>
+<td align="left">Nov 13/Nov 14</td>
 <td align="left">Quantitative and qualitative predictors; Transformations</td>
 <td align="left">7.6, 10.5, 8</td>
 <td align="left">Homework 5</td>
 </tr>
-<tr class="odd">
-<td align="left">7</td>
-<td align="left">Nov 28/Nov 29</td>
+<tr class="even">
+<td align="left">6</td>
+<td align="left">Nov 20/Nov 21</td>
 <td align="left">Model selection and validation; Introduction to MARS</td>
 <td align="left">9</td>
 <td align="left"></td>
 </tr>
+<tr class="odd">
+<td align="left">7</td>
+<td align="left">Nov 27/Nov 28</td>
+<td align="left">No class</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
 <tr class="even">
 <td align="left">8</td>
-<td align="left">Dec 05/Dec 06</td>
+<td align="left">Dec 04/Dec 05</td>
 <td align="left">Review; final exam (7–9)</td>
 <td align="left"></td>
 <td align="left"></td>
@@ -493,6 +549,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
