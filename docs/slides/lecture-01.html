@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
     <title>BANA 7052: Lecture 01</title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta name="author" content="Brandon M. Greenwell" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/hygge.css" rel="stylesheet" />
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # BANA 7052: Lecture 01
 ## Association and Simple Linear Regression
 ### Brandon M. Greenwell
-### 18 October, 2018
+### 13 October, 2019
 
 ---
 
@@ -49,7 +49,7 @@ class: clear, middle, center
 
 * Main topics:
 
-    - Association 😴
+    - Association 😪
     
     - Simple linear regression
   
@@ -153,20 +153,20 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Statistical relationships
 
-&lt;img src="lecture-01_files/figure-html/statistical-relationships-04-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/statistical-relationships-04-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Pearson correlation
 
-&lt;img src="lecture-01_files/figure-html/pearson-correlation-01-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/pearson-correlation-01-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-01_files/figure-html/pearson-correlation-02-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/pearson-correlation-02-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -319,7 +319,7 @@ tibble::as_tibble(crystal)  # print a summary of the data
 plot(weight ~ time, data = crystal)  # better
 ```
 
-&lt;img src="lecture-01_files/figure-html/your-turn-01-01-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/your-turn-01-01-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -333,7 +333,7 @@ ggplot(crystal, aes(x = time, y = weight)) +
   geom_point(size = 3)
 ```
 
-&lt;img src="lecture-01_files/figure-html/your-turn-01-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/your-turn-01-02-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -487,7 +487,7 @@ ggplot(HistData::Galton, aes(x = parent, y = child)) +
 
 # Historical origins of regression
 
-&lt;img src="lecture-01_files/figure-html/galton-02-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/galton-02-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -519,14 +519,14 @@ ggplot(data.frame(x = 1:10, y = 15*1:10), aes(x, y)) +
 
 # Functional relationships
 
-&lt;img src="lecture-01_files/figure-html/functional-relation-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/functional-relation-02-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Statistical relationships
 
-&lt;img src="lecture-01_files/figure-html/linear-relationships-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/linear-relationships-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -699,7 +699,7 @@ class: clear, middle, center
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-01_files/figure-html/arsenic-conditional-distribution-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/arsenic-conditional-distribution-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -786,7 +786,7 @@ class: clear, middle, center
 
 .font130[
 
-* Don't bother trying to memorize these formulas! 🤣
+* Don't bother trying to memorize these formulas! 😂
 
 ]
 
@@ -1007,7 +1007,7 @@ ggplot(data = crystal, aes(x = time, y = weight)) +
 
 # Residuals: `\(Y_i - \widehat{Y}_i\)`
 
-&lt;img src="lecture-01_files/figure-html/crystal-residuals-02-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/crystal-residuals-02-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1052,7 +1052,7 @@ y &lt;- rnorm(30, mean = 1 + 2*x, sd = 1.2)
 plot(x, y)
 ```
 
-&lt;img src="lecture-01_files/figure-html/your-turn-03-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/your-turn-03-02-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -1211,8 +1211,9 @@ sustainer propellant. `\(n = 20\)` observations on shear strength (measured in p
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-01_files/figure-html/quittin-time-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/quittin-time-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
     </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
@@ -1222,16 +1223,74 @@ class: clear, middle, center
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
 });
-(function() {
-  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
   if (!r) return;
   s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
   d.head.appendChild(s);
-})();</script>
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 (function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
   for (i = 0; i < codes.length;) {
     code = codes[i];
     if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
@@ -1245,7 +1304,8 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     i++;
   }
-})();
+};
+slideshow._releaseMath(document);
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
