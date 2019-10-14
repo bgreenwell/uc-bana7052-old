@@ -15,15 +15,18 @@ output:
 
 ---
 class: clear, center, middle
+background-image: url("images/time.svg")
+background-size: contain
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE, servr.daemon = TRUE)
 
 # Global chunk options
 knitr::opts_chunk$set(
+  cache = TRUE,
   echo = TRUE,
-  dev = "svg",
-  fig.retina = 3,
+  dev = "svg",     #
+  fig.retina = 3,  #
   fig.align = "center",
   fig.width = 6,
   fig.asp = 0.618,
@@ -41,6 +44,10 @@ library(patchwork)
 my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 ```
 
+
+---
+class: clear, center, middle
+
 .font300[
 
 [R code for these slides](https://github.com/bgreenwell/uc-bana7052/blob/master/code/lecture-01.R)
@@ -49,11 +56,9 @@ my_id <- "1551b314-5e8a-4477-aca2-088c05963111-v1"
 
 
 ---
-class: clear, middle, center
-
-```{r curve-fitting, echo=FALSE, out.width="40%"}
-knitr::include_graphics("images/curve-fitting.png")
-```
+class: clear, center, middle
+background-image: url("images/curve-fitting.png")
+background-size: contain
 
 
 ---
@@ -91,8 +96,7 @@ pkgs <- c(
   "HistData",    # for historical data sets
   "investr",     # for inverse estimation
   "magick",      # for working with images
-  "roundhouse",  # for pure awesomeness
-  "tibble"       # for nicer data frames
+  "roundhouse"   # for pure awesomeness
 )
 
 # Install required (CRAN) packages
@@ -108,10 +112,8 @@ for (pkg in pkgs) {
 
 ---
 class: clear, middle, center
-
-```{r wonka, echo=FALSE, out.width="70%"}
-knitr::include_graphics("images/read-the-book.jpg")
-```
+background-image: url("images/read-the-book.jpg")
+background-size: contain
 
 
 ---
@@ -123,12 +125,11 @@ knitr::include_graphics("images/read-the-book.jpg")
 ```{r statistical-relationships-01}
 # Load required packages
 library(ggplot2)
-library(tibble)
 
 # Generate some random data
-set.seed(101)
-d <- tibble(
-  x = seq(from = -2, to = 2, length = 100),
+set.seed(101)  # for reproducibility
+x <- seq(from = -2, to = 2, length = 100)
+d <- data.frame(
   y1 = 1 + x + rnorm(length(x)),
   y2 = 1 + x^2 + rnorm(length(x)),
   y3 = 1 + x^3 + rnorm(length(x)),
@@ -148,16 +149,16 @@ d <- tibble(
 ```{r statistical-relationships-02, fig.keep="none"}
 # Construct scatterplots
 p1 <- ggplot(d, aes(x = x, y = y1)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "Linear")
 p2 <- ggplot(d, aes(x = x, y = y2)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "Quadratic")
 p3 <- ggplot(d, aes(x = x, y = y3)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "Cubic")
 p4 <- ggplot(d, aes(x = x, y = y4)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "None")
 
 # Display plots in a grid
@@ -171,7 +172,7 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Statistical relationships
 
-```{r statistical-relationships-04, echo=FALSE, out.width="80%"}
+```{r statistical-relationships-04, echo=FALSE, out.width="90%"}
 # Display plots in a grid
 gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 ```
@@ -181,27 +182,27 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Pearson correlation
 
-```{r pearson-correlation-01, echo=FALSE, fig.width=7, fig.height=5, out.width="80%"}
+```{r pearson-correlation-01, echo=FALSE, fig.width=7, fig.height=5, out.width="90%"}
 set.seed(101)
-d <- tibble(
-  x = seq(from = -2, to = 2, length = 100),
-  y1 = 1 + x + rnorm(length(x)),
-  y2 = 1 - x + rnorm(length(x)),
-  y3 = 1 + x^2 + rnorm(length(x)),
-  y4 = 1 + rnorm(length(x))
+x <- seq(from = -2, to = 2, length = 100)
+d <- data.frame(
+  y1 = 1 + x + rnorm(length(x), sd = 1/3),
+  y2 = 1 - x + rnorm(length(x), sd = 1/3),
+  y3 = 1 + x^2 + rnorm(length(x), sd = 1/3),
+  y4 = 1 + rnorm(length(x), sd = 1/3)
 )
 p1 <- ggplot(d, aes(x = x, y = y1)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "Positive")
 p2 <- ggplot(d, aes(x = x, y = y2)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "Negative")
 p3 <- ggplot(d, aes(x = x, y = y4)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "None")
 p4 <- "images/correlation-coefficient.png" %>%
   png::readPNG() %>%
-  grid::rasterGrob(interpolate = TRUE, width = 0.8)
+  grid::rasterGrob(interpolate = TRUE, width = 0.6)
 p4 <- ggplot() +
   annotation_custom(p4, xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = Inf)
 p1 + p2 + p3 - p4 + 
@@ -213,10 +214,12 @@ p1 + p2 + p3 - p4 +
 ---
 class: clear, middle, center
 
+## Are $X$ and $Y$ correlated?
+
 ```{r pearson-correlation-02, echo=FALSE, fig.width=6, fig.asp=0.618, out.width="100%"}
 ggplot(d, aes(x = x, y = y3)) +
-  geom_point(alpha = 0.9) + 
-  labs(y = "y", title = "What's the correlation here?")
+  geom_point(alpha = 2/3) + 
+  labs(x = "X", y = "Y")
 ```
 
 
@@ -254,6 +257,24 @@ $$Cor\left(X, Y\right) = \rho = \frac{Cov\left(X,Y\right)}{\sigma_X\sigma_Y}$$
 * There is a formal relationship between Pearson's correlation and the *simple linear regression* (SLR) model
 
     - Simple linear relationships can be described by a *slope* and *intercept*
+
+]
+
+
+---
+
+# What does the following code do?
+
+.code110[
+
+```{r pvalue-simulation}
+# See ?set.seed, ?replicate, and ?cor.test for details
+set.seed(1926)
+pvals <- replicate(1000, {
+  cor.test(x = rnorm(10000), y = rnorm(10000))$p.value
+})
+mean(pvals <= 0.05)
+```
 
 ]
 
@@ -310,7 +331,7 @@ knitr::include_graphics("images/correlation-causation-comic.png")
 
 ```{r crystal}
 data(crystal, package = "investr")  # ?investr::crystal
-tibble::as_tibble(crystal)  # print a summary of the data
+head(crystal, n = 5)  # print first five observations
 ```
 
 ]
@@ -363,9 +384,20 @@ ggplot(crystal, aes(x = time, y = weight)) +
 
 # Solution
 
+```{r your-turn-01-03, fig.width=6, fig.asp=0.618, out.width="70%"}
+# Scatterplot using lattice
+# library(lattice)  # or use :: like below
+lattice::xyplot(weight ~ time, data = crystal, pch = 19, cex = 1.3)
+```
+
+
+---
+
+# Solution
+
 .code125[
 
-```{r your-turn-01-03}
+```{r your-turn-01-04}
 cor(crystal)  # correlation matrix
 with(crystal, cor(time, weight))  # using with() 
 cor(crystal$time, crystal$weight)  # using $
@@ -380,7 +412,7 @@ cor(crystal$time, crystal$weight)  # using $
 
 .code110[
 
-```{r your-turn-01-04}
+```{r your-turn-01-05}
 # Test for (linear) association
 with(crystal, cor.test(time, weight, conf.level = 0.95))
 ```
@@ -700,10 +732,8 @@ where $\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)$
 
 ---
 class: clear, middle, center
-
-```{r slr-conditional-distribution, echo=FALSE, out.width="80%"}
-knitr::include_graphics("images/slr-conditional-distribution.png")
-```
+background-image: url("images/slr-conditional-distribution.png")
+background-size: contain
 
 
 ---
@@ -777,9 +807,8 @@ Calculus!
 ---
 class: clear, middle, center
 
-```{r calculus-joke, echo=FALSE, out.width="100%"}
-knitr::include_graphics("images/calculus-joke.jpg")
-```
+background-image: url("images/calculus-joke.jpg")
+background-size: contain
 
 
 ---
@@ -1111,7 +1140,7 @@ $$L\left(\beta_0, \beta_1, \sigma^2\right) = \prod_{i=1}^nf\left(Y_i; \beta_0 + 
 
 .font175[
 
-* Maximizing the likelihood is the same as maximizing the *log-likelihood* $l = \log\left(L\right)$ (**Why?** `r emo::ji("thinking")`)
+* Maximizing the likelihood is the same as maximizing the *log-likelihood* (**Why?** `r emo::ji("thinking")`) $$l = \log\left(L\right)$$
 
 * The full log-likelihood is given by 
 

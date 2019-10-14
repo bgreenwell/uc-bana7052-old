@@ -16,13 +16,19 @@ class: center, middle, inverse, title-slide
 # BANA 7052: Lecture 01
 ## Association and Simple Linear Regression
 ### Brandon M. Greenwell
-### 13 October, 2019
+### 14 October, 2019
 
 ---
 
 class: clear, center, middle
+background-image: url("images/time.svg")
+background-size: contain
 
 
+
+
+---
+class: clear, center, middle
 
 .font300[
 
@@ -32,9 +38,9 @@ class: clear, center, middle
 
 
 ---
-class: clear, middle, center
-
-&lt;img src="images/curve-fitting.png" width="40%" style="display: block; margin: auto;" /&gt;
+class: clear, center, middle
+background-image: url("images/curve-fitting.png")
+background-size: contain
 
 
 ---
@@ -73,8 +79,7 @@ pkgs &lt;- c(
   "HistData",    # for historical data sets
   "investr",     # for inverse estimation
   "magick",      # for working with images
-  "roundhouse",  # for pure awesomeness
-  "tibble"       # for nicer data frames
+  "roundhouse"   # for pure awesomeness
 )
 
 # Install required (CRAN) packages
@@ -90,8 +95,8 @@ for (pkg in pkgs) {
 
 ---
 class: clear, middle, center
-
-&lt;img src="images/read-the-book.jpg" width="70%" style="display: block; margin: auto;" /&gt;
+background-image: url("images/read-the-book.jpg")
+background-size: contain
 
 
 ---
@@ -104,12 +109,11 @@ class: clear, middle, center
 ```r
 # Load required packages
 library(ggplot2)
-library(tibble)
 
 # Generate some random data
-set.seed(101)
-d &lt;- tibble(
-  x = seq(from = -2, to = 2, length = 100),
+set.seed(101)  # for reproducibility
+x &lt;- seq(from = -2, to = 2, length = 100)
+d &lt;- data.frame(
   y1 = 1 + x + rnorm(length(x)),
   y2 = 1 + x^2 + rnorm(length(x)),
   y3 = 1 + x^3 + rnorm(length(x)),
@@ -130,16 +134,16 @@ d &lt;- tibble(
 ```r
 # Construct scatterplots
 p1 &lt;- ggplot(d, aes(x = x, y = y1)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "Linear")
 p2 &lt;- ggplot(d, aes(x = x, y = y2)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "Quadratic")
 p3 &lt;- ggplot(d, aes(x = x, y = y3)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "Cubic")
 p4 &lt;- ggplot(d, aes(x = x, y = y4)) +
-  geom_point(alpha = 0.9) + 
+  geom_point(alpha = 2/3) + 
   labs(y = "y", title = "None")
 
 # Display plots in a grid
@@ -153,18 +157,20 @@ gridExtra::grid.arrange(p1, p2, p3, p4, ncol = 2)
 
 # Statistical relationships
 
-&lt;img src="lecture-01_files/figure-html/statistical-relationships-04-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/statistical-relationships-04-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
 # Pearson correlation
 
-&lt;img src="lecture-01_files/figure-html/pearson-correlation-01-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-01_files/figure-html/pearson-correlation-01-1.svg" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle, center
+
+## Are `\(X\)` and `\(Y\)` correlated?
 
 &lt;img src="lecture-01_files/figure-html/pearson-correlation-02-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
@@ -203,6 +209,29 @@ class: clear, middle, center
 * There is a formal relationship between Pearson's correlation and the *simple linear regression* (SLR) model
 
     - Simple linear relationships can be described by a *slope* and *intercept*
+
+]
+
+
+---
+
+# What does the following code do?
+
+.code110[
+
+
+```r
+# See ?set.seed, ?replicate, and ?cor.test for details
+set.seed(1926)
+pvals &lt;- replicate(1000, {
+  cor.test(x = rnorm(10000), y = rnorm(10000))$p.value
+})
+mean(pvals &lt;= 0.05)
+```
+
+```
+## [1] 0.052
+```
 
 ]
 
@@ -261,27 +290,16 @@ class: clear, center, middle
 
 ```r
 data(crystal, package = "investr")  # ?investr::crystal
-tibble::as_tibble(crystal)  # print a summary of the data
+head(crystal, n = 5)  # print first five observations
 ```
 
 ```
-## # A tibble: 14 x 2
-##     time weight
-##    &lt;dbl&gt;  &lt;dbl&gt;
-##  1     2   0.08
-##  2     4   1.12
-##  3     6   4.43
-##  4     8   4.98
-##  5    10   4.92
-##  6    12   7.18
-##  7    14   5.57
-##  8    16   8.4 
-##  9    18   8.81
-## 10    20  10.8 
-## 11    22  11.2 
-## 12    24  10.1 
-## 13    26  13.1 
-## 14    28  15.0
+##   time weight
+## 1    2   0.08
+## 2    4   1.12
+## 3    6   4.43
+## 4    8   4.98
+## 5   10   4.92
 ```
 
 ]
@@ -334,6 +352,20 @@ ggplot(crystal, aes(x = time, y = weight)) +
 ```
 
 &lt;img src="lecture-01_files/figure-html/your-turn-01-02-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Solution
+
+
+```r
+# Scatterplot using lattice
+# library(lattice)  # or use :: like below
+lattice::xyplot(weight ~ time, data = crystal, pch = 19, cex = 1.3)
+```
+
+&lt;img src="lecture-01_files/figure-html/your-turn-01-03-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -692,8 +724,8 @@ where `\(\epsilon_i \stackrel{iid}{\sim} N\left(0, \sigma^2\right)\)`
 
 ---
 class: clear, middle, center
-
-&lt;img src="images/slr-conditional-distribution.png" width="80%" style="display: block; margin: auto;" /&gt;
+background-image: url("images/slr-conditional-distribution.png")
+background-size: contain
 
 
 ---
@@ -760,7 +792,8 @@ Calculus!
 ---
 class: clear, middle, center
 
-&lt;img src="images/calculus-joke.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+background-image: url("images/calculus-joke.jpg")
+background-size: contain
 
 
 ---
@@ -1140,7 +1173,7 @@ Since `\(Y_i \stackrel{indep.}{\sim} N\left(\beta_0 + \beta_1X_i, \sigma^2\right
 
 .font175[
 
-* Maximizing the likelihood is the same as maximizing the *log-likelihood* `\(l = \log\left(L\right)\)` (**Why?** 🤔)
+* Maximizing the likelihood is the same as maximizing the *log-likelihood* (**Why?** 🤔) `$$l = \log\left(L\right)$$`
 
 * The full log-likelihood is given by 
 
