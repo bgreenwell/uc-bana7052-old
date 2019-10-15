@@ -2,9 +2,9 @@
 title: "BANA 7052\tApplied Linear Regression (2 cr.)"
 subtitle: Fall Semester, 2019
 output:
-  html_document: default
-  pdf_document: default
   word_document: default
+  pdf_document: default
+  html_document: default
 ---
 
 Section 001 Wed. 6pm-9:50pm, LINDHALL 2120
