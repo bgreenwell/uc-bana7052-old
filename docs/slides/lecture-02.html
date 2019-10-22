@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
   <head>
     <title>Inferences in Simple Linear Regression</title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta name="author" content="Brandon M. Greenwell" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/hygge.css" rel="stylesheet" />
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Inferences in Simple Linear Regression
 ## Lecture 02
 ### Brandon M. Greenwell
-### 25 October, 2018
+### 22 October, 2019
 
 ---
 
@@ -89,19 +89,19 @@ background-size: 40%
 ---
 class: clear, middle
 
-&lt;img src="lecture-02_files/figure-html/relationship-01-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/relationship-01-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle
 
-&lt;img src="lecture-02_files/figure-html/relationship-02-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/relationship-02-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 class: clear, middle
 
-&lt;img src="lecture-02_files/figure-html/relationship-03-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/relationship-03-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -200,7 +200,7 @@ plot(x, y)
 abline(fit, lwd = 2, col = "red2")
 ```
 
-&lt;img src="lecture-02_files/figure-html/simulation-02-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/simulation-02-1.svg" width="70%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -250,7 +250,7 @@ hist(sim[, 2], br = 50, fr = FALSE, col = "gray30", border = "white",
 abline(v = 10, lwd = 3, col = "red2")
 ```
 
-&lt;img src="lecture-02_files/figure-html/simulation-04-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/simulation-04-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -470,7 +470,7 @@ plotFit(rocket_fit, lwd.fit = 2,
 
 # Rocket propellant example <i class="fas  fa-rocket fa-spin "></i>
 
-&lt;img src="lecture-02_files/figure-html/rocket-slr-plot-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/rocket-slr-plot-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -601,7 +601,7 @@ plotFit(crystal_fit, lwd.fit = 2,
 
 # Solution
 
-&lt;img src="lecture-02_files/figure-html/crystal-slr-plot-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/crystal-slr-plot-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1393,7 +1393,7 @@ plotFit(rocket_fit, interval = "confidence")
 abline(v = 15, col = "red2")
 ```
 
-&lt;img src="lecture-02_files/figure-html/rocket-conf-band-02-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/rocket-conf-band-02-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1406,7 +1406,7 @@ plotFit(rocket_fit, interval = "confidence",
         shade = TRUE, xlim = c(-20, 100))
 ```
 
-&lt;img src="lecture-02_files/figure-html/rocket-conf-band-03-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/rocket-conf-band-03-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1454,7 +1454,7 @@ plotFit(crystal_fit, interval = "confidence",
 ## 1 10.07 9.474876 10.66512
 ```
 
-&lt;img src="lecture-02_files/figure-html/crystal-conf-band-02-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/crystal-conf-band-02-1.svg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -1751,8 +1751,9 @@ For the crystal weight data, rather than estimating the mean weight for crystals
 ---
 class: clear, middle, center
 
-&lt;img src="lecture-02_files/figure-html/quittin-time-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="lecture-02_files/figure-html/quittin-time-1.svg" width="100%" style="display: block; margin: auto;" /&gt;
     </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
@@ -1762,16 +1763,57 @@ class: clear, middle, center
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
 });
-(function() {
-  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
   if (!r) return;
   s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
   d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
 })();</script>
 
 <script>
 (function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
   for (i = 0; i < codes.length;) {
     code = codes[i];
     if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
@@ -1785,7 +1827,8 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     i++;
   }
-})();
+};
+slideshow._releaseMath(document);
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
