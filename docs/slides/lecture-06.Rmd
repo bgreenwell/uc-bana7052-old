@@ -23,7 +23,8 @@ options(htmltools.dir.version = FALSE, servr.daemon = TRUE,
 knitr::opts_chunk$set(
   cache = TRUE,
   echo = TRUE,
-  dev = "svglite",
+  dev = "svg",     #
+  fig.retina = 3,  #
   fig.align = "center",
   message = FALSE,
   warning = FALSE,
