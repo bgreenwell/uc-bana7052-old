@@ -2,9 +2,9 @@
 title: "BANA 7052\tApplied Linear Regression (2 cr.)"
 subtitle: Fall Semester, 2020
 output:
-  pdf_document: default
-  word_document: default
   html_document: default
+  word_document: default
+  pdf_document: default
 ---
 
 Section 002 Thu. 6pm-9:50pm (on the corresponding Teams page)
@@ -35,7 +35,7 @@ Course materials including syllabus, lecture notes, reading assignments, homewor
 
  * This is a subset of a much larger text called **Applied Linear Statistical Models** (you can probably find a free PDF copy online by searching for "Applied Linear Statistical Models pdf"...)
 
-**Communication:** All communication (e.g., video lectures, discussion, etc.) will be done through the corresponding Teams page for our course: https://teams.microsoft.com/l/team/19%3a1244eb984f88448c8d6c0cac3befa9bc%40thread.tacv2/conversations?groupId=dfd888d6-0e7a-45ae-ba36-0a9c2ae38dba&tenantId=f5222e6c-5fc6-48eb-8f03-73db18203b63.
+**Communication:** All communication (e.g., video lectures, discussion, etc.) will be done through the corresponding [Teams page](https://teams.microsoft.com/l/team/19%3a1244eb984f88448c8d6c0cac3befa9bc%40thread.tacv2/conversations?groupId=dfd888d6-0e7a-45ae-ba36-0a9c2ae38dba&tenantId=f5222e6c-5fc6-48eb-8f03-73db18203b63) for our course.
 
 
 ### Grading:	
